@@ -13,11 +13,12 @@
 3. **Unified Backend (Supabase):** Use Supabase exclusively for Authentication, Database, and Image Storage.  
 4. **"Anti-Vibecode" Design Aesthetic (CRITICAL):** \* **No Cheap AI Tropes:** Avoid pure black (\#000000) backgrounds, excessive neon glows, or generic centered layouts.  
    * **Premium Theme:** Use a structured Vercel/Linear aesthetic. Use deep zinc/slate (bg-zinc-950) for backgrounds, subtle borders (border-zinc-800), and crisp white text. Use solid **Cobalt Blue (bg-blue-600)** for primary CTAs.  
-   * **Production Polish:** You MUST implement proper loading states (Shadcn Skeletons or spinners) for all async actions. You MUST use Toast notifications (e.g., sonner or Shadcn Toasts) for success/error feedback (e.g., "Image processed successfully", "Out of credits").
+   * **Production Polish:** You MUST implement proper loading states (Shadcn Skeletons or spinners) for all async actions. You MUST use Toast notifications (e.g., sonner or Shadcn Toasts) for success/error feedback (e.g., "Image processed successfully", "Out of credits").  
+5. **Mandatory Stitch Workflow:** You MUST use the installed Stitch skills (stitch-design, taste-design, shadcn-ui) for ALL frontend UI/UX generation. Ensure the design strictly follows the "Anti-Vibecode" rules, prioritizing premium layouts, loading skeletons, and interactive feedback.
 
 ## **🏗️ EXECUTION PLAN (HOW WE BUILD)**
 
-* **Phase 1: Foundation & Auth:** Setup Next.js, Tailwind, Shadcn. Initialize Supabase client. Build the Login/Signup page using Supabase Auth.  
+* **Phase 1: Foundation, Git & Auth:** Setup Next.js, Tailwind, Shadcn. Initialize Supabase client. Build the Login/Signup page using Supabase Auth & Stitch Design skills. Commit and push the completed phase to GitHub via raw git commands.
 * **Phase 2: Database & Storage Setup:** Setup the Supabase database schema, RLS policies, PostgreSQL triggers for the credit system (Default 6 credits), and create the creations storage bucket.  
 * **Phase 3: The AI Engine (Server Action):** Write the secure Next.js Server Action that receives an image file, calls the Clipdrop API, saves both original and transparent results to Supabase Storage, and deducts 1 credit from the database using the Service Role Key.  
 * **Phase 4: Dashboard & Upload UI:** Build the user dashboard. Include a highly polished drag-and-drop upload zone with loading states, and a real-time credit counter display.  
