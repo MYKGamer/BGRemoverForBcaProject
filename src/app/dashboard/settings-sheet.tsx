@@ -37,7 +37,7 @@ export function SettingsSheet({ isOpen, onClose, user }: SettingsSheetProps) {
             <span>Settings</span>
           </SheetTitle>
           <SheetDescription className="text-[#a1a1aa]">
-            Manage your account preferences and view system status.
+            Adjust your preferences and manage your account here.
           </SheetDescription>
         </SheetHeader>
 

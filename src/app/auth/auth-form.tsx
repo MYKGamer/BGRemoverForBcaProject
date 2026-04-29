@@ -40,7 +40,7 @@ export function AuthForm() {
       <CardHeader className="space-y-1 text-center">
         <CardTitle className="text-2xl font-semibold tracking-tight">BGRemover AI</CardTitle>
         <CardDescription className="text-[#a1a1aa]">
-          Sophisticated background removal for professional workflows
+          Fast and clean background removal for all your photos
         </CardDescription>
       </CardHeader>
       <CardContent className="grid gap-6">

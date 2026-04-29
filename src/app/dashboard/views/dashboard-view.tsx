@@ -69,7 +69,7 @@ export function DashboardView({ userEmail, credits, historyCount }: DashboardVie
               <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
               <div className="text-xl font-bold text-white">Active</div>
             </div>
-            <p className="text-xs text-[#71717a] mt-3">All systems operational. Latency: 240ms</p>
+            <p className="text-xs text-[#71717a] mt-3">AI Engine is running smoothly. Ready for your images.</p>
           </CardContent>
         </Card>
       </div>
