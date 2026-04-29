@@ -1,7 +1,7 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { signOut } from '../auth/actions'
+import { UserMenu } from './user-menu'
 import { UploadZone } from './upload-zone'
 import { HistoryGrid } from './history-grid'
 import { Zap } from 'lucide-react'
@@ -47,11 +47,7 @@ export default async function DashboardPage() {
               <Zap className="h-4 w-4 text-yellow-500" />
               <span className="text-sm font-medium text-[#fafafa]">{credits} Credits</span>
             </div>
-            <form action={signOut}>
-              <Button variant="ghost" size="sm" className="text-[#a1a1aa] hover:text-white hover:bg-[#27272a]">
-                Sign Out
-              </Button>
-            </form>
+            <UserMenu user={user} />
           </div>
         </div>
       </header>
