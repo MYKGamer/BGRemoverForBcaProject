@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { 
   LayoutDashboard, 
   Image as ImageIcon, 
@@ -35,9 +36,13 @@ export function Sidebar({ activeView, setActiveView, onSettingsClick }: SidebarP
       onMouseEnter={() => setIsExpanded(true)}
       onMouseLeave={() => setIsExpanded(false)}
     >
+
       {/* Logo Section */}
-      <div className="h-16 flex items-center px-6 mb-8 mt-4">
-        <div className="h-10 w-10 min-w-[40px] bg-[#2563eb] rounded-xl flex items-center justify-center font-bold text-white shadow-lg shadow-[#2563eb]/20">
+      <Link 
+        href="/" 
+        className="h-16 flex items-center px-6 mb-8 mt-4 group hover:opacity-90 transition-all"
+      >
+        <div className="h-10 w-10 min-w-[40px] bg-[#2563eb] rounded-xl flex items-center justify-center font-bold text-white shadow-lg shadow-[#2563eb]/20 group-hover:scale-105 transition-transform">
           B
         </div>
         <span className={`ml-3 font-bold text-xl text-white tracking-tight transition-opacity duration-300 whitespace-nowrap ${
@@ -45,7 +50,7 @@ export function Sidebar({ activeView, setActiveView, onSettingsClick }: SidebarP
         }`}>
           BGRemover
         </span>
-      </div>
+      </Link>
 
       {/* Navigation Items */}
       <nav className="flex-1 px-4 space-y-2">
