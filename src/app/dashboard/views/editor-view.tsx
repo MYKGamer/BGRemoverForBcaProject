@@ -10,7 +10,7 @@ export function EditorView() {
           BG <span className="text-[#2563eb]">Editor</span>
         </h1>
         <p className="text-lg text-[#a1a1aa]">
-          Upload any image and remove its background with AI precision.
+          Select a photo to get started. We'll handle the tricky parts for you.
         </p>
       </div>
       <UploadZone />

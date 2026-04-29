@@ -85,7 +85,7 @@ export function DashboardView({ userEmail, credits, historyCount }: DashboardVie
             </div>
             <h2 className="text-2xl md:text-3xl font-bold text-white">Ready to remove some backgrounds?</h2>
             <p className="text-[#a1a1aa] leading-relaxed">
-              Experience lightning-fast background removal with our advanced AI engine. Simply upload your image and let the magic happen.
+              Get clean, professional cuts in just a few seconds. Whether it's for your next big project or just for fun, we've got you covered.
             </p>
           </div>
           

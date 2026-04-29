@@ -9,7 +9,7 @@ export default function Home() {
           AI Background <span className="text-[#2563eb]">Remover</span>
         </h1>
         <p className="mt-6 text-xl leading-8 text-[#a1a1aa] max-w-2xl mx-auto">
-          High-fidelity background removal powered by AI. Designed for professional studio workflows and college excellence.
+          Give your photos a professional look by removing backgrounds instantly. Simple, fast, and built for everyone—from students to creators.
         </p>
         <div className="mt-10 flex items-center justify-center gap-x-6">
           <Link href="/auth">
