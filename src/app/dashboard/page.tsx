@@ -1,8 +1,9 @@
-import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { signOut } from '../auth/actions'
 import { UploadZone } from './upload-zone'
+import { HistoryGrid } from './history-grid'
 import { Zap } from 'lucide-react'
 
 export default async function DashboardPage() {
@@ -21,6 +22,15 @@ export default async function DashboardPage() {
     .single()
 
   const credits = userData?.credits ?? 0
+
+  // Fetch user history
+  const { data: historyItems, error: historyError } = await supabase
+    .from('history')
+    .select('*')
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: false })
+
+  const items = historyItems || []
 
   return (
     <div className="min-h-screen bg-[#09090b] flex flex-col">
@@ -58,6 +68,14 @@ export default async function DashboardPage() {
         </div>
 
         <UploadZone />
+        
+        {/* History Section */}
+        <div className="w-full max-w-5xl mx-auto mt-20">
+          <h2 className="text-2xl font-bold text-white mb-6 border-b border-[#27272a] pb-4">
+            Your Creations
+          </h2>
+          <HistoryGrid initialItems={items} />
+        </div>
       </main>
     </div>
   )

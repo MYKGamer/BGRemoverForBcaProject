@@ -1,7 +1,7 @@
 'use server'
 
-import { createClient } from '@/lib/supabase/server'
-import { supabaseAdmin } from '@/lib/supabase/admin'
+import { createClient } from '@/utils/supabase/server'
+import { supabaseAdmin } from '@/utils/supabase/admin'
 import { revalidatePath } from 'next/cache'
 
 export async function removeBackground(formData: FormData) {
@@ -36,7 +36,7 @@ export async function removeBackground(formData: FormData) {
     // 2. Upload Original Image
     const fileExt = file.name.split('.').pop()
     const fileName = `${user.id}-${Date.now()}-original.${fileExt}`
-    
+
     const { error: uploadError } = await supabase.storage
       .from('creations')
       .upload(fileName, file)
@@ -72,7 +72,7 @@ export async function removeBackground(formData: FormData) {
 
     // 4. Upload Transparent Image
     const resultFileName = `${user.id}-${Date.now()}-transparent.png`
-    
+
     const { error: resultUploadError } = await supabase.storage
       .from('creations')
       .upload(resultFileName, resultFile)
@@ -102,14 +102,14 @@ export async function removeBackground(formData: FormData) {
     // 6. Deduct Credit (Using Service Role via Admin Client)
     const { error: deductError } = await supabaseAdmin
       .rpc('decrement_credit', { user_id: user.id })
-    
+
     // Fallback if RPC doesn't exist: use direct update with admin client
     if (deductError) {
       const { error: updateError } = await supabaseAdmin
         .from('users_data')
         .update({ credits: userData.credits - 1 })
         .eq('id', user.id)
-        
+
       if (updateError) {
         console.error('Deduct Error:', updateError)
         return { error: 'Failed to deduct credit, but image processed' }
@@ -117,7 +117,7 @@ export async function removeBackground(formData: FormData) {
     }
 
     revalidatePath('/dashboard')
-    
+
     return { success: true, originalUrl, transparentUrl }
   } catch (error: unknown) {
     console.error('Server Action Error:', error)
