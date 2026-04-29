@@ -1,5 +1,6 @@
 'use client'
 
+import { useTransition } from 'react'
 import {
   Sheet,
   SheetContent,
@@ -8,7 +9,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet"
 import { UserMenu } from "./user-menu"
-import { Settings, Bell, Shield, CreditCard, LogOut } from 'lucide-react'
+import { Settings, Bell, Shield, CreditCard, LogOut, Loader2 } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { signOut } from "../auth/actions"
 
@@ -19,6 +20,14 @@ interface SettingsSheetProps {
 }
 
 export function SettingsSheet({ isOpen, onClose, user }: SettingsSheetProps) {
+  const [isPending, startTransition] = useTransition()
+
+  const handleSignOut = () => {
+    startTransition(async () => {
+      await signOut()
+    })
+  }
+
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent className="bg-[#09090b] border-[#27272a] text-white w-[400px] sm:w-[540px] p-0">
@@ -78,11 +87,21 @@ export function SettingsSheet({ isOpen, onClose, user }: SettingsSheetProps) {
           <div className="p-6 border-t border-[#27272a] bg-[#09090b]">
             <Button 
               variant="destructive" 
-              className="w-full flex items-center justify-center space-x-2 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white border border-red-500/20"
-              onClick={() => signOut()}
+              className="w-full flex items-center justify-center space-x-2 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white border border-red-500/20 disabled:opacity-50"
+              onClick={handleSignOut}
+              disabled={isPending}
             >
-              <LogOut className="h-4 w-4" />
-              <span>Sign Out</span>
+              {isPending ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <span>Signing out...</span>
+                </>
+              ) : (
+                <>
+                  <LogOut className="h-4 w-4" />
+                  <span>Sign Out</span>
+                </>
+              )}
             </Button>
             <p className="text-[10px] text-center text-[#3f3f46] mt-4 uppercase tracking-[0.2em]">
               BGRemover v0.1.0
