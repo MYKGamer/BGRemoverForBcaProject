@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useTransition } from 'react'
 import Image from 'next/image'
-import { LogOut, User, ChevronDown, UserPlus } from 'lucide-react'
+import { LogOut, User, ChevronDown, UserPlus, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { signOut } from '../auth/actions'
 
@@ -18,12 +18,20 @@ interface UserMenuProps {
 
 export function UserMenu({ user }: UserMenuProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const [isPending, startTransition] = useTransition()
   const menuRef = useRef<HTMLDivElement>(null)
 
   const email = user.email || 'User'
   const avatarUrl = user.user_metadata?.avatar_url
   const fullName = user.user_metadata?.full_name || email.split('@')[0]
   const initial = (fullName[0] || email[0]).toUpperCase()
+
+  const handleSignOut = () => {
+    setIsOpen(false)
+    startTransition(async () => {
+      await signOut()
+    })
+  }
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -40,10 +48,13 @@ export function UserMenu({ user }: UserMenuProps) {
     <div className="relative" ref={menuRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 p-1 rounded-full hover:bg-[#18181b] transition-all border border-transparent hover:border-[#27272a]"
+        disabled={isPending}
+        className="flex items-center space-x-2 p-1 rounded-full hover:bg-[#18181b] transition-all border border-transparent hover:border-[#27272a] disabled:opacity-50"
       >
         <div className="h-8 w-8 rounded-full bg-[#2563eb] flex items-center justify-center text-white font-bold overflow-hidden border border-[#27272a]">
-          {avatarUrl ? (
+          {isPending ? (
+            <Loader2 className="h-4 w-4 animate-spin text-white" />
+          ) : avatarUrl ? (
             <Image 
               src={avatarUrl} 
               alt={fullName} 
@@ -69,27 +80,26 @@ export function UserMenu({ user }: UserMenuProps) {
             <Button
               variant="ghost"
               className="w-full justify-start text-[#a1a1aa] hover:text-white hover:bg-[#27272a] rounded-lg"
-              onClick={() => {
-                setIsOpen(false)
-                // Switch account could just redirect to auth or logout and then login
-                signOut()
-              }}
+              onClick={handleSignOut}
+              disabled={isPending}
             >
               <UserPlus className="mr-2 h-4 w-4" />
               Switch Account
             </Button>
             
-            <form action={signOut} className="w-full">
-              <Button
-                type="submit"
-                variant="ghost"
-                className="w-full justify-start text-red-400 hover:text-red-300 hover:bg-red-900/20 rounded-lg"
-                onClick={() => setIsOpen(false)}
-              >
+            <Button
+              variant="ghost"
+              className="w-full justify-start text-red-400 hover:text-red-300 hover:bg-red-900/20 rounded-lg"
+              onClick={handleSignOut}
+              disabled={isPending}
+            >
+              {isPending ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
                 <LogOut className="mr-2 h-4 w-4" />
-                Sign Out
-              </Button>
-            </form>
+              )}
+              Sign Out
+            </Button>
           </div>
         </div>
       )}
