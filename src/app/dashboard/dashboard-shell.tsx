@@ -18,7 +18,7 @@ interface DashboardShellProps {
 }
 
 export function DashboardShell({ user, credits, historyItems }: DashboardShellProps) {
-  const [activeView, setActiveView] = useState<View>('editor')
+  const [activeView, setActiveView] = useState<View>('dashboard')
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
   const renderView = () => {
