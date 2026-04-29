@@ -5,10 +5,18 @@ import { supabaseAdmin } from '@/utils/supabase/admin'
 import { revalidatePath } from 'next/cache'
 
 export async function removeBackground(formData: FormData) {
+  let uploadedOriginalPath = ''
+  
   try {
     const file = formData.get('image') as File | null
     if (!file) {
       return { error: 'No image provided' }
+    }
+
+    // 1. Basic File Validation (Teacher check: Security & Performance)
+    const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
+    if (file.size > MAX_FILE_SIZE) {
+      return { error: 'Image too large. Please upload an image smaller than 10MB.' }
     }
 
     const supabase = await createClient()
@@ -18,7 +26,7 @@ export async function removeBackground(formData: FormData) {
       return { error: 'Unauthorized' }
     }
 
-    // 1. Check credits
+    // 2. Check credits
     const { data: userData, error: userError } = await supabase
       .from('users_data')
       .select('credits')
@@ -30,12 +38,13 @@ export async function removeBackground(formData: FormData) {
     }
 
     if (userData.credits <= 0) {
-      return { error: 'Out of credits' }
+      return { error: 'Out of credits. Please top up to continue.' }
     }
 
-    // 2. Upload Original Image
+    // 3. Upload Original Image
     const fileExt = file.name.split('.').pop()
     const fileName = `${user.id}-${Date.now()}-original.${fileExt}`
+    uploadedOriginalPath = fileName
 
     const { error: uploadError } = await supabase.storage
       .from('creations')
@@ -43,12 +52,12 @@ export async function removeBackground(formData: FormData) {
 
     if (uploadError) {
       console.error('Upload Error:', uploadError)
-      return { error: 'Failed to upload original image' }
+      return { error: 'Failed to upload image to storage' }
     }
 
     const originalUrl = supabase.storage.from('creations').getPublicUrl(fileName).data.publicUrl
 
-    // 3. Call Clipdrop API
+    // 4. Call Clipdrop API
     const clipdropForm = new FormData()
     clipdropForm.append('image_file', file)
 
@@ -61,16 +70,19 @@ export async function removeBackground(formData: FormData) {
     })
 
     if (!response.ok) {
+      // CLEANUP: Delete the original image if AI fails
+      await supabase.storage.from('creations').remove([fileName])
+      
       const errorText = await response.text()
       console.error('Clipdrop Error:', response.status, errorText)
-      return { error: 'Failed to process image with AI' }
+      return { error: 'AI processing failed. Please try again later.' }
     }
 
     const buffer = await response.arrayBuffer()
     const resultBlob = new Blob([buffer], { type: 'image/png' })
     const resultFile = new File([resultBlob], 'result.png', { type: 'image/png' })
 
-    // 4. Upload Transparent Image
+    // 5. Upload Transparent Image
     const resultFileName = `${user.id}-${Date.now()}-transparent.png`
 
     const { error: resultUploadError } = await supabase.storage
@@ -78,13 +90,15 @@ export async function removeBackground(formData: FormData) {
       .upload(resultFileName, resultFile)
 
     if (resultUploadError) {
+      // CLEANUP: Delete the original image if second upload fails
+      await supabase.storage.from('creations').remove([fileName])
       console.error('Result Upload Error:', resultUploadError)
-      return { error: 'Failed to upload processed image' }
+      return { error: 'Failed to save processed image' }
     }
 
     const transparentUrl = supabase.storage.from('creations').getPublicUrl(resultFileName).data.publicUrl
 
-    // 5. Save History
+    // 6. Save History
     const { error: historyError } = await supabase
       .from('history')
       .insert({
@@ -96,31 +110,34 @@ export async function removeBackground(formData: FormData) {
 
     if (historyError) {
       console.error('History Error:', historyError)
-      // Continue anyway as the image is processed
     }
 
-    // 6. Deduct Credit (Using Service Role via Admin Client)
+    // 7. Deduct Credit (Using Service Role via Admin Client)
     const { error: deductError } = await supabaseAdmin
       .rpc('decrement_credit', { user_id: user.id })
 
-    // Fallback if RPC doesn't exist: use direct update with admin client
     if (deductError) {
       const { error: updateError } = await supabaseAdmin
         .from('users_data')
-        .update({ credits: userData.credits - 1 })
+        .update({ credits: Math.max(0, userData.credits - 1) })
         .eq('id', user.id)
 
       if (updateError) {
         console.error('Deduct Error:', updateError)
-        return { error: 'Failed to deduct credit, but image processed' }
       }
     }
 
     revalidatePath('/dashboard')
-
     return { success: true, originalUrl, transparentUrl }
+
   } catch (error: unknown) {
+    // FINAL CLEANUP: Ensure no junk files if an unexpected error occurs
+    if (uploadedOriginalPath) {
+      const supabase = await createClient()
+      await supabase.storage.from('creations').remove([uploadedOriginalPath])
+    }
+    
     console.error('Server Action Error:', error)
-    return { error: error instanceof Error ? error.message : 'An unexpected error occurred' }
+    return { error: 'An unexpected system error occurred' }
   }
 }
