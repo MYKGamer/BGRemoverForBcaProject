@@ -62,8 +62,8 @@ export async function loginWithGoogle() {
   }
 }
 
-export async function signOut() {
+export async function signOut(redirectTo: string = '/auth') {
   const supabase = await createClient()
   await supabase.auth.signOut()
-  redirect('/auth')
+  redirect(redirectTo)
 }

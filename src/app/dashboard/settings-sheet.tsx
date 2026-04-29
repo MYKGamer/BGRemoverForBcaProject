@@ -24,7 +24,7 @@ export function SettingsSheet({ isOpen, onClose, user }: SettingsSheetProps) {
 
   const handleSignOut = () => {
     startTransition(async () => {
-      await signOut()
+      await signOut('/')
     })
   }
 

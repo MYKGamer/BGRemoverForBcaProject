@@ -29,7 +29,14 @@ export function UserMenu({ user }: UserMenuProps) {
   const handleSignOut = () => {
     setIsOpen(false)
     startTransition(async () => {
-      await signOut()
+      await signOut('/')
+    })
+  }
+
+  const handleSwitchAccount = () => {
+    setIsOpen(false)
+    startTransition(async () => {
+      await signOut('/auth')
     })
   }
 
@@ -80,7 +87,7 @@ export function UserMenu({ user }: UserMenuProps) {
             <Button
               variant="ghost"
               className="w-full justify-start text-[#a1a1aa] hover:text-white hover:bg-[#27272a] rounded-lg"
-              onClick={handleSignOut}
+              onClick={handleSwitchAccount}
               disabled={isPending}
             >
               <UserPlus className="mr-2 h-4 w-4" />
