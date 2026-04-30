@@ -48,7 +48,7 @@ export function BeforeAfterSlider() {
       {/* After Image (Background) */}
       <div className="absolute inset-0 bg-[url('https://transparenttextures.com/patterns/cubes.png')] bg-[#09090b]">
         <img 
-          src="/images/Picsart_26-04-30_12-46-31-678.jpg" 
+          src="/images/After.jpg" 
           alt="After" 
           className="w-full h-full object-cover"
         />
@@ -60,7 +60,7 @@ export function BeforeAfterSlider() {
         style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
       >
         <img 
-          src="/images/Picsart_26-04-30_12-46-21-887.jpg" 
+          src="/images/Before.jpg" 
           alt="Before" 
           className="w-full h-full object-cover"
         />
