@@ -133,11 +133,17 @@ export default async function Home() {
                 <div className="hidden sm:flex flex-1 items-center justify-center relative z-10">
                   {/* Before/After visual representation */}
                   <div className="relative w-full h-32 bg-[#09090b] rounded-xl border border-[#27272a] overflow-hidden flex shadow-inner">
-                    <div className="w-1/2 h-full border-r border-[#27272a] flex items-center justify-center bg-zinc-800/30">
-                      <span className="text-xs font-semibold text-[#a1a1aa] uppercase tracking-widest">Before</span>
+                    <div className="w-1/2 h-full border-r border-[#27272a] relative">
+                      <img src="/images/LuffyBefore.jpg" alt="Luffy Before" className="absolute inset-0 w-full h-full object-cover opacity-60" />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="text-[10px] font-bold text-white uppercase tracking-widest bg-black/40 px-2 py-0.5 rounded backdrop-blur-sm">Before</span>
+                      </div>
                     </div>
-                    <div className="w-1/2 h-full bg-[url('https://transparenttextures.com/patterns/cubes.png')] bg-zinc-900/50 flex items-center justify-center">
-                      <span className="text-xs font-semibold text-[#2563eb] uppercase tracking-widest">After</span>
+                    <div className="w-1/2 h-full bg-[url('https://transparenttextures.com/patterns/cubes.png')] bg-zinc-900/50 relative">
+                      <img src="/images/LuffyAfter.jpg" alt="Luffy After" className="absolute inset-0 w-full h-full object-cover" />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="text-[10px] font-bold text-white uppercase tracking-widest bg-[#2563eb]/60 px-2 py-0.5 rounded backdrop-blur-sm border border-[#2563eb]/30">After</span>
+                      </div>
                     </div>
                   </div>
                 </div>
