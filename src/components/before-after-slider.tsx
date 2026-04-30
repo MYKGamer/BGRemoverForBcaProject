@@ -23,6 +23,7 @@ export function BeforeAfterSlider() {
       // Safety check: if it's a mouse event, ensure the left button (buttons: 1) is still held down
       if ('buttons' in e && e.buttons !== 1) {
         setIsDragging(false)
+        setSliderPosition(50) // Reset to center
         return
       }
 
@@ -32,6 +33,7 @@ export function BeforeAfterSlider() {
 
     const handleUp = () => {
       setIsDragging(false)
+      setSliderPosition(50) // Reset to center on release
     }
 
     if (isDragging) {
@@ -67,7 +69,7 @@ export function BeforeAfterSlider() {
 
       {/* Before Image (Foreground with Clip) */}
       <div 
-        className="absolute inset-0 pointer-events-none"
+        className={`absolute inset-0 pointer-events-none ${!isDragging ? 'transition-[clip-path] duration-500 ease-out' : ''}`}
         style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
       >
         <img 
@@ -79,10 +81,12 @@ export function BeforeAfterSlider() {
 
       {/* Slider Line/Handle */}
       <div 
-        className="absolute inset-y-0 w-1 bg-white/50 backdrop-blur-sm shadow-[0_0_15px_rgba(0,0,0,0.5)] flex items-center justify-center pointer-events-none"
+        className={`absolute inset-y-0 w-1 bg-white/50 backdrop-blur-sm shadow-[0_0_15px_rgba(0,0,0,0.5)] flex items-center justify-center pointer-events-none ${
+          !isDragging ? 'transition-[left] duration-500 ease-out' : ''
+        }`}
         style={{ left: `${sliderPosition}%` }}
       >
-        {/* THE TRIGGER HANDLE - This is now the ONLY place where dragging can start */}
+        {/* THE TRIGGER HANDLE */}
         <div 
           className={`h-12 w-12 rounded-full bg-white text-[#2563eb] flex items-center justify-center shadow-2xl border-4 border-[#2563eb]/20 transition-transform duration-200 pointer-events-auto cursor-col-resize active:cursor-grabbing ${
             isDragging ? 'scale-125 shadow-[#2563eb]/40' : 'scale-100 hover:scale-110'

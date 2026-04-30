@@ -98,7 +98,7 @@ export default async function Home() {
           </div>
 
           {/* MacOS-style Mockup Window */}
-          <div id="how-it-works" className="mt-20 w-full max-w-4xl mx-auto rounded-2xl border border-[#27272a] bg-[#18181b] shadow-2xl overflow-hidden shadow-black/50">
+          <div id="how-it-works" className="mt-20 w-full max-w-3xl mx-auto rounded-2xl border border-[#27272a] bg-[#18181b] shadow-2xl overflow-hidden shadow-black/50">
             <div className="h-10 border-b border-[#27272a] bg-[#09090b] flex items-center px-4 gap-2">
               <div className="h-3 w-3 rounded-full bg-red-500/80"></div>
               <div className="h-3 w-3 rounded-full bg-yellow-500/80"></div>
