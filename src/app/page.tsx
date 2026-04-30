@@ -13,6 +13,7 @@ import {
   MonitorPlay,
   Wand2
 } from "lucide-react";
+import { BeforeAfterSlider } from "@/components/before-after-slider";
 
 export default async function Home() {
   const supabase = await createClient();
@@ -103,16 +104,7 @@ export default async function Home() {
               <div className="h-3 w-3 rounded-full bg-yellow-500/80"></div>
               <div className="h-3 w-3 rounded-full bg-green-500/80"></div>
             </div>
-            <div className="aspect-video bg-[url('https://transparenttextures.com/patterns/cubes.png')] bg-[#09090b]/50 relative flex items-center justify-center p-8 group overflow-hidden">
-               {/* Visual Placeholder */}
-               <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5"></div>
-               <div className="relative z-10 flex flex-col items-center justify-center space-y-4 text-[#a1a1aa] group-hover:scale-105 transition-transform duration-500">
-                  <div className="h-24 w-24 rounded-full bg-[#2563eb]/20 flex items-center justify-center backdrop-blur-sm border border-[#2563eb]/30">
-                    <MonitorPlay className="h-10 w-10 text-[#2563eb]" />
-                  </div>
-                  <p className="font-medium tracking-widest uppercase text-sm">Dashboard Interface Mockup</p>
-               </div>
-            </div>
+            <BeforeAfterSlider />
           </div>
         </section>
 
