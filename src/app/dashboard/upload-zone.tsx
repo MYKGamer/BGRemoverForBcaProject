@@ -2,7 +2,8 @@
 
 import { useState, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
-import { Upload, Loader2, Image as ImageIcon } from 'lucide-react'
+import { Upload, Loader2, Image as ImageIcon, Download } from 'lucide-react'
+import { Button } from "@/components/ui/button"
 import { removeBackground } from './actions'
 import { toast } from 'sonner'
 
@@ -47,6 +48,27 @@ export function UploadZone() {
     }
   }, [])
 
+  const handleDownload = async () => {
+    if (!resultImage) return
+    
+    try {
+      const response = await fetch(resultImage)
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = `bg-remover-${Date.now()}.png`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(url)
+      toast.success('Download started!')
+    } catch (error) {
+      console.error('Download Error:', error)
+      toast.error('Failed to download image')
+    }
+  }
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
@@ -69,12 +91,22 @@ export function UploadZone() {
               className="max-h-full max-w-full object-contain"
             />
           </div>
-          <button 
-            onClick={() => setResultImage(null)}
-            className="text-[#a1a1aa] hover:text-white transition-colors text-sm"
-          >
-            Upload another image
-          </button>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Button 
+              onClick={handleDownload}
+              className="bg-[#2563eb] hover:bg-[#1d4ed8] text-white px-8 py-6 rounded-xl flex items-center space-x-2 transition-all shadow-lg shadow-blue-500/20 text-base font-semibold group"
+            >
+              <Download className="h-5 w-5 group-hover:translate-y-[1px] transition-transform" />
+              <span>Download Image</span>
+            </Button>
+            
+            <button 
+              onClick={() => setResultImage(null)}
+              className="text-[#a1a1aa] hover:text-white transition-colors text-sm px-4 py-2"
+            >
+              Upload another image
+            </button>
+          </div>
         </div>
       ) : (
         <div 
