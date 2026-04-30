@@ -7,9 +7,10 @@ interface DashboardViewProps {
   userEmail: string
   credits: number
   historyCount: number
+  onStartEditing: () => void
 }
 
-export function DashboardView({ userEmail, credits, historyCount }: DashboardViewProps) {
+export function DashboardView({ userEmail, credits, historyCount, onStartEditing }: DashboardViewProps) {
   const userName = userEmail.split('@')[0]
   const maxCredits = 10 // Assumption for demo purposes
   const creditPercentage = Math.min(100, (credits / maxCredits) * 100)
@@ -74,24 +75,38 @@ export function DashboardView({ userEmail, credits, historyCount }: DashboardVie
         </Card>
       </div>
 
-      {/* Hero Action Section */}
-      <div className="relative group overflow-hidden rounded-2xl border border-[#27272a] bg-[#18181b]/40 p-8 md:p-12">
-        <div className="absolute top-0 right-0 -mt-10 -mr-10 h-64 w-64 bg-[#2563eb]/5 rounded-full blur-3xl transition-all group-hover:bg-[#2563eb]/10" />
+      {/* Hero Action Section - Now Interactive */}
+      <div 
+        onClick={onStartEditing}
+        className="relative group overflow-hidden rounded-2xl border border-[#27272a] bg-[#18181b]/40 p-8 md:p-12 cursor-pointer hover:border-[#2563eb]/50 transition-all duration-300"
+      >
+        <div className="absolute top-0 right-0 -mt-10 -mr-10 h-64 w-64 bg-[#2563eb]/5 rounded-full blur-3xl transition-all group-hover:bg-[#2563eb]/15 group-hover:scale-110" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#2563eb]/0 via-[#2563eb]/0 to-[#2563eb]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         
         <div className="relative flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="space-y-4 max-w-xl text-center md:text-left">
-            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#2563eb]/10 border border-[#2563eb]/20 text-[#2563eb] text-xs font-bold uppercase tracking-widest">
+            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#2563eb]/10 border border-[#2563eb]/20 text-[#2563eb] text-[10px] font-bold uppercase tracking-[0.2em]">
               New Update v0.1
             </div>
-            <h2 className="text-2xl md:text-3xl font-bold text-white">Ready to remove some backgrounds?</h2>
-            <p className="text-[#a1a1aa] leading-relaxed">
+            <h2 className="text-2xl md:text-4xl font-bold text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-white/60 transition-all duration-300">
+              Ready to remove some backgrounds?
+            </h2>
+            <p className="text-[#a1a1aa] leading-relaxed text-lg">
               Get clean, professional cuts in just a few seconds. Whether it's for your next big project or just for fun, we've got you covered.
             </p>
+            
+            {/* Added CTA Hint */}
+            <div className="pt-4 flex items-center justify-center md:justify-start space-x-2 text-[#2563eb] font-semibold group/btn">
+              <span className="group-hover:translate-x-1 transition-transform">Get Started Now</span>
+              <Zap className="h-4 w-4 group-hover:scale-125 transition-transform fill-[#2563eb]/20" />
+            </div>
           </div>
           
-          <div className="flex-shrink-0">
-             <div className="h-20 w-20 rounded-2xl bg-[#2563eb] flex items-center justify-center shadow-2xl shadow-[#2563eb]/30 group-hover:scale-110 transition-transform duration-500">
-               <ImageIcon className="h-10 w-10 text-white" />
+          <div className="flex-shrink-0 relative">
+             {/* Glowing ring behind icon */}
+             <div className="absolute inset-0 bg-[#2563eb]/40 rounded-2xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+             <div className="relative h-24 w-24 rounded-2xl bg-[#2563eb] flex items-center justify-center shadow-2xl shadow-[#2563eb]/40 group-hover:scale-110 group-hover:-rotate-3 transition-all duration-500 ring-4 ring-[#2563eb]/20">
+               <ImageIcon className="h-12 w-12 text-white" />
              </div>
           </div>
         </div>

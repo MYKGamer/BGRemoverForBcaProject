@@ -24,7 +24,14 @@ export function DashboardShell({ user, credits, historyItems }: DashboardShellPr
   const renderView = () => {
     switch (activeView) {
       case 'dashboard':
-        return <DashboardView userEmail={user.email} credits={credits} historyCount={historyItems.length} />
+        return (
+          <DashboardView 
+            userEmail={user.email} 
+            credits={credits} 
+            historyCount={historyItems.length} 
+            onStartEditing={() => setActiveView('editor')}
+          />
+        )
       case 'editor':
         return <EditorView />
       case 'history':
