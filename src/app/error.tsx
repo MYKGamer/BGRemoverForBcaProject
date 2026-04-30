@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { AlertTriangle, RefreshCcw, Home } from 'lucide-react'
 import Link from 'next/link'
 
@@ -52,16 +52,16 @@ export default function Error({
             Try Again
           </Button>
           
-          <Button 
-            variant="outline"
-            asChild
-            className="flex-1 border-[#27272a] hover:bg-[#18181b] text-white py-6 rounded-2xl text-lg transition-all"
+          <Link 
+            href="/"
+            className={buttonVariants({ 
+              variant: 'outline', 
+              className: 'flex-1 border-[#27272a] hover:bg-[#18181b] text-white py-6 rounded-2xl text-lg transition-all' 
+            })}
           >
-            <Link href="/">
-              <Home className="mr-2 h-5 w-5" />
-              Go Home
-            </Link>
-          </Button>
+            <Home className="mr-2 h-5 w-5" />
+            Go Home
+          </Link>
         </div>
 
         <p className="text-xs text-[#3f3f46] uppercase tracking-[0.1em]">
