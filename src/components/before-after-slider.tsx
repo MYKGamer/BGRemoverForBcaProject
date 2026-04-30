@@ -53,17 +53,8 @@ export function BeforeAfterSlider() {
     <div 
       ref={containerRef}
       className={`relative w-full aspect-video rounded-2xl overflow-hidden select-none border border-[#27272a] shadow-2xl transition-all duration-300 ${
-        isDragging ? 'cursor-grabbing' : 'cursor-col-resize hover:border-[#2563eb]/50'
+        isDragging ? 'cursor-grabbing' : 'cursor-default'
       }`}
-      onMouseDown={(e) => {
-        // Only allow left click (button 0)
-        if (e.button !== 0) return
-        setIsDragging(true)
-        // We don't call handleMove here to avoid 'snapping' on click
-      }}
-      onTouchStart={() => {
-        setIsDragging(true)
-      }}
     >
       {/* After Image (Background) */}
       <div className="absolute inset-0 bg-[url('https://transparenttextures.com/patterns/cubes.png')] bg-[#09090b]">
@@ -91,9 +82,19 @@ export function BeforeAfterSlider() {
         className="absolute inset-y-0 w-1 bg-white/50 backdrop-blur-sm shadow-[0_0_15px_rgba(0,0,0,0.5)] flex items-center justify-center pointer-events-none"
         style={{ left: `${sliderPosition}%` }}
       >
-        <div className={`h-12 w-12 rounded-full bg-white text-[#2563eb] flex items-center justify-center shadow-2xl border-4 border-[#2563eb]/20 transition-transform duration-200 ${
-          isDragging ? 'scale-110 shadow-[#2563eb]/20' : 'scale-100'
-        }`}>
+        {/* THE TRIGGER HANDLE - This is now the ONLY place where dragging can start */}
+        <div 
+          className={`h-12 w-12 rounded-full bg-white text-[#2563eb] flex items-center justify-center shadow-2xl border-4 border-[#2563eb]/20 transition-transform duration-200 pointer-events-auto cursor-col-resize active:cursor-grabbing ${
+            isDragging ? 'scale-125 shadow-[#2563eb]/40' : 'scale-100 hover:scale-110'
+          }`}
+          onMouseDown={(e) => {
+            if (e.button !== 0) return
+            setIsDragging(true)
+          }}
+          onTouchStart={() => {
+            setIsDragging(true)
+          }}
+        >
           <MoveHorizontal className="h-6 w-6" />
         </div>
       </div>
