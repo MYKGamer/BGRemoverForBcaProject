@@ -19,6 +19,13 @@ export function BeforeAfterSlider() {
   useEffect(() => {
     const handleMoveEvent = (e: MouseEvent | TouchEvent) => {
       if (!isDragging) return
+      
+      // Safety check: if it's a mouse event, ensure the left button (buttons: 1) is still held down
+      if ('buttons' in e && e.buttons !== 1) {
+        setIsDragging(false)
+        return
+      }
+
       const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
       handleMove(clientX)
     }
@@ -49,12 +56,13 @@ export function BeforeAfterSlider() {
         isDragging ? 'cursor-grabbing' : 'cursor-col-resize hover:border-[#2563eb]/50'
       }`}
       onMouseDown={(e) => {
+        // Only allow left click (button 0)
+        if (e.button !== 0) return
         setIsDragging(true)
-        handleMove(e.clientX)
+        // We don't call handleMove here to avoid 'snapping' on click
       }}
-      onTouchStart={(e) => {
+      onTouchStart={() => {
         setIsDragging(true)
-        handleMove(e.touches[0].clientX)
       }}
     >
       {/* After Image (Background) */}
