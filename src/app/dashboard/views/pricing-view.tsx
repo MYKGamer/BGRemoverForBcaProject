@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 const plans = [
   {
     name: "Basic",
-    price: 99,
+    price: 1,
     credits: 10,
     features: ["10 High Quality Exports", "Standard Processing", "Email Support"],
     icon: Zap,
@@ -16,7 +16,7 @@ const plans = [
   },
   {
     name: "Pro",
-    price: 499,
+    price: 9,
     credits: 100,
     features: ["100 High Quality Exports", "Priority Processing", "24/7 Support", "Commercial License"],
     icon: Sparkles,
@@ -25,7 +25,7 @@ const plans = [
   },
   {
     name: "Business",
-    price: 999,
+    price: 39,
     credits: 500,
     features: ["500 High Quality Exports", "Ultra-Fast AI Engine", "Dedicated Account Manager", "Bulk Processing"],
     icon: CreditCard,
