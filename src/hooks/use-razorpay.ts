@@ -36,6 +36,11 @@ export const useRazorpay = () => {
       body: JSON.stringify({ amount }),
     });
 
+    if (orderResponse.status === 401) {
+      window.location.href = "/auth";
+      return;
+    }
+
     const orderData = await orderResponse.json();
 
     if (!orderData.id) {

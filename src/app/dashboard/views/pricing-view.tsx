@@ -33,7 +33,7 @@ const plans = [
   },
 ];
 
-export function PricingView() {
+export function PricingView({ hideHeader = false }: { hideHeader?: boolean }) {
   const { processPayment, loading } = useRazorpay();
 
   const handleSubscribe = async (amount: number) => {
@@ -45,10 +45,12 @@ export function PricingView() {
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight text-white">Pricing Plans</h1>
-        <p className="text-[#a1a1aa]">Choose the perfect plan for your creative needs.</p>
-      </div>
+      {!hideHeader && (
+        <div className="flex flex-col gap-2">
+          <h1 className="text-3xl font-bold tracking-tight text-white">Pricing Plans</h1>
+          <p className="text-[#a1a1aa]">Choose the perfect plan for your creative needs.</p>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {plans.map((plan) => {

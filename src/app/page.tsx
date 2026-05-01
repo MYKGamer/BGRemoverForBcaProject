@@ -28,12 +28,13 @@ export default async function Home() {
   const { data: { user } } = await supabase.auth.getUser();
 
   const authRoute = user ? "/dashboard" : "/auth";
+  const pricingRoute = user ? "/pricing" : "/auth";
 
   const NavLinks = () => (
     <>
       <a href="#features" className="hover:text-white transition-colors">Features</a>
       <a href="#how-it-works" className="hover:text-white transition-colors">How it Works</a>
-      <a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
+      <Link href="/pricing" className="hover:text-white transition-colors">Pricing</Link>
     </>
   );
 
@@ -332,7 +333,7 @@ export default async function Home() {
                     <span>History Access</span>
                   </li>
                 </ul>
-                <Link href={authRoute} className="w-full">
+                <Link href={pricingRoute} className="w-full">
                   <Button className="w-full bg-[#27272a] hover:bg-[#3f3f46] text-white rounded-full h-12 font-semibold">
                     Get Started Free
                   </Button>
@@ -369,7 +370,7 @@ export default async function Home() {
                     <span>Premium Support</span>
                   </li>
                 </ul>
-                <Link href={authRoute} className="w-full">
+                <Link href={pricingRoute} className="w-full">
                   <Button className="w-full bg-[#2563eb] hover:bg-[#1d4ed8] text-white rounded-full h-12 font-semibold shadow-lg shadow-blue-500/20">
                     Upgrade to Pro
                   </Button>
@@ -399,7 +400,7 @@ export default async function Home() {
             <h4 className="text-white font-semibold mb-4">Product</h4>
             <ul className="space-y-2 text-sm text-[#a1a1aa]">
               <li><a href="#features" className="hover:text-white transition-colors">Features</a></li>
-              <li><a href="#pricing" className="hover:text-white transition-colors">Pricing</a></li>
+              <li><Link href="/pricing" className="hover:text-white transition-colors">Pricing</Link></li>
               <li><a href="#" className="hover:text-white transition-colors">API</a></li>
               <li><a href="#" className="hover:text-white transition-colors">Changelog</a></li>
             </ul>
