@@ -48,7 +48,7 @@ export async function POST(req: Request) {
           .from('transactions')
           .insert({
             user_id: userId,
-            amount: order.amount / 100, // Convert from paise to rupees
+            amount: (order.amount as any) / 100, // Convert from paise to rupees
             credits: Number(credits),
             razorpay_order_id: razorpay_order_id,
             razorpay_payment_id: razorpay_payment_id,
