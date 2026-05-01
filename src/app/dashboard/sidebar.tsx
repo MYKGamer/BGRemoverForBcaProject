@@ -70,11 +70,7 @@ export function Sidebar({ activeView, setActiveView, onSettingsClick, forceExpan
               <button
                 key={item.id}
                 onClick={() => window.location.href = '/pricing'}
-                className={`w-full flex items-center p-3 rounded-xl transition-all duration-200 group relative ${
-                  activeView === 'pricing' 
-                    ? 'bg-[#2563eb]/10 text-[#2563eb] border border-[#2563eb]/20' 
-                    : 'text-[#a1a1aa] hover:text-white hover:bg-[#18181b]'
-                }`}
+                className="w-full flex items-center p-3 rounded-xl transition-all duration-200 group relative text-[#a1a1aa] hover:text-white hover:bg-[#18181b]"
               >
                 <Icon className={`h-6 w-6 min-w-[24px] group-hover:scale-110 transition-transform`} />
                 <span className={`ml-4 font-medium transition-opacity duration-300 whitespace-nowrap ${

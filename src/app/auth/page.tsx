@@ -1,6 +1,7 @@
 import { AuthForm } from './auth-form'
 import Link from 'next/link'
-import { ImageIcon } from 'lucide-react'
+import { ImageIcon, Loader2 } from 'lucide-react'
+import { Suspense } from 'react'
 
 export default function AuthPage() {
   return (
@@ -18,7 +19,9 @@ export default function AuthPage() {
         </Link>
       </div>
 
-      <AuthForm />
+      <Suspense fallback={<div className="flex justify-center p-8"><Loader2 className="h-8 w-8 animate-spin text-white" /></div>}>
+        <AuthForm />
+      </Suspense>
     </main>
   )
 }
