@@ -22,7 +22,6 @@ import {
   X
 } from "lucide-react";
 import { BeforeAfterSlider } from "@/components/before-after-slider";
-import { LandingPricing } from "@/components/landing-pricing";
 
 export default async function Home() {
   const supabase = await createClient();
@@ -312,7 +311,72 @@ export default async function Home() {
             </h2>
             <p className="text-[#a1a1aa] text-lg mb-16">No hidden fees, no credit card required to start.</p>
             
-            <LandingPricing isLoggedIn={!!user} />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+              {/* Free Plan */}
+              <div className="bg-[#18181b] border border-[#27272a] rounded-3xl p-8 flex flex-col">
+                <h3 className="text-xl font-bold text-white mb-2">Free Plan</h3>
+                <div className="flex items-baseline gap-1 mb-6">
+                  <span className="text-4xl font-extrabold text-white">₹1</span>
+                  <span className="text-[#a1a1aa]">/mo</span>
+                </div>
+                <ul className="space-y-4 mb-8 flex-1">
+                  <li className="flex items-center gap-3 text-[#e4e4e7]">
+                    <CheckCircle2 className="h-5 w-5 text-[#a1a1aa]" />
+                    <span>2 Free Credits on Signup</span>
+                  </li>
+                  <li className="flex items-center gap-3 text-[#e4e4e7]">
+                    <CheckCircle2 className="h-5 w-5 text-[#a1a1aa]" />
+                    <span>Standard AI Processing</span>
+                  </li>
+                  <li className="flex items-center gap-3 text-[#e4e4e7]">
+                    <CheckCircle2 className="h-5 w-5 text-[#a1a1aa]" />
+                    <span>History Access</span>
+                  </li>
+                </ul>
+                <Link href={pricingRoute} className="w-full">
+                  <Button className="w-full bg-[#27272a] hover:bg-[#3f3f46] text-white rounded-full h-12 font-semibold">
+                    Get Started Free
+                  </Button>
+                </Link>
+              </div>
+
+              {/* Pro Plan */}
+              <div className="bg-[#09090b] border-2 border-[#2563eb] rounded-3xl p-8 flex flex-col relative shadow-2xl shadow-blue-900/20">
+                <div className="absolute top-0 right-8 transform -translate-y-1/2">
+                  <span className="bg-[#2563eb] text-white text-xs font-bold uppercase tracking-wider py-1 px-3 rounded-full">
+                    Most Popular
+                  </span>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-2">Pro Plan</h3>
+                <div className="flex items-baseline gap-1 mb-6">
+                  <span className="text-4xl font-extrabold text-white">₹9</span>
+                  <span className="text-[#a1a1aa]">/mo</span>
+                </div>
+                <ul className="space-y-4 mb-8 flex-1">
+                  <li className="flex items-center gap-3 text-white">
+                    <CheckCircle2 className="h-5 w-5 text-[#2563eb]" />
+                    <span className="font-medium">5 High Quality Exports</span>
+                  </li>
+                  <li className="flex items-center gap-3 text-white">
+                    <CheckCircle2 className="h-5 w-5 text-[#2563eb]" />
+                    <span>Priority Processing Speed</span>
+                  </li>
+                  <li className="flex items-center gap-3 text-white">
+                    <CheckCircle2 className="h-5 w-5 text-[#2563eb]" />
+                    <span>API Access</span>
+                  </li>
+                  <li className="flex items-center gap-3 text-white">
+                    <CheckCircle2 className="h-5 w-5 text-[#2563eb]" />
+                    <span>Premium Support</span>
+                  </li>
+                </ul>
+                <Link href={pricingRoute} className="w-full">
+                  <Button className="w-full bg-[#2563eb] hover:bg-[#1d4ed8] text-white rounded-full h-12 font-semibold shadow-lg shadow-blue-500/20">
+                    Upgrade to Pro
+                  </Button>
+                </Link>
+              </div>
+            </div>
           </div>
         </section>
       </main>
