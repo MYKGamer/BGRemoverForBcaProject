@@ -69,7 +69,7 @@ export function Sidebar({ activeView, setActiveView, onSettingsClick, forceExpan
             return (
               <button
                 key={item.id}
-                onClick={() => router.push('/pricing')}
+                onClick={() => window.location.href = '/pricing'}
                 className={`w-full flex items-center p-3 rounded-xl transition-all duration-200 group relative ${
                   activeView === 'pricing' 
                     ? 'bg-[#2563eb]/10 text-[#2563eb] border border-[#2563eb]/20' 

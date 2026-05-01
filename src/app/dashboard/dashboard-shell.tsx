@@ -40,7 +40,7 @@ export function DashboardShell({ user, credits, historyItems }: DashboardShellPr
             credits={credits} 
             historyCount={historyItems.length} 
             onStartEditing={() => setActiveView('editor')}
-            onUpgrade={() => router.push('/pricing')}
+            onUpgrade={() => window.location.href = '/pricing'}
           />
         )
       case 'editor':
@@ -104,7 +104,7 @@ export function DashboardShell({ user, credits, historyItems }: DashboardShellPr
             <div className="flex items-center space-x-2 md:space-x-4">
               <Button 
                 variant="ghost" 
-                onClick={() => router.push('/pricing')}
+                onClick={() => window.location.href = '/pricing'}
                 className="hidden sm:block text-[#a1a1aa] hover:text-white hover:bg-[#18181b] rounded-xl font-bold uppercase tracking-wider text-xs"
               >
                 Pricing
@@ -112,7 +112,7 @@ export function DashboardShell({ user, credits, historyItems }: DashboardShellPr
               <Button 
                 variant="outline" 
                 size="sm" 
-                onClick={() => router.push('/pricing')}
+                onClick={() => window.location.href = '/pricing'}
                 className="hidden sm:flex bg-[#2563eb]/10 border-[#2563eb]/20 text-[#2563eb] hover:bg-[#2563eb] hover:text-white rounded-full transition-all items-center gap-2 px-4 h-9 font-bold"
               >
                 <Zap className="h-3.5 w-3.5 fill-current" />

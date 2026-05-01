@@ -186,11 +186,11 @@ export default function PricingPage() {
                   Get Started for Free
                 </Button>
               </Link>
-              <Link href="#features">
+              <a href="#features">
                 <Button variant="outline" size="lg" className="border-white/10 hover:bg-white/5 text-white rounded-full px-12 h-16 font-black text-xl">
                   Learn More
                 </Button>
-              </Link>
+              </a>
             </div>
           </div>
         </motion.section>
@@ -211,7 +211,7 @@ export default function PricingPage() {
           
           <div className="flex gap-12 text-sm font-black uppercase tracking-widest text-[#a1a1aa]">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
-            <Link href="/pricing" className="hover:text-white transition-colors text-white">Pricing</Link>
+            <a href="/pricing" className="hover:text-white transition-colors text-white">Pricing</a>
             <Link href="/dashboard" className="hover:text-white transition-colors">Dashboard</Link>
           </div>
           
