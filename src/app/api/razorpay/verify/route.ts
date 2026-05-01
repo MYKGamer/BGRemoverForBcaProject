@@ -42,6 +42,18 @@ export async function POST(req: Request) {
           .from('users_data')
           .update({ credits: newCredits })
           .eq('id', userId);
+
+        // 3. Log the transaction for Admin tracking
+        await supabase
+          .from('transactions')
+          .insert({
+            user_id: userId,
+            amount: order.amount / 100, // Convert from paise to rupees
+            credits: Number(credits),
+            razorpay_order_id: razorpay_order_id,
+            razorpay_payment_id: razorpay_payment_id,
+            status: 'success'
+          });
       }
 
       return NextResponse.json({ 
