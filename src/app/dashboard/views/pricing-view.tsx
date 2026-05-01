@@ -9,16 +9,16 @@ const plans = [
   {
     name: "Basic",
     price: 1,
-    credits: 10,
-    features: ["10 High Quality Exports", "Standard Processing", "Email Support"],
+    credits: 2,
+    features: ["2 High Quality Exports", "Standard Processing", "Email Support"],
     icon: Zap,
     color: "blue",
   },
   {
     name: "Pro",
     price: 9,
-    credits: 100,
-    features: ["100 High Quality Exports", "Priority Processing", "24/7 Support", "Commercial License"],
+    credits: 5,
+    features: ["5 High Quality Exports", "Priority Processing", "24/7 Support", "Commercial License"],
     icon: Sparkles,
     color: "purple",
     popular: true,
@@ -26,8 +26,8 @@ const plans = [
   {
     name: "Business",
     price: 39,
-    credits: 500,
-    features: ["500 High Quality Exports", "Ultra-Fast AI Engine", "Dedicated Account Manager", "Bulk Processing"],
+    credits: 10,
+    features: ["10 High Quality Exports", "Ultra-Fast AI Engine", "Dedicated Account Manager", "Bulk Processing"],
     icon: CreditCard,
     color: "green",
   },
@@ -85,7 +85,7 @@ export function PricingView({ hideHeader = false }: { hideHeader?: boolean }) {
                 <h3 className="text-xl font-bold text-white mb-1">{plan.name}</h3>
                 <div className="flex items-baseline gap-1">
                   <span className="text-3xl font-bold text-white">₹{plan.price}</span>
-                  <span className="text-[#a1a1aa] text-sm">/one-time</span>
+                  <span className="text-[#a1a1aa] text-sm">/monthly</span>
                 </div>
                 <p className="mt-2 text-sm text-[#a1a1aa]">{plan.credits} AI Credits</p>
               </div>

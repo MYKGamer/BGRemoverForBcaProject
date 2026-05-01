@@ -322,7 +322,7 @@ export default async function Home() {
                 <ul className="space-y-4 mb-8 flex-1">
                   <li className="flex items-center gap-3 text-[#e4e4e7]">
                     <CheckCircle2 className="h-5 w-5 text-[#a1a1aa]" />
-                    <span>6 Free Credits on Signup</span>
+                    <span>2 Free Credits on Signup</span>
                   </li>
                   <li className="flex items-center gap-3 text-[#e4e4e7]">
                     <CheckCircle2 className="h-5 w-5 text-[#a1a1aa]" />
@@ -355,7 +355,7 @@ export default async function Home() {
                 <ul className="space-y-4 mb-8 flex-1">
                   <li className="flex items-center gap-3 text-white">
                     <CheckCircle2 className="h-5 w-5 text-[#2563eb]" />
-                    <span className="font-medium">Unlimited Background Removals</span>
+                    <span className="font-medium">5 High Quality Exports</span>
                   </li>
                   <li className="flex items-center gap-3 text-white">
                     <CheckCircle2 className="h-5 w-5 text-[#2563eb]" />
