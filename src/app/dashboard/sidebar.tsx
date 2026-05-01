@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { 
   LayoutDashboard, 
   Image as ImageIcon, 
@@ -12,7 +13,7 @@ import {
   CreditCard
 } from 'lucide-react'
 
-type View = 'dashboard' | 'editor' | 'history' | 'pricing'
+type View = 'dashboard' | 'editor' | 'history'
 
 interface SidebarProps {
   activeView: View
@@ -23,6 +24,7 @@ interface SidebarProps {
 
 export function Sidebar({ activeView, setActiveView, onSettingsClick, forceExpand = false }: SidebarProps) {
   const [isHovered, setIsHovered] = useState(false)
+  const router = useRouter()
   
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -65,22 +67,22 @@ export function Sidebar({ activeView, setActiveView, onSettingsClick, forceExpan
 
           if (item.id === 'pricing') {
             return (
-              <Link
+              <button
                 key={item.id}
-                href="/pricing"
+                onClick={() => router.push('/pricing')}
                 className={`w-full flex items-center p-3 rounded-xl transition-all duration-200 group relative ${
-                  isActive 
+                  activeView === 'pricing' 
                     ? 'bg-[#2563eb]/10 text-[#2563eb] border border-[#2563eb]/20' 
                     : 'text-[#a1a1aa] hover:text-white hover:bg-[#18181b]'
                 }`}
               >
-                <Icon className={`h-6 w-6 min-w-[24px] ${isActive ? 'text-[#2563eb]' : 'group-hover:scale-110 transition-transform'}`} />
+                <Icon className={`h-6 w-6 min-w-[24px] group-hover:scale-110 transition-transform`} />
                 <span className={`ml-4 font-medium transition-opacity duration-300 whitespace-nowrap ${
                   isExpanded ? 'opacity-100' : 'opacity-0'
                 }`}>
                   {item.label}
                 </span>
-              </Link>
+              </button>
             )
           }
 

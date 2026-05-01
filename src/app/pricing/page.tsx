@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
 
+export const unstable_instant = true;
+
 const faqs = [
   {
     q: "How do credits work?",

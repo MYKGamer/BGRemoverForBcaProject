@@ -102,12 +102,22 @@ export function DashboardShell({ user, credits, historyItems }: DashboardShellPr
             </div>
             
             <div className="flex items-center space-x-2 md:space-x-4">
-              <Link href="/pricing" className="hidden sm:block">
-                <Button variant="outline" size="sm" className="bg-[#2563eb]/10 border-[#2563eb]/20 text-[#2563eb] hover:bg-[#2563eb] hover:text-white rounded-full transition-all flex items-center gap-2 px-4 h-9 font-bold">
-                  <Zap className="h-3.5 w-3.5 fill-current" />
-                  Upgrade to Pro
-                </Button>
-              </Link>
+              <Button 
+                variant="ghost" 
+                onClick={() => router.push('/pricing')}
+                className="hidden sm:block text-[#a1a1aa] hover:text-white hover:bg-[#18181b] rounded-xl font-bold uppercase tracking-wider text-xs"
+              >
+                Pricing
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => router.push('/pricing')}
+                className="hidden sm:flex bg-[#2563eb]/10 border-[#2563eb]/20 text-[#2563eb] hover:bg-[#2563eb] hover:text-white rounded-full transition-all items-center gap-2 px-4 h-9 font-bold"
+              >
+                <Zap className="h-3.5 w-3.5 fill-current" />
+                Upgrade to Pro
+              </Button>
               <div className="flex items-center space-x-1.5 px-2 md:px-3 py-1 md:py-1.5 rounded-full bg-[#18181b] border border-[#27272a] shadow-inner">
                 <Zap className="h-3 md:h-4 w-3 md:w-4 text-yellow-500" />
                 <span className="text-xs md:text-sm font-medium text-[#fafafa]">{credits} <span className="hidden sm:inline">Credits</span></span>
