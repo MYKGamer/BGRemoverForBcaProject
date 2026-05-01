@@ -12,10 +12,11 @@ import {
 import { DashboardView } from './views/dashboard-view'
 import { EditorView } from './views/editor-view'
 import { HistoryView } from './views/history-view'
+import { PricingView } from './views/pricing-view'
 import { Sidebar } from './sidebar'
 import { SettingsSheet } from './settings-sheet'
 
-type View = 'dashboard' | 'editor' | 'history'
+type View = 'dashboard' | 'editor' | 'history' | 'pricing'
 
 interface DashboardShellProps {
   user: any
@@ -42,6 +43,8 @@ export function DashboardShell({ user, credits, historyItems }: DashboardShellPr
         return <EditorView />
       case 'history':
         return <HistoryView initialItems={historyItems} />
+      case 'pricing':
+        return <PricingView />
       default:
         return <EditorView />
     }

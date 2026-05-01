@@ -6,12 +6,13 @@ import {
   LayoutDashboard, 
   Image as ImageIcon, 
   History, 
-  Settings, 
+  Settings,
   ChevronRight,
-  Zap
+  Zap,
+  CreditCard
 } from 'lucide-react'
 
-type View = 'dashboard' | 'editor' | 'history'
+type View = 'dashboard' | 'editor' | 'history' | 'pricing'
 
 interface SidebarProps {
   activeView: View
@@ -27,6 +28,7 @@ export function Sidebar({ activeView, setActiveView, onSettingsClick, forceExpan
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'editor', label: 'BG Editor', icon: ImageIcon },
     { id: 'history', label: 'History', icon: History },
+    { id: 'pricing', label: 'Pricing', icon: CreditCard },
   ]
   
   const isExpanded = forceExpand || isHovered 
