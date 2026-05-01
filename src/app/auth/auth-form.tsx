@@ -10,25 +10,30 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { toast } from 'sonner'
 import { Loader2 } from 'lucide-react'
 
+import { useSearchParams } from 'next/navigation'
+
 export function AuthForm() {
   const [isLoading, setIsLoading] = useState(false)
+  const searchParams = useSearchParams()
+  const next = searchParams.get('next') || '/dashboard'
 
   async function handleAction(formData: FormData, action: 'login' | 'signup') {
     setIsLoading(true)
-    const result = action === 'login' ? await login(formData) : await signup(formData)
+    const result = action === 'login' 
+      ? await login(formData, next) 
+      : await signup(formData, next)
     
     if (result?.error) {
       toast.error(result.error)
       setIsLoading(false)
     } else {
       toast.success(action === 'login' ? 'Successfully logged in!' : 'Successfully signed up!')
-      // Redirect happens automatically in the server action
     }
   }
 
   async function handleGoogleLogin() {
     setIsLoading(true)
-    const result = await loginWithGoogle()
+    const result = await loginWithGoogle(next)
     if (result?.error) {
       toast.error(result.error)
       setIsLoading(false)

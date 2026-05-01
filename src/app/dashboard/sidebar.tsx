@@ -63,6 +63,27 @@ export function Sidebar({ activeView, setActiveView, onSettingsClick, forceExpan
           const Icon = item.icon
           const isActive = activeView === item.id
 
+          if (item.id === 'pricing') {
+            return (
+              <Link
+                key={item.id}
+                href="/pricing"
+                className={`w-full flex items-center p-3 rounded-xl transition-all duration-200 group relative ${
+                  isActive 
+                    ? 'bg-[#2563eb]/10 text-[#2563eb] border border-[#2563eb]/20' 
+                    : 'text-[#a1a1aa] hover:text-white hover:bg-[#18181b]'
+                }`}
+              >
+                <Icon className={`h-6 w-6 min-w-[24px] ${isActive ? 'text-[#2563eb]' : 'group-hover:scale-110 transition-transform'}`} />
+                <span className={`ml-4 font-medium transition-opacity duration-300 whitespace-nowrap ${
+                  isExpanded ? 'opacity-100' : 'opacity-0'
+                }`}>
+                  {item.label}
+                </span>
+              </Link>
+            )
+          }
+
           return (
             <button
               key={item.id}

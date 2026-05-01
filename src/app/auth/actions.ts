@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { headers } from 'next/headers'
 
-export async function login(formData: FormData) {
+export async function login(formData: FormData, redirectTo: string = '/dashboard') {
   const supabase = await createClient()
 
   const data = {
@@ -20,10 +20,10 @@ export async function login(formData: FormData) {
   }
 
   revalidatePath('/', 'layout')
-  redirect('/dashboard')
+  redirect(redirectTo)
 }
 
-export async function signup(formData: FormData) {
+export async function signup(formData: FormData, redirectTo: string = '/dashboard') {
   const supabase = await createClient()
 
   const data = {
@@ -38,10 +38,10 @@ export async function signup(formData: FormData) {
   }
 
   revalidatePath('/', 'layout')
-  redirect('/dashboard')
+  redirect(redirectTo)
 }
 
-export async function loginWithGoogle() {
+export async function loginWithGoogle(next: string = '/dashboard') {
   const supabase = await createClient()
   const origin = (await headers()).get('origin')
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || origin
@@ -49,7 +49,7 @@ export async function loginWithGoogle() {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${siteUrl}/auth/callback`,
+      redirectTo: `${siteUrl}/auth/callback?next=${encodeURIComponent(next)}`,
     },
   })
 

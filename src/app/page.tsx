@@ -28,7 +28,7 @@ export default async function Home() {
   const { data: { user } } = await supabase.auth.getUser();
 
   const authRoute = user ? "/dashboard" : "/auth";
-  const pricingRoute = user ? "/pricing" : "/auth";
+  const pricingRoute = user ? "/pricing" : "/auth?next=/pricing";
 
   const NavLinks = () => (
     <>
@@ -305,45 +305,45 @@ export default async function Home() {
 
         {/* 5. Pricing Section */}
         <section id="pricing" className="w-full py-24 px-6 border-t border-[#27272a] bg-[#09090b]">
-          <div className="max-w-4xl mx-auto text-center">
+          <div className="max-w-6xl mx-auto text-center">
             <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white mb-4">
               Simple pricing. Start for free.
             </h2>
             <p className="text-[#a1a1aa] text-lg mb-16">No hidden fees, no credit card required to start.</p>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
-              {/* Free Plan */}
-              <div className="bg-[#18181b] border border-[#27272a] rounded-3xl p-8 flex flex-col">
-                <h3 className="text-xl font-bold text-white mb-2">Free Plan</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+              {/* Basic Plan */}
+              <div className="bg-[#18181b] border border-[#27272a] rounded-3xl p-8 flex flex-col hover:border-zinc-700 transition-all">
+                <h3 className="text-xl font-bold text-white mb-2">Basic</h3>
                 <div className="flex items-baseline gap-1 mb-6">
                   <span className="text-4xl font-extrabold text-white">₹1</span>
                   <span className="text-[#a1a1aa]">/mo</span>
                 </div>
                 <ul className="space-y-4 mb-8 flex-1">
                   <li className="flex items-center gap-3 text-[#e4e4e7]">
-                    <CheckCircle2 className="h-5 w-5 text-[#a1a1aa]" />
-                    <span>2 Free Credits on Signup</span>
+                    <CheckCircle2 className="h-5 w-5 text-blue-500" />
+                    <span>2 High Quality Exports</span>
                   </li>
                   <li className="flex items-center gap-3 text-[#e4e4e7]">
-                    <CheckCircle2 className="h-5 w-5 text-[#a1a1aa]" />
-                    <span>Standard AI Processing</span>
+                    <CheckCircle2 className="h-5 w-5 text-blue-500" />
+                    <span>Standard Processing</span>
                   </li>
                   <li className="flex items-center gap-3 text-[#e4e4e7]">
-                    <CheckCircle2 className="h-5 w-5 text-[#a1a1aa]" />
-                    <span>History Access</span>
+                    <CheckCircle2 className="h-5 w-5 text-blue-500" />
+                    <span>Email Support</span>
                   </li>
                 </ul>
                 <Link href={pricingRoute} className="w-full">
                   <Button className="w-full bg-[#27272a] hover:bg-[#3f3f46] text-white rounded-full h-12 font-semibold">
-                    Get Started Free
+                    Get Started
                   </Button>
                 </Link>
               </div>
 
               {/* Pro Plan */}
-              <div className="bg-[#09090b] border-2 border-[#2563eb] rounded-3xl p-8 flex flex-col relative shadow-2xl shadow-blue-900/20">
-                <div className="absolute top-0 right-8 transform -translate-y-1/2">
-                  <span className="bg-[#2563eb] text-white text-xs font-bold uppercase tracking-wider py-1 px-3 rounded-full">
+              <div className="bg-[#09090b] border-2 border-[#2563eb] rounded-3xl p-8 flex flex-col relative shadow-2xl shadow-blue-900/20 transform scale-105 z-10">
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                  <span className="bg-[#2563eb] text-white text-[10px] font-black uppercase tracking-widest py-1.5 px-4 rounded-full">
                     Most Popular
                   </span>
                 </div>
@@ -359,20 +359,48 @@ export default async function Home() {
                   </li>
                   <li className="flex items-center gap-3 text-white">
                     <CheckCircle2 className="h-5 w-5 text-[#2563eb]" />
-                    <span>Priority Processing Speed</span>
+                    <span>Priority Processing</span>
                   </li>
                   <li className="flex items-center gap-3 text-white">
                     <CheckCircle2 className="h-5 w-5 text-[#2563eb]" />
-                    <span>API Access</span>
+                    <span>Commercial License</span>
                   </li>
                   <li className="flex items-center gap-3 text-white">
                     <CheckCircle2 className="h-5 w-5 text-[#2563eb]" />
-                    <span>Premium Support</span>
+                    <span>24/7 Support</span>
                   </li>
                 </ul>
                 <Link href={pricingRoute} className="w-full">
                   <Button className="w-full bg-[#2563eb] hover:bg-[#1d4ed8] text-white rounded-full h-12 font-semibold shadow-lg shadow-blue-500/20">
                     Upgrade to Pro
+                  </Button>
+                </Link>
+              </div>
+
+              {/* Business Plan */}
+              <div className="bg-[#18181b] border border-[#27272a] rounded-3xl p-8 flex flex-col hover:border-zinc-700 transition-all">
+                <h3 className="text-xl font-bold text-white mb-2">Business</h3>
+                <div className="flex items-baseline gap-1 mb-6">
+                  <span className="text-4xl font-extrabold text-white">₹39</span>
+                  <span className="text-[#a1a1aa]">/mo</span>
+                </div>
+                <ul className="space-y-4 mb-8 flex-1">
+                  <li className="flex items-center gap-3 text-[#e4e4e7]">
+                    <CheckCircle2 className="h-5 w-5 text-green-500" />
+                    <span>10 High Quality Exports</span>
+                  </li>
+                  <li className="flex items-center gap-3 text-[#e4e4e7]">
+                    <CheckCircle2 className="h-5 w-5 text-green-500" />
+                    <span>Ultra-Fast AI Engine</span>
+                  </li>
+                  <li className="flex items-center gap-3 text-[#e4e4e7]">
+                    <CheckCircle2 className="h-5 w-5 text-green-500" />
+                    <span>Dedicated Manager</span>
+                  </li>
+                </ul>
+                <Link href={pricingRoute} className="w-full">
+                  <Button className="w-full bg-[#27272a] hover:bg-[#3f3f46] text-white rounded-full h-12 font-semibold">
+                    Go Business
                   </Button>
                 </Link>
               </div>

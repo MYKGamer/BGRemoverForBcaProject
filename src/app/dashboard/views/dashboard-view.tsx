@@ -8,9 +8,10 @@ interface DashboardViewProps {
   credits: number
   historyCount: number
   onStartEditing: () => void
+  onUpgrade: () => void
 }
 
-export function DashboardView({ userEmail, credits, historyCount, onStartEditing }: DashboardViewProps) {
+export function DashboardView({ userEmail, credits, historyCount, onStartEditing, onUpgrade }: DashboardViewProps) {
   const userName = userEmail.split('@')[0]
   const maxCredits = 10 // Assumption for demo purposes
   const creditPercentage = Math.min(100, (credits / maxCredits) * 100)
@@ -33,7 +34,7 @@ export function DashboardView({ userEmail, credits, historyCount, onStartEditing
           </CardHeader>
           <CardContent>
             <div className="text-4xl font-black text-white mb-4 tracking-tighter">{credits} <span className="text-xs text-[#52525b] font-normal tracking-normal uppercase">/ {maxCredits} available</span></div>
-            <div className="space-y-3">
+            <div className="space-y-4">
               <div className="h-2 w-full bg-[#09090b] rounded-full overflow-hidden p-[1px] ring-1 ring-[#27272a]">
                 <div 
                   className="h-full bg-gradient-to-r from-[#2563eb] to-[#60a5fa] rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(37,99,235,0.4)]" 
@@ -42,7 +43,13 @@ export function DashboardView({ userEmail, credits, historyCount, onStartEditing
               </div>
               <div className="flex justify-between items-center">
                 <p className="text-[10px] text-[#71717a] font-bold uppercase tracking-[0.1em]">Plan: Free Tier</p>
-                <p className="text-[10px] text-[#2563eb] font-bold uppercase tracking-[0.1em]">{Math.round(creditPercentage)}% Full</p>
+                <button 
+                  onClick={onUpgrade}
+                  className="text-[10px] text-[#2563eb] hover:text-blue-400 font-black uppercase tracking-[0.2em] transition-colors flex items-center gap-1 group/btn"
+                >
+                  Upgrade to Pro
+                  <ArrowRight className="h-2.5 w-2.5 group-hover/btn:translate-x-1 transition-transform" />
+                </button>
               </div>
             </div>
           </CardContent>
