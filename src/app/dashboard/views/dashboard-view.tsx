@@ -100,9 +100,7 @@ export function DashboardView({ userEmail, credits, historyCount, onStartEditing
         
         <div className="relative flex flex-col lg:flex-row items-center justify-between gap-8">
           <div className="space-y-4 max-w-xl text-center lg:text-left">
-            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#2563eb]/10 border border-[#2563eb]/20 text-[#2563eb] text-[9px] font-black uppercase tracking-[0.3em]">
-              New Version 1.0 Ready
-            </div>
+
             <h2 className="text-2xl md:text-3xl font-black text-white leading-tight tracking-tighter">
               Ready to remove some <br className="hidden md:block" />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563eb] via-[#60a5fa] to-[#a855f7]">backgrounds?</span>

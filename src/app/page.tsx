@@ -127,10 +127,7 @@ export default async function Home() {
 
         {/* 2. The Hero Section */}
         <section className="w-full flex flex-col items-center justify-center pt-24 pb-16 px-6 text-center max-w-5xl mx-auto relative z-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#2563eb]/10 border border-[#2563eb]/20 text-[#2563eb] text-xs font-semibold uppercase tracking-wider mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <Sparkles className="h-3 w-3" />
-            <span>BG Remover 1.0 is live &rarr;</span>
-          </div>
+
           
           <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold tracking-tighter text-[#fafafa] mb-6 leading-[1.1] animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100">
             Pixel-Perfect Backgrounds. <br className="hidden md:block"/>
