@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { UserMenu } from './user-menu'
 import { Zap, Menu } from 'lucide-react'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { 
   Sheet,
@@ -45,7 +46,7 @@ export function DashboardShell({ user, credits, historyItems }: DashboardShellPr
       case 'history':
         return <HistoryView initialItems={historyItems} />
       case 'pricing':
-        return <PricingView />
+        return <PricingView user={user} />
       default:
         return <EditorView />
     }

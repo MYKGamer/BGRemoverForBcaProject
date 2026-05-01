@@ -317,7 +317,7 @@ export default async function Home() {
                 <h3 className="text-xl font-bold text-white mb-2">Basic</h3>
                 <div className="flex items-baseline gap-1 mb-6">
                   <span className="text-4xl font-extrabold text-white">₹1</span>
-                  <span className="text-[#a1a1aa]">/mo</span>
+                  <span className="text-[#a1a1aa] text-sm">/ One-time</span>
                 </div>
                 <ul className="space-y-4 mb-8 flex-1">
                   <li className="flex items-center gap-3 text-[#e4e4e7]">

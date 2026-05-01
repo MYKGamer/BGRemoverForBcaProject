@@ -112,7 +112,7 @@ export default function PricingPage() {
 
         {/* 4. The Core Pricing Interface */}
         <div className="max-w-7xl mx-auto">
-          <PricingView hideHeader={true} />
+          <PricingView hideHeader={true} user={user} />
         </div>
 
         {/* 5. Interactive Trust Section */}

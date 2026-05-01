@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 
+import { useRouter } from "next/navigation";
+
 const plans = [
   {
     name: "Basic",
@@ -34,10 +36,16 @@ const plans = [
   },
 ];
 
-export function PricingView({ hideHeader = false }: { hideHeader?: boolean }) {
+export function PricingView({ hideHeader = false, user = null }: { hideHeader?: boolean, user?: any }) {
   const { processPayment, loading } = useRazorpay();
+  const router = useRouter();
 
   const handleSubscribe = async (amount: number, credits: number) => {
+    if (!user) {
+      router.push("/auth?next=/pricing");
+      return;
+    }
+
     await (processPayment as any)(amount, credits, (res: any) => {
       console.log("Payment Successful:", res);
       window.location.reload();
@@ -124,7 +132,9 @@ export function PricingView({ hideHeader = false }: { hideHeader?: boolean }) {
                 <h3 className="text-2xl font-black text-white mb-2 tracking-tight">{plan.name}</h3>
                 <div className="flex items-baseline gap-1.5">
                   <span className="text-5xl font-black text-white tracking-tighter">₹{plan.price}</span>
-                  <span className="text-[#a1a1aa] text-sm font-medium">/monthly</span>
+                  <span className="text-[#a1a1aa] text-sm font-medium">
+                    {plan.name === "Basic" ? "/ One-time" : "/monthly"}
+                  </span>
                 </div>
                 <div className="mt-5 inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10">
                   <div className={cn("h-1.5 w-1.5 rounded-full animate-pulse", 
