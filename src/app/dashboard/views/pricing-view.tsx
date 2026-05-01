@@ -52,6 +52,20 @@ export function PricingView({ hideHeader = false }: { hideHeader?: boolean }) {
         </div>
       )}
 
+      {/* Test Mode Note for Demo */}
+      <div className="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-4 flex items-start gap-4">
+        <div className="bg-blue-500/20 p-2 rounded-lg">
+          <Info className="h-5 w-5 text-blue-400" />
+        </div>
+        <div>
+          <h4 className="text-blue-400 font-semibold text-sm">Demo / Test Mode Instructions</h4>
+          <p className="text-blue-400/80 text-xs mt-1 leading-relaxed">
+            To test the payment flow: Select a plan, and in the Razorpay popup, choose <b>Netbanking</b> &rarr; <b>Select any Bank</b> &rarr; click <b>Success</b>. 
+            Real UPI/QR payments are disabled in this project demo mode.
+          </p>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {plans.map((plan) => {
           const Icon = plan.icon;
