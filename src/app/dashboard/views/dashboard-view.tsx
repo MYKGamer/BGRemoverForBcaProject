@@ -91,38 +91,38 @@ export function DashboardView({ userEmail, credits, historyCount, onStartEditing
       {/* Hero Action Section - Premium Upgrade */}
       <div 
         onClick={onStartEditing}
-        className="relative group overflow-hidden rounded-[2rem] border border-[#27272a] bg-gradient-to-br from-[#18181b] to-[#09090b] p-8 md:p-14 cursor-pointer hover:border-[#2563eb]/40 transition-all duration-500 shadow-2xl"
+        className="relative group overflow-hidden rounded-[1.5rem] border border-[#27272a] bg-gradient-to-br from-[#18181b] to-[#09090b] p-6 md:p-10 cursor-pointer hover:border-[#2563eb]/40 transition-all duration-500 shadow-2xl"
       >
         {/* Animated Background Pattern */}
         <div className="absolute inset-0 bg-[url('https://transparenttextures.com/patterns/carbon-fibre.png')] opacity-[0.03]" />
-        <div className="absolute top-0 right-0 -mt-20 -mr-20 h-80 w-80 bg-[#2563eb]/10 rounded-full blur-[100px] transition-all group-hover:bg-[#2563eb]/20 group-hover:scale-125" />
-        <div className="absolute bottom-0 left-0 -mb-20 -ml-20 h-60 w-60 bg-purple-500/5 rounded-full blur-[80px]" />
+        <div className="absolute top-0 right-0 -mt-20 -mr-20 h-64 w-64 bg-[#2563eb]/10 rounded-full blur-[80px] transition-all group-hover:bg-[#2563eb]/20 group-hover:scale-125" />
+        <div className="absolute bottom-0 left-0 -mb-20 -ml-20 h-48 w-48 bg-purple-500/5 rounded-full blur-[60px]" />
         
-        <div className="relative flex flex-col lg:flex-row items-center justify-between gap-10">
-          <div className="space-y-6 max-w-xl text-center lg:text-left">
-            <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-[#2563eb]/10 border border-[#2563eb]/20 text-[#2563eb] text-[10px] font-black uppercase tracking-[0.3em]">
+        <div className="relative flex flex-col lg:flex-row items-center justify-between gap-8">
+          <div className="space-y-4 max-w-xl text-center lg:text-left">
+            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#2563eb]/10 border border-[#2563eb]/20 text-[#2563eb] text-[9px] font-black uppercase tracking-[0.3em]">
               New Version 1.0 Ready
             </div>
-            <h2 className="text-3xl md:text-5xl font-black text-white leading-tight tracking-tighter">
+            <h2 className="text-2xl md:text-3xl font-black text-white leading-tight tracking-tighter">
               Ready to remove some <br className="hidden md:block" />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563eb] via-[#60a5fa] to-[#a855f7]">backgrounds?</span>
             </h2>
-            <p className="text-[#a1a1aa] leading-relaxed text-lg md:text-xl">
+            <p className="text-[#a1a1aa] leading-relaxed text-sm md:text-base">
               Upload your photos and let our high-precision AI do the heavy lifting. Get professional results in seconds.
             </p>
             
-            <div className="pt-4 flex items-center justify-center lg:justify-start">
-              <div className="px-8 py-4 bg-[#2563eb] hover:bg-[#1d4ed8] text-white rounded-2xl font-bold transition-all duration-300 shadow-[0_0_30px_-5px_rgba(37,99,235,0.4)] group-hover:shadow-[0_0_50px_-10px_rgba(37,99,235,0.6)] flex items-center gap-3 transform group-hover:scale-[1.02]">
-                <span>Get Started Now</span>
-                <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+            <div className="pt-2 flex items-center justify-center lg:justify-start">
+              <div className="px-6 py-3 bg-[#2563eb] hover:bg-[#1d4ed8] text-white rounded-xl font-bold transition-all duration-300 shadow-[0_0_30px_-5px_rgba(37,99,235,0.4)] group-hover:shadow-[0_0_50px_-10px_rgba(37,99,235,0.6)] flex items-center gap-2 transform group-hover:scale-[1.02]">
+                <span className="text-sm">Get Started Now</span>
+                <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </div>
             </div>
           </div>
           
           <div className="flex-shrink-0 relative">
-             <div className="absolute inset-0 bg-[#2563eb]/30 rounded-[2.5rem] blur-3xl opacity-50 group-hover:opacity-100 transition-opacity duration-700" />
-             <div className="relative h-40 w-40 md:h-48 md:w-48 rounded-[2.5rem] bg-gradient-to-br from-[#2563eb] to-[#3b82f6] flex items-center justify-center shadow-[0_20px_50px_rgba(37,99,235,0.4)] group-hover:scale-105 group-hover:-rotate-3 transition-all duration-700 ring-8 ring-[#2563eb]/20">
-               <ImageIcon className="h-20 w-20 md:h-24 md:w-24 text-white drop-shadow-2xl" />
+             <div className="absolute inset-0 bg-[#2563eb]/30 rounded-[1.5rem] blur-2xl opacity-50 group-hover:opacity-100 transition-opacity duration-700" />
+             <div className="relative h-24 w-24 md:h-32 md:w-32 rounded-[1.5rem] bg-gradient-to-br from-[#2563eb] to-[#3b82f6] flex items-center justify-center shadow-[0_15px_35px_rgba(37,99,235,0.3)] group-hover:scale-105 group-hover:-rotate-3 transition-all duration-700 ring-4 ring-[#2563eb]/20">
+               <ImageIcon className="h-12 w-12 md:h-16 md:w-16 text-white drop-shadow-2xl" />
              </div>
           </div>
         </div>

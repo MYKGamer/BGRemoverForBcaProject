@@ -25,12 +25,12 @@ export function HistoryGrid({ initialItems }: { initialItems: HistoryItem[] }) {
 
   if (items.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-16 md:py-32 text-center border-2 border-dashed border-[#27272a] rounded-[2rem] md:rounded-[2.5rem] bg-[#09090b]/50 backdrop-blur-sm px-4">
-        <div className="h-16 md:h-20 w-16 md:w-20 bg-[#18181b] rounded-2xl md:rounded-3xl flex items-center justify-center mb-6 border border-[#27272a] shadow-2xl rotate-3">
-          <ImageIcon className="h-8 md:h-10 w-8 md:w-10 text-[#52525b]" />
+      <div className="flex flex-col items-center justify-center py-10 md:py-16 text-center border-2 border-dashed border-[#27272a] rounded-[1.5rem] bg-[#09090b]/50 backdrop-blur-sm px-4">
+        <div className="h-12 md:h-14 w-12 md:w-14 bg-[#18181b] rounded-xl md:rounded-2xl flex items-center justify-center mb-4 border border-[#27272a] shadow-2xl rotate-3">
+          <ImageIcon className="h-6 md:h-8 w-6 md:w-8 text-[#52525b]" />
         </div>
-        <h3 className="text-xl md:text-2xl font-black text-white tracking-tight italic">Gallery is empty</h3>
-        <p className="text-[#a1a1aa] mt-3 max-w-xs text-base md:text-lg font-medium">
+        <h3 className="text-lg md:text-xl font-black text-white tracking-tight italic">Gallery is empty</h3>
+        <p className="text-[#a1a1aa] mt-2 max-w-xs text-sm md:text-base font-medium">
           Your AI-powered background removals will appear here as soon as you create them.
         </p>
       </div>
@@ -98,7 +98,7 @@ export function HistoryGrid({ initialItems }: { initialItems: HistoryItem[] }) {
         return (
           <div 
             key={item.id} 
-            className="group relative rounded-[2rem] overflow-hidden border border-[#27272a] bg-[#09090b] transition-all duration-500 hover:border-[#2563eb]/40 hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.8)] flex flex-col"
+            className="group relative rounded-[1.5rem] overflow-hidden border border-[#27272a] bg-[#09090b] transition-all duration-500 hover:border-[#2563eb]/40 hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.8)] flex flex-col"
           >
             {/* Image Container with Custom Transparency Grid */}
             <div 
@@ -127,28 +127,28 @@ export function HistoryGrid({ initialItems }: { initialItems: HistoryItem[] }) {
               </div>
               
               {/* Action Buttons Layer */}
-              <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center gap-3 z-30">
+              <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center gap-2 z-30">
                 <Button 
                   size="icon" 
-                  className="h-12 w-12 rounded-2xl bg-white text-black hover:bg-[#2563eb] hover:text-white transition-all shadow-xl hover:-translate-y-1 transform"
+                  className="h-10 w-10 rounded-xl bg-white text-black hover:bg-[#2563eb] hover:text-white transition-all shadow-xl hover:-translate-y-1 transform"
                   onClick={() => handleDownload(item.transparent_image_url, item.title)}
                 >
-                  <Download className="h-5 w-5" />
+                  <Download className="h-4 w-4" />
                 </Button>
                 <Button 
                   size="icon" 
                   variant="destructive"
-                  className="h-12 w-12 rounded-2xl transition-all shadow-xl hover:-translate-y-1 transform bg-[#ef4444] hover:bg-[#dc2626]"
+                  className="h-10 w-10 rounded-xl transition-all shadow-xl hover:-translate-y-1 transform bg-[#ef4444] hover:bg-[#dc2626]"
                   onClick={() => handleDelete(item)}
                   disabled={isDeleting === item.id}
                 >
-                  <Trash2 className="h-5 w-5" />
+                  <Trash2 className="h-4 w-4" />
                 </Button>
               </div>
             </div>
 
             {/* Content Details */}
-            <div className="p-6 bg-[#18181b]/50 backdrop-blur-md border-t border-[#27272a] space-y-4">
+            <div className="p-4 bg-[#18181b]/50 backdrop-blur-md border-t border-[#27272a] space-y-2">
               <div className="flex items-start justify-between gap-3">
                 {editingId === item.id ? (
                   <div className="flex items-center gap-2 flex-1">
