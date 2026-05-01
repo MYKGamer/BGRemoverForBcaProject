@@ -19,7 +19,7 @@ export const useRazorpay = () => {
     });
   };
 
-  const processPayment = async (amount: number, onSuccess?: (res: any) => void) => {
+  const processPayment = async (amount: number, credits: number, onSuccess?: (res: any) => void) => {
     setLoading(true);
     const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
 
@@ -33,7 +33,7 @@ export const useRazorpay = () => {
     const orderResponse = await fetch("/api/razorpay/order", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ amount }),
+      body: JSON.stringify({ amount, credits }),
     });
 
     if (orderResponse.status === 401) {

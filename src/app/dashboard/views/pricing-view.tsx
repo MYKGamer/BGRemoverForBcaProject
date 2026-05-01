@@ -36,10 +36,10 @@ const plans = [
 export function PricingView({ hideHeader = false }: { hideHeader?: boolean }) {
   const { processPayment, loading } = useRazorpay();
 
-  const handleSubscribe = async (amount: number) => {
-    await processPayment(amount, (res) => {
+  const handleSubscribe = async (amount: number, credits: number) => {
+    await (processPayment as any)(amount, credits, (res: any) => {
       console.log("Payment Successful:", res);
-      // Yahan aap dashboard refresh kar sakte hain
+      window.location.reload();
     });
   };
 
@@ -114,7 +114,7 @@ export function PricingView({ hideHeader = false }: { hideHeader?: boolean }) {
               </div>
 
               <Button
-                onClick={() => handleSubscribe(plan.price)}
+                onClick={() => handleSubscribe(plan.price, plan.credits)}
                 disabled={loading}
                 className={`w-full py-6 rounded-xl font-bold ${
                   plan.popular ? "bg-[#2563eb] hover:bg-[#1d4ed8]" : "bg-white text-black hover:bg-white/90"
