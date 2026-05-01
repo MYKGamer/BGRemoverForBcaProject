@@ -316,7 +316,7 @@ export default async function Home() {
               <div className="bg-[#18181b] border border-[#27272a] rounded-3xl p-8 flex flex-col">
                 <h3 className="text-xl font-bold text-white mb-2">Free Plan</h3>
                 <div className="flex items-baseline gap-1 mb-6">
-                  <span className="text-4xl font-extrabold text-white">₹0</span>
+                  <span className="text-4xl font-extrabold text-white">₹1</span>
                   <span className="text-[#a1a1aa]">/mo</span>
                 </div>
                 <ul className="space-y-4 mb-8 flex-1">
@@ -349,7 +349,7 @@ export default async function Home() {
                 </div>
                 <h3 className="text-xl font-bold text-white mb-2">Pro Plan</h3>
                 <div className="flex items-baseline gap-1 mb-6">
-                  <span className="text-4xl font-extrabold text-white">₹499</span>
+                  <span className="text-4xl font-extrabold text-white">₹9</span>
                   <span className="text-[#a1a1aa]">/mo</span>
                 </div>
                 <ul className="space-y-4 mb-8 flex-1">
