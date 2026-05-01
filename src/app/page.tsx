@@ -22,6 +22,7 @@ import {
   X
 } from "lucide-react";
 import { BeforeAfterSlider } from "@/components/before-after-slider";
+import { NavButton } from "@/components/nav-button";
 
 export default async function Home() {
   const supabase = await createClient();
@@ -58,23 +59,27 @@ export default async function Home() {
           <div className="flex items-center gap-2 md:gap-4">
             <div className="hidden md:flex items-center gap-4">
               {user ? (
-                <Link href="/dashboard">
-                  <Button className="bg-[#2563eb] hover:bg-[#1d4ed8] text-white transition-all shadow-lg shadow-blue-500/20 rounded-full px-6">
-                    Dashboard
-                  </Button>
-                </Link>
+                <NavButton 
+                  href="/dashboard"
+                  className="bg-[#2563eb] hover:bg-[#1d4ed8] text-white transition-all shadow-lg shadow-blue-500/20 rounded-full px-6"
+                >
+                  Dashboard
+                </NavButton>
               ) : (
                 <>
-                  <Link href="/auth">
-                    <Button variant="ghost" className="text-[#a1a1aa] hover:text-white hover:bg-[#18181b]">
-                      Sign In
-                    </Button>
-                  </Link>
-                  <Link href="/auth">
-                    <Button className="bg-[#2563eb] hover:bg-[#1d4ed8] text-white transition-all shadow-lg shadow-blue-500/20 rounded-full px-6">
-                      Get Started
-                    </Button>
-                  </Link>
+                  <NavButton 
+                    href="/auth"
+                    variant="ghost" 
+                    className="text-[#a1a1aa] hover:text-white hover:bg-[#18181b]"
+                  >
+                    Sign In
+                  </NavButton>
+                  <NavButton 
+                    href="/auth"
+                    className="bg-[#2563eb] hover:bg-[#1d4ed8] text-white transition-all shadow-lg shadow-blue-500/20 rounded-full px-6"
+                  >
+                    Get Started
+                  </NavButton>
                 </>
               )}
             </div>
@@ -95,17 +100,11 @@ export default async function Home() {
                     <NavLinks />
                     <div className="pt-6 border-t border-[#27272a] flex flex-col space-y-4">
                       {user ? (
-                        <Link href="/dashboard">
-                          <Button className="w-full bg-[#2563eb] py-6 rounded-2xl">Dashboard</Button>
-                        </Link>
+                        <NavButton href="/dashboard" className="w-full bg-[#2563eb] py-6 rounded-2xl">Dashboard</NavButton>
                       ) : (
                         <>
-                          <Link href="/auth">
-                            <Button variant="outline" className="w-full border-[#27272a] py-6 rounded-2xl">Sign In</Button>
-                          </Link>
-                          <Link href="/auth">
-                            <Button className="w-full bg-[#2563eb] py-6 rounded-2xl">Get Started</Button>
-                          </Link>
+                          <NavButton href="/auth" variant="outline" className="w-full border-[#27272a] py-6 rounded-2xl">Sign In</NavButton>
+                          <NavButton href="/auth" className="w-full bg-[#2563eb] py-6 rounded-2xl">Get Started</NavButton>
                         </>
                       )}
                     </div>
@@ -145,12 +144,14 @@ export default async function Home() {
           </p>
           
           <div className="flex flex-col sm:flex-row items-center gap-4 w-full justify-center px-4 sm:px-0 animate-in fade-in slide-in-from-bottom-10 duration-700 delay-300">
-            <Link href={authRoute} className="w-full sm:w-auto">
-              <Button size="lg" className="w-full px-8 h-12 bg-[#2563eb] hover:bg-[#1d4ed8] text-white transition-all shadow-[0_0_40px_-10px_rgba(37,99,235,0.5)] hover:shadow-[0_0_60px_-15px_rgba(37,99,235,0.7)] rounded-full text-base font-semibold group">
-                Start for Free
-                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </Link>
+            <NavButton 
+              href={authRoute} 
+              size="lg" 
+              className="w-full sm:w-auto px-8 h-12 bg-[#2563eb] hover:bg-[#1d4ed8] text-white transition-all shadow-[0_0_40px_-10px_rgba(37,99,235,0.5)] hover:shadow-[0_0_60px_-15px_rgba(37,99,235,0.7)] rounded-full text-base font-semibold group"
+            >
+              Start for Free
+              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            </NavButton>
             <a href="#how-it-works" className="w-full sm:w-auto">
               <Button variant="outline" size="lg" className="w-full px-8 h-12 border-[#27272a] hover:bg-[#18181b] text-white rounded-full text-base font-semibold transition-all">
                 View Demo
@@ -333,11 +334,9 @@ export default async function Home() {
                     <span>Email Support</span>
                   </li>
                 </ul>
-                <a href={pricingRoute} className="w-full">
-                  <Button className="w-full bg-[#27272a] hover:bg-[#3f3f46] text-white rounded-full h-12 font-semibold">
-                    Get Started
-                  </Button>
-                </a>
+                <NavButton href={pricingRoute} className="w-full bg-[#27272a] hover:bg-[#3f3f46] text-white rounded-full h-12 font-semibold">
+                  Get Started
+                </NavButton>
               </div>
 
               {/* Pro Plan */}
@@ -370,11 +369,9 @@ export default async function Home() {
                     <span>24/7 Support</span>
                   </li>
                 </ul>
-                <a href={pricingRoute} className="w-full">
-                  <Button className="w-full bg-[#2563eb] hover:bg-[#1d4ed8] text-white rounded-full h-12 font-semibold shadow-lg shadow-blue-500/20">
-                    Upgrade to Pro
-                  </Button>
-                </a>
+                <NavButton href={pricingRoute} className="w-full bg-[#2563eb] hover:bg-[#1d4ed8] text-white rounded-full h-12 font-semibold shadow-lg shadow-blue-500/20">
+                  Upgrade to Pro
+                </NavButton>
               </div>
 
               {/* Business Plan */}
@@ -398,11 +395,9 @@ export default async function Home() {
                     <span>Dedicated Manager</span>
                   </li>
                 </ul>
-                <a href={pricingRoute} className="w-full">
-                  <Button className="w-full bg-[#27272a] hover:bg-[#3f3f46] text-white rounded-full h-12 font-semibold">
-                    Go Business
-                  </Button>
-                </a>
+                <NavButton href={pricingRoute} className="w-full bg-[#27272a] hover:bg-[#3f3f46] text-white rounded-full h-12 font-semibold">
+                  Go Business
+                </NavButton>
               </div>
             </div>
           </div>
