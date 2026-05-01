@@ -63,10 +63,13 @@ export function SettingsSheet({ isOpen, onClose, user }: SettingsSheetProps) {
           {/* Credits Summary Card */}
           <section className="space-y-4">
             <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#52525b] px-2">Usage Monitor</h3>
-            <div className="bg-gradient-to-br from-[#09090b] to-[#18181b] border border-[#27272a] rounded-[2rem] p-6 space-y-6">
+            <button 
+              onClick={() => window.location.href = '/pricing'}
+              className="w-full text-left bg-gradient-to-br from-[#09090b] to-[#18181b] border border-[#27272a] rounded-[2rem] p-6 space-y-6 hover:border-[#2563eb]/50 transition-all group"
+            >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 text-white">
-                  <Sparkles className="h-4 w-4 text-[#2563eb]" />
+                  <Sparkles className="h-4 w-4 text-[#2563eb] group-hover:scale-125 transition-transform" />
                   <span className="text-sm font-bold">Remaining Credits</span>
                 </div>
                 <span className="text-xl font-black text-white">42</span>
@@ -75,9 +78,9 @@ export function SettingsSheet({ isOpen, onClose, user }: SettingsSheetProps) {
                 <div className="h-full w-[42%] bg-[#2563eb] rounded-full shadow-[0_0_10px_rgba(37,99,235,0.5)]" />
               </div>
               <p className="text-[10px] text-[#71717a] font-medium leading-relaxed">
-                Credits reset on the 1st of every month. Upgrade to Pro for unlimited removals.
+                Credits reset on the 1st of every month. <span className="text-[#2563eb] font-bold group-hover:underline">Upgrade to Pro</span> for unlimited removals.
               </p>
-            </div>
+            </button>
           </section>
 
           {/* Preferences */}
@@ -91,6 +94,11 @@ export function SettingsSheet({ isOpen, onClose, user }: SettingsSheetProps) {
               ].map((item, idx) => (
                 <button 
                   key={idx}
+                  onClick={() => {
+                    if (item.label === 'Billing & Invoices') {
+                      window.location.href = '/pricing'
+                    }
+                  }}
                   className="w-full flex items-center justify-between p-4 rounded-2xl hover:bg-[#18181b] transition-all duration-300 group border border-transparent hover:border-[#27272a]"
                 >
                   <div className="flex items-center gap-4">

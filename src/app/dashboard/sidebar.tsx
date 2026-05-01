@@ -123,19 +123,22 @@ export function Sidebar({ activeView, setActiveView, onSettingsClick, forceExpan
         </button>
 
         {/* Mini Credit Display when collapsed */}
-        <div className={`p-3 rounded-xl bg-[#18181b]/50 border border-[#27272a] transition-all duration-300 ${
-          isExpanded ? 'opacity-100' : 'opacity-100'
-        }`}>
+        <button
+          onClick={() => window.location.href = '/pricing'}
+          className={`p-3 w-full rounded-xl bg-[#18181b]/50 border border-[#27272a] hover:bg-[#2563eb]/10 hover:border-[#2563eb]/30 transition-all duration-300 group ${
+            isExpanded ? 'opacity-100' : 'opacity-100'
+          }`}
+        >
           <div className="flex items-center">
-            <Zap className="h-5 w-5 text-yellow-500 min-w-[20px]" />
-            <div className={`ml-4 transition-opacity duration-300 whitespace-nowrap ${
+            <Zap className="h-5 w-5 text-yellow-500 min-w-[20px] group-hover:scale-110 transition-transform" />
+            <div className={`ml-4 text-left transition-opacity duration-300 whitespace-nowrap ${
               isExpanded ? 'opacity-100' : 'hidden'
             }`}>
               <p className="text-[10px] uppercase tracking-wider text-[#a1a1aa] font-bold">Credits</p>
-              <p className="text-sm font-bold text-white">Pro Plan</p>
+              <p className="text-sm font-bold text-white group-hover:text-[#2563eb] transition-colors">Pro Plan</p>
             </div>
           </div>
-        </div>
+        </button>
       </div>
     </aside>
   )
