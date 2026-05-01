@@ -2,6 +2,12 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
 import { 
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import { 
   ImageIcon, 
   Sparkles, 
   Zap, 
@@ -11,7 +17,9 @@ import {
   CheckCircle2, 
   ArrowRight,
   MonitorPlay,
-  Wand2
+  Wand2,
+  Menu,
+  X
 } from "lucide-react";
 import { BeforeAfterSlider } from "@/components/before-after-slider";
 
@@ -21,11 +29,19 @@ export default async function Home() {
 
   const authRoute = user ? "/dashboard" : "/auth";
 
+  const NavLinks = () => (
+    <>
+      <a href="#features" className="hover:text-white transition-colors">Features</a>
+      <a href="#how-it-works" className="hover:text-white transition-colors">How it Works</a>
+      <a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
+    </>
+  );
+
   return (
     <div className="min-h-screen bg-[#09090b] text-white selection:bg-[#2563eb]/30 font-sans">
       {/* 1. Glassmorphism Navigation (Sticky) */}
       <nav className="sticky top-0 z-50 w-full border-b border-[#27272a] bg-[#09090b]/80 backdrop-blur-md">
-        <div className="container mx-auto px-6 h-16 flex items-center justify-between">
+        <div className="container mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="h-8 w-8 rounded-lg bg-[#2563eb] flex items-center justify-center shadow-lg shadow-blue-500/20">
               <ImageIcon className="h-5 w-5 text-white" />
@@ -33,72 +49,116 @@ export default async function Home() {
             <span className="font-bold text-lg tracking-tight">BG<span className="text-[#2563eb]">Remover</span> AI</span>
           </div>
           
+          {/* Desktop Links */}
           <div className="hidden md:flex items-center space-x-8 text-sm font-medium text-[#a1a1aa]">
-            <a href="#features" className="hover:text-white transition-colors">Features</a>
-            <a href="#how-it-works" className="hover:text-white transition-colors">How it Works</a>
-            <a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
+            <NavLinks />
           </div>
 
-          <div className="flex items-center gap-4">
-            {user ? (
-              <Link href="/dashboard">
-                <Button className="bg-[#2563eb] hover:bg-[#1d4ed8] text-white transition-all shadow-lg shadow-blue-500/20 rounded-full px-6">
-                  Go to Dashboard
-                </Button>
-              </Link>
-            ) : (
-              <>
-                <Link href="/auth">
-                  <Button variant="ghost" className="text-[#a1a1aa] hover:text-white hover:bg-[#18181b]">
-                    Sign In
-                  </Button>
-                </Link>
-                <Link href="/auth">
+          <div className="flex items-center gap-2 md:gap-4">
+            <div className="hidden md:flex items-center gap-4">
+              {user ? (
+                <Link href="/dashboard">
                   <Button className="bg-[#2563eb] hover:bg-[#1d4ed8] text-white transition-all shadow-lg shadow-blue-500/20 rounded-full px-6">
-                    Get Started
+                    Dashboard
                   </Button>
                 </Link>
-              </>
-            )}
+              ) : (
+                <>
+                  <Link href="/auth">
+                    <Button variant="ghost" className="text-[#a1a1aa] hover:text-white hover:bg-[#18181b]">
+                      Sign In
+                    </Button>
+                  </Link>
+                  <Link href="/auth">
+                    <Button className="bg-[#2563eb] hover:bg-[#1d4ed8] text-white transition-all shadow-lg shadow-blue-500/20 rounded-full px-6">
+                      Get Started
+                    </Button>
+                  </Link>
+                </>
+              )}
+            </div>
+
+            {/* Mobile Menu Trigger */}
+            <div className="md:hidden">
+              <Sheet>
+                <SheetTrigger 
+                  render={
+                    <Button variant="ghost" size="icon" className="text-white hover:bg-[#18181b]">
+                      <Menu className="h-6 w-6" />
+                    </Button>
+                  }
+                />
+                <SheetContent side="right" className="bg-[#09090b] border-[#27272a] text-white p-8">
+                  <SheetTitle className="text-white mb-8">Navigation</SheetTitle>
+                  <div className="flex flex-col space-y-6 text-lg font-medium text-[#a1a1aa]">
+                    <NavLinks />
+                    <div className="pt-6 border-t border-[#27272a] flex flex-col space-y-4">
+                      {user ? (
+                        <Link href="/dashboard">
+                          <Button className="w-full bg-[#2563eb] py-6 rounded-2xl">Dashboard</Button>
+                        </Link>
+                      ) : (
+                        <>
+                          <Link href="/auth">
+                            <Button variant="outline" className="w-full border-[#27272a] py-6 rounded-2xl">Sign In</Button>
+                          </Link>
+                          <Link href="/auth">
+                            <Button className="w-full bg-[#2563eb] py-6 rounded-2xl">Get Started</Button>
+                          </Link>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </SheetContent>
+              </Sheet>
+            </div>
           </div>
         </div>
       </nav>
 
-      <main className="flex flex-col items-center w-full">
+
+      <main className="flex flex-col items-center w-full relative overflow-hidden">
+        
+        {/* Background Ambient Glow */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] pointer-events-none">
+          <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#2563eb]/20 blur-[120px] rounded-full opacity-50" />
+          <div className="absolute top-[20%] left-[40%] w-[300px] h-[300px] bg-purple-500/10 blur-[100px] rounded-full opacity-40 mix-blend-screen" />
+        </div>
+
         {/* 2. The Hero Section */}
-        <section className="w-full flex flex-col items-center justify-center pt-24 pb-16 px-6 text-center max-w-5xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#2563eb]/10 border border-[#2563eb]/20 text-[#2563eb] text-xs font-semibold uppercase tracking-wider mb-8">
+        <section className="w-full flex flex-col items-center justify-center pt-24 pb-16 px-6 text-center max-w-5xl mx-auto relative z-10">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#2563eb]/10 border border-[#2563eb]/20 text-[#2563eb] text-xs font-semibold uppercase tracking-wider mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
             <Sparkles className="h-3 w-3" />
             <span>BG Remover 1.0 is live &rarr;</span>
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter text-[#fafafa] mb-6 leading-tight">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold tracking-tighter text-[#fafafa] mb-6 leading-[1.1] animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100">
             Pixel-Perfect Backgrounds. <br className="hidden md:block"/>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563eb] to-[#60a5fa]">
               Zero Effort.
             </span>
           </h1>
           
-          <p className="text-lg md:text-xl text-[#a1a1aa] max-w-2xl mb-10 leading-relaxed">
+          <p className="text-base md:text-xl text-[#a1a1aa] max-w-2xl mb-10 leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200 px-4 sm:px-0">
             Professional AI background removal for designers, developers, and e-commerce. Separate subjects from the noise in milliseconds.
           </p>
           
-          <div className="flex flex-col sm:flex-row items-center gap-4 w-full justify-center">
-            <Link href={authRoute}>
-              <Button size="lg" className="w-full sm:w-auto px-8 h-12 bg-[#2563eb] hover:bg-[#1d4ed8] text-white transition-all shadow-lg shadow-blue-500/20 rounded-full text-base font-semibold group">
+          <div className="flex flex-col sm:flex-row items-center gap-4 w-full justify-center px-4 sm:px-0 animate-in fade-in slide-in-from-bottom-10 duration-700 delay-300">
+            <Link href={authRoute} className="w-full sm:w-auto">
+              <Button size="lg" className="w-full px-8 h-12 bg-[#2563eb] hover:bg-[#1d4ed8] text-white transition-all shadow-[0_0_40px_-10px_rgba(37,99,235,0.5)] hover:shadow-[0_0_60px_-15px_rgba(37,99,235,0.7)] rounded-full text-base font-semibold group">
                 Start for Free
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
-            <a href="#how-it-works">
-              <Button variant="outline" size="lg" className="w-full sm:w-auto px-8 h-12 border-[#27272a] hover:bg-[#18181b] text-white rounded-full text-base font-semibold">
+            <a href="#how-it-works" className="w-full sm:w-auto">
+              <Button variant="outline" size="lg" className="w-full px-8 h-12 border-[#27272a] hover:bg-[#18181b] text-white rounded-full text-base font-semibold transition-all">
                 View Demo
               </Button>
             </a>
           </div>
 
           {/* MacOS-style Mockup Window */}
-          <div id="how-it-works" className="mt-20 w-full max-w-3xl mx-auto rounded-2xl border border-[#27272a] bg-[#18181b] shadow-2xl overflow-hidden shadow-black/50">
+          <div id="how-it-works" className="mt-20 w-full max-w-3xl mx-auto rounded-2xl border border-[#27272a] bg-[#18181b] shadow-[0_0_50px_-15px_rgba(0,0,0,0.8)] overflow-hidden transition-transform duration-700 hover:scale-[1.02] animate-in fade-in slide-in-from-bottom-12 delay-500">
             <div className="h-10 border-b border-[#27272a] bg-[#09090b] flex items-center px-4 gap-2">
               <div className="h-3 w-3 rounded-full bg-red-500/80"></div>
               <div className="h-3 w-3 rounded-full bg-yellow-500/80"></div>
@@ -121,10 +181,10 @@ export default async function Home() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[250px]">
               {/* Card 1 (Span 2) */}
-              <div className="md:col-span-2 row-span-1 bg-[#18181b]/50 border border-[#27272a] rounded-3xl p-8 flex flex-col sm:flex-row gap-6 relative overflow-hidden group hover:border-[#2563eb]/30 transition-colors">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#2563eb]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <div className="md:col-span-2 row-span-1 bg-[#18181b]/50 border border-[#27272a] rounded-3xl p-8 flex flex-col sm:flex-row gap-6 relative overflow-hidden group hover:border-[#2563eb]/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-500/10">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#2563eb]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="flex-1 relative z-10">
-                  <div className="h-10 w-10 rounded-lg bg-[#2563eb]/20 flex items-center justify-center mb-6 border border-[#2563eb]/30">
+                  <div className="h-10 w-10 rounded-lg bg-[#2563eb]/20 flex items-center justify-center mb-6 border border-[#2563eb]/30 group-hover:scale-110 transition-transform duration-300">
                     <Wand2 className="h-5 w-5 text-[#2563eb]" />
                   </div>
                   <h3 className="text-2xl font-bold text-white mb-2">Clipdrop AI Engine</h3>
@@ -132,7 +192,7 @@ export default async function Home() {
                 </div>
                 <div className="hidden sm:flex flex-1 items-center justify-center relative z-10">
                   {/* Before/After visual representation */}
-                  <div className="relative w-full h-32 bg-[#09090b] rounded-xl border border-[#27272a] overflow-hidden flex shadow-inner">
+                  <div className="relative w-full h-32 bg-[#09090b] rounded-xl border border-[#27272a] overflow-hidden flex shadow-inner group-hover:shadow-blue-500/20 transition-all">
                     <div className="w-1/2 h-full border-r border-[#27272a] relative">
                       <img src="/images/LuffyBefore.jpg" alt="Luffy Before" className="absolute inset-0 w-full h-full object-cover opacity-60" />
                       <div className="absolute inset-0 flex items-center justify-center">
@@ -150,9 +210,9 @@ export default async function Home() {
               </div>
 
               {/* Card 2 */}
-              <div className="col-span-1 row-span-1 bg-[#18181b]/50 border border-[#27272a] rounded-3xl p-8 relative overflow-hidden group hover:border-yellow-500/30 transition-colors">
-                <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                <div className="h-10 w-10 rounded-lg bg-yellow-500/20 flex items-center justify-center mb-6 border border-yellow-500/30">
+              <div className="col-span-1 row-span-1 bg-[#18181b]/50 border border-[#27272a] rounded-3xl p-8 relative overflow-hidden group hover:border-yellow-500/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-yellow-500/10">
+                <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="h-10 w-10 rounded-lg bg-yellow-500/20 flex items-center justify-center mb-6 border border-yellow-500/30 group-hover:scale-110 transition-transform duration-300">
                   <Zap className="h-5 w-5 text-yellow-500" />
                 </div>
                 <h3 className="text-xl font-bold text-white mb-2">Lightning Fast</h3>
@@ -160,9 +220,9 @@ export default async function Home() {
               </div>
 
               {/* Card 3 */}
-              <div className="col-span-1 row-span-1 bg-[#18181b]/50 border border-[#27272a] rounded-3xl p-8 relative overflow-hidden group hover:border-green-500/30 transition-colors">
-                <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                <div className="h-10 w-10 rounded-lg bg-green-500/20 flex items-center justify-center mb-6 border border-green-500/30">
+              <div className="col-span-1 row-span-1 bg-[#18181b]/50 border border-[#27272a] rounded-3xl p-8 relative overflow-hidden group hover:border-green-500/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-green-500/10">
+                <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="h-10 w-10 rounded-lg bg-green-500/20 flex items-center justify-center mb-6 border border-green-500/30 group-hover:scale-110 transition-transform duration-300">
                   <ShieldCheck className="h-5 w-5 text-green-500" />
                 </div>
                 <h3 className="text-xl font-bold text-white mb-2">Secure Storage</h3>
@@ -170,11 +230,11 @@ export default async function Home() {
               </div>
 
               {/* Card 4 (Span 2) */}
-              <div className="md:col-span-2 row-span-1 bg-[#18181b]/50 border border-[#27272a] rounded-3xl p-8 relative overflow-hidden group hover:border-purple-500/30 transition-colors">
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <div className="md:col-span-2 row-span-1 bg-[#18181b]/50 border border-[#27272a] rounded-3xl p-8 relative overflow-hidden group hover:border-purple-500/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-purple-500/10">
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="flex flex-col h-full justify-between relative z-10">
                   <div>
-                    <div className="h-10 w-10 rounded-lg bg-purple-500/20 flex items-center justify-center mb-6 border border-purple-500/30">
+                    <div className="h-10 w-10 rounded-lg bg-purple-500/20 flex items-center justify-center mb-6 border border-purple-500/30 group-hover:scale-110 transition-transform duration-300">
                       <History className="h-5 w-5 text-purple-500" />
                     </div>
                     <h3 className="text-2xl font-bold text-white mb-2">History Dashboard</h3>
@@ -195,7 +255,7 @@ export default async function Home() {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Testimonial 1 */}
-              <div className="bg-[#18181b] border border-[#27272a] rounded-2xl p-6 text-left relative">
+              <div className="bg-[#18181b]/80 border border-[#27272a] rounded-2xl p-6 text-left relative transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-zinc-700">
                 <div className="flex text-yellow-500 mb-4">
                   {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 fill-current" />)}
                 </div>
@@ -210,7 +270,7 @@ export default async function Home() {
               </div>
 
               {/* Testimonial 2 */}
-              <div className="bg-[#18181b] border border-[#27272a] rounded-2xl p-6 text-left relative">
+              <div className="bg-[#18181b]/80 border border-[#27272a] rounded-2xl p-6 text-left relative transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-zinc-700">
                 <div className="flex text-yellow-500 mb-4">
                   {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 fill-current" />)}
                 </div>
@@ -225,7 +285,7 @@ export default async function Home() {
               </div>
 
               {/* Testimonial 3 */}
-              <div className="bg-[#18181b] border border-[#27272a] rounded-2xl p-6 text-left relative">
+              <div className="bg-[#18181b]/80 border border-[#27272a] rounded-2xl p-6 text-left relative transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-zinc-700">
                 <div className="flex text-yellow-500 mb-4">
                   {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 fill-current" />)}
                 </div>

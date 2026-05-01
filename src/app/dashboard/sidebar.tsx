@@ -17,24 +17,27 @@ interface SidebarProps {
   activeView: View
   setActiveView: (view: View) => void
   onSettingsClick: () => void
+  forceExpand?: boolean
 }
 
-export function Sidebar({ activeView, setActiveView, onSettingsClick }: SidebarProps) {
-  const [isExpanded, setIsExpanded] = useState(false)
-
+export function Sidebar({ activeView, setActiveView, onSettingsClick, forceExpand = false }: SidebarProps) {
+  const [isHovered, setIsHovered] = useState(false)
+  
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'editor', label: 'BG Editor', icon: ImageIcon },
     { id: 'history', label: 'History', icon: History },
   ]
+  
+  const isExpanded = forceExpand || isHovered 
 
   return (
     <aside 
-      className={`fixed left-0 top-0 h-screen bg-[#09090b] border-r border-[#27272a] z-[60] transition-all duration-300 ease-in-out flex flex-col ${
-        isExpanded ? 'w-64' : 'w-20'
+      className={`h-screen bg-[#09090b] border-r border-[#27272a] z-[60] transition-all duration-300 ease-in-out flex flex-col w-64 md:fixed md:left-0 md:top-0 ${
+        !isHovered ? 'md:w-20' : 'md:w-64'
       }`}
-      onMouseEnter={() => setIsExpanded(true)}
-      onMouseLeave={() => setIsExpanded(false)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
 
       {/* Logo Section */}

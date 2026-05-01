@@ -2,11 +2,12 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
-import { Download, Trash2, Edit2, Check, X, Image as ImageIcon } from 'lucide-react'
+import { Download, Trash2, Edit2, Check, X, Image as ImageIcon, ExternalLink, Clock, Calendar, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { deleteHistoryItem, renameHistoryItem } from './history-actions'
 import { toast } from 'sonner'
+import { formatDistanceToNow } from 'date-fns'
 
 type HistoryItem = {
   id: string
@@ -24,20 +25,20 @@ export function HistoryGrid({ initialItems }: { initialItems: HistoryItem[] }) {
 
   if (items.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-24 text-center border border-dashed border-[#27272a] rounded-2xl bg-[#09090b]">
-        <div className="h-16 w-16 bg-[#18181b] rounded-full flex items-center justify-center mb-4 border border-[#27272a]">
-          <ImageIcon className="h-8 w-8 text-[#a1a1aa]" />
+      <div className="flex flex-col items-center justify-center py-16 md:py-32 text-center border-2 border-dashed border-[#27272a] rounded-[2rem] md:rounded-[2.5rem] bg-[#09090b]/50 backdrop-blur-sm px-4">
+        <div className="h-16 md:h-20 w-16 md:w-20 bg-[#18181b] rounded-2xl md:rounded-3xl flex items-center justify-center mb-6 border border-[#27272a] shadow-2xl rotate-3">
+          <ImageIcon className="h-8 md:h-10 w-8 md:w-10 text-[#52525b]" />
         </div>
-        <h3 className="text-xl font-semibold text-white">No creations yet</h3>
-        <p className="text-[#a1a1aa] mt-2 max-w-sm">
-          Upload an image above to remove its background. Your processed images will appear here.
+        <h3 className="text-xl md:text-2xl font-black text-white tracking-tight italic">Gallery is empty</h3>
+        <p className="text-[#a1a1aa] mt-3 max-w-xs text-base md:text-lg font-medium">
+          Your AI-powered background removals will appear here as soon as you create them.
         </p>
       </div>
     )
   }
 
   const handleDelete = async (item: HistoryItem) => {
-    if (!window.confirm('Are you sure you want to delete this image? This action cannot be undone.')) return
+    if (!window.confirm('Delete this asset? This cannot be undone.')) return
 
     setIsDeleting(item.id)
     const result = await deleteHistoryItem(item.id, item.original_image_url, item.transparent_image_url)
@@ -45,7 +46,7 @@ export function HistoryGrid({ initialItems }: { initialItems: HistoryItem[] }) {
     if (result.error) {
       toast.error(result.error)
     } else {
-      toast.success('Image deleted successfully')
+      toast.success('Asset deleted')
       setItems((prev) => prev.filter((i) => i.id !== item.id))
     }
     setIsDeleting(null)
@@ -69,6 +70,7 @@ export function HistoryGrid({ initialItems }: { initialItems: HistoryItem[] }) {
   }
 
   const handleDownload = async (url: string, title: string) => {
+    const toastId = toast.loading('Preparing download...')
     try {
       const response = await fetch(url)
       const blob = await response.blob()
@@ -82,74 +84,84 @@ export function HistoryGrid({ initialItems }: { initialItems: HistoryItem[] }) {
       document.body.removeChild(link)
       window.URL.revokeObjectURL(blobUrl)
       
-      toast.success('Download started')
+      toast.success('Download started', { id: toastId })
     } catch (error) {
-      toast.error('Failed to download image')
+      toast.error('Failed to download image', { id: toastId })
     }
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {items.map((item) => (
-        <div 
-          key={item.id} 
-          className="group relative rounded-xl overflow-hidden border border-[#27272a] bg-[#18181b] transition-all hover:border-[#3f3f46] hover:shadow-2xl hover:shadow-black/50 flex flex-col"
-        >
-          {/* Image Container with Checkerboard Pattern */}
-          <div 
-            className="relative w-full aspect-square bg-[#09090b] flex items-center justify-center overflow-hidden"
-            style={{
-              backgroundImage: 'repeating-linear-gradient(45deg, #18181b 25%, transparent 25%, transparent 75%, #18181b 75%, #18181b), repeating-linear-gradient(45deg, #18181b 25%, #09090b 25%, #09090b 75%, #18181b 75%, #18181b)',
-              backgroundPosition: '0 0, 10px 10px',
-              backgroundSize: '20px 20px'
-            }}
-          >
-            <Image
-              src={item.transparent_image_url}
-              alt={item.title}
-              fill
-              className="object-contain p-4 drop-shadow-2xl transition-transform duration-500 group-hover:scale-105"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
-            
-            {/* Hover Action Overlay */}
-            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4 backdrop-blur-sm">
-              <Button 
-                variant="secondary" 
-                size="icon" 
-                className="h-10 w-10 rounded-full bg-white text-black hover:bg-gray-200 hover:scale-110 transition-transform"
-                onClick={() => handleDownload(item.transparent_image_url, item.title)}
-                title="Download"
-              >
-                <Download className="h-4 w-4" />
-              </Button>
-              <Button 
-                variant="destructive" 
-                size="icon" 
-                className="h-10 w-10 rounded-full hover:scale-110 transition-transform"
-                onClick={() => handleDelete(item)}
-                disabled={isDeleting === item.id}
-                title="Delete"
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
+      {items.map((item) => {
+        const isNew = new Date(item.created_at).getTime() > Date.now() - 1000 * 60 * 60 * 24;
 
-          {/* Details Section */}
-          <div className="p-4 border-t border-[#27272a] bg-[#18181b]">
-            {editingId === item.id ? (
-              <div className="flex items-center gap-2">
-                <Input
-                  autoFocus
-                  value={editTitle}
-                  onChange={(e) => setEditTitle(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') handleRename(item.id)
-                    if (e.key === 'Escape') setEditingId(null)
-                  }}
-                  className="h-8 bg-[#09090b] border-[#27272a] text-sm text-white focus-visible:ring-1 focus-visible:ring-[#2563eb]"
-                />
+        return (
+          <div 
+            key={item.id} 
+            className="group relative rounded-[2rem] overflow-hidden border border-[#27272a] bg-[#09090b] transition-all duration-500 hover:border-[#2563eb]/40 hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.8)] flex flex-col"
+          >
+            {/* Image Container with Custom Transparency Grid */}
+            <div 
+              className="relative w-full aspect-square bg-[#09090b] flex items-center justify-center overflow-hidden"
+              style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%2318181b' d='M0 0h8v8H0zM8 8h8v8H8z'/%3E%3C/svg%3E")`,
+                backgroundSize: '24px 24px'
+              }}
+            >
+              <Image
+                src={item.transparent_image_url}
+                alt={item.title}
+                fill
+                className="object-contain p-6 drop-shadow-[0_20px_30px_rgba(0,0,0,0.5)] transition-all duration-700 group-hover:scale-105 group-hover:rotate-1"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
+
+              {/* Status Badges */}
+              <div className="absolute top-4 left-4 flex flex-col gap-2 z-20">
+                {isNew && (
+                  <div className="px-3 py-1 rounded-full bg-[#2563eb] text-[10px] font-black text-white uppercase tracking-tighter shadow-lg shadow-blue-500/40 flex items-center gap-1 animate-pulse">
+                    <Sparkles className="h-3 w-3" />
+                    New
+                  </div>
+                )}
+              </div>
+              
+              {/* Action Buttons Layer */}
+              <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center gap-3 z-30">
+                <Button 
+                  size="icon" 
+                  className="h-12 w-12 rounded-2xl bg-white text-black hover:bg-[#2563eb] hover:text-white transition-all shadow-xl hover:-translate-y-1 transform"
+                  onClick={() => handleDownload(item.transparent_image_url, item.title)}
+                >
+                  <Download className="h-5 w-5" />
+                </Button>
+                <Button 
+                  size="icon" 
+                  variant="destructive"
+                  className="h-12 w-12 rounded-2xl transition-all shadow-xl hover:-translate-y-1 transform bg-[#ef4444] hover:bg-[#dc2626]"
+                  onClick={() => handleDelete(item)}
+                  disabled={isDeleting === item.id}
+                >
+                  <Trash2 className="h-5 w-5" />
+                </Button>
+              </div>
+            </div>
+
+            {/* Content Details */}
+            <div className="p-6 bg-[#18181b]/50 backdrop-blur-md border-t border-[#27272a] space-y-4">
+              <div className="flex items-start justify-between gap-3">
+                {editingId === item.id ? (
+                  <div className="flex items-center gap-2 flex-1">
+                    <Input
+                      autoFocus
+                      className="h-8 bg-[#09090b] border-[#27272a] text-sm text-white focus-visible:ring-1 focus-visible:ring-[#2563eb]"
+                      value={editTitle}
+                      onChange={(e) => setEditTitle(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') handleRename(item.id)
+                        if (e.key === 'Escape') setEditingId(null)
+                      }}
+                    />
                 <Button 
                   size="icon" 
                   variant="ghost" 
@@ -185,6 +197,7 @@ export function HistoryGrid({ initialItems }: { initialItems: HistoryItem[] }) {
                 </Button>
               </div>
             )}
+            </div>
             <p className="text-xs text-[#a1a1aa] mt-1">
               {new Date(item.created_at).toLocaleDateString('en-US', {
                 month: 'short',
@@ -192,9 +205,10 @@ export function HistoryGrid({ initialItems }: { initialItems: HistoryItem[] }) {
                 year: 'numeric'
               })}
             </p>
+            </div>
           </div>
-        </div>
-      ))}
+        )
+      })}
     </div>
   )
 }

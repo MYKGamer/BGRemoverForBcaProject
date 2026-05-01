@@ -2,7 +2,13 @@
 
 import { useState } from 'react'
 import { UserMenu } from './user-menu'
-import { Zap } from 'lucide-react'
+import { Zap, Menu } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { 
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+} from "@/components/ui/sheet"
 import { DashboardView } from './views/dashboard-view'
 import { EditorView } from './views/editor-view'
 import { HistoryView } from './views/history-view'
@@ -43,11 +49,13 @@ export function DashboardShell({ user, credits, historyItems }: DashboardShellPr
 
   return (
     <div className="min-h-screen bg-[#09090b] flex">
-      <Sidebar 
-        activeView={activeView} 
-        setActiveView={setActiveView} 
-        onSettingsClick={() => setIsSettingsOpen(true)} 
-      />
+      <div className="hidden md:block">
+        <Sidebar 
+          activeView={activeView} 
+          setActiveView={setActiveView} 
+          onSettingsClick={() => setIsSettingsOpen(true)} 
+        />
+      </div>
 
       <SettingsSheet 
         isOpen={isSettingsOpen} 
@@ -55,20 +63,43 @@ export function DashboardShell({ user, credits, historyItems }: DashboardShellPr
         user={user}
       />
 
-      <div className="flex-1 flex flex-col pl-20">
+      <div className="flex-1 flex flex-col md:pl-20">
         {/* Header */}
         <header className="h-16 border-b border-[#27272a] bg-[#09090b]/80 backdrop-blur sticky top-0 z-50">
-          <div className="px-8 h-full flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <h2 className="text-sm font-medium text-[#a1a1aa] uppercase tracking-widest transition-all">
+          <div className="px-4 md:px-8 h-full flex items-center justify-between">
+            <div className="flex items-center space-x-2 md:space-x-4">
+              <div className="md:hidden">
+                <Sheet>
+                <SheetTrigger 
+                  render={
+                    <Button variant="ghost" size="icon" className="text-white">
+                      <Menu className="h-5 w-5" />
+                    </Button>
+                  }
+                />
+                  <SheetContent side="left" className="bg-[#09090b] border-[#27272a] p-0 w-64">
+                    <Sidebar 
+                      activeView={activeView} 
+                      forceExpand={true}
+                      setActiveView={(v) => {
+                        setActiveView(v)
+                      }} 
+                      onSettingsClick={() => {
+                        setIsSettingsOpen(true)
+                      }} 
+                    />
+                  </SheetContent>
+                </Sheet>
+              </div>
+              <h2 className="text-xs md:text-sm font-medium text-[#a1a1aa] uppercase tracking-widest transition-all">
                 {activeView === 'editor' ? 'BG Editor' : activeView}
               </h2>
             </div>
             
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-[#18181b] border border-[#27272a] shadow-inner">
-                <Zap className="h-4 w-4 text-yellow-500" />
-                <span className="text-sm font-medium text-[#fafafa]">{credits} Credits</span>
+            <div className="flex items-center space-x-2 md:space-x-4">
+              <div className="flex items-center space-x-1.5 px-2 md:px-3 py-1 md:py-1.5 rounded-full bg-[#18181b] border border-[#27272a] shadow-inner">
+                <Zap className="h-3 md:h-4 w-3 md:w-4 text-yellow-500" />
+                <span className="text-xs md:text-sm font-medium text-[#fafafa]">{credits} <span className="hidden sm:inline">Credits</span></span>
               </div>
               <UserMenu user={user} />
             </div>
@@ -76,12 +107,13 @@ export function DashboardShell({ user, credits, historyItems }: DashboardShellPr
         </header>
 
         {/* Dynamic Content */}
-        <main className="flex-1 p-8 overflow-y-auto">
-          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <main className="flex-1 p-4 md:p-8 overflow-y-auto">
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-7xl mx-auto w-full">
             {renderView()}
           </div>
         </main>
       </div>
     </div>
+
   )
 }
