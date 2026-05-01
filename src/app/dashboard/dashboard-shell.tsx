@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { UserMenu } from './user-menu'
 import { Zap, Menu } from 'lucide-react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { 
   Sheet,
@@ -17,7 +18,7 @@ import { PricingView } from './views/pricing-view'
 import { Sidebar } from './sidebar'
 import { SettingsSheet } from './settings-sheet'
 
-type View = 'dashboard' | 'editor' | 'history' | 'pricing'
+type View = 'dashboard' | 'editor' | 'history'
 
 interface DashboardShellProps {
   user: any
@@ -28,6 +29,7 @@ interface DashboardShellProps {
 export function DashboardShell({ user, credits, historyItems }: DashboardShellProps) {
   const [activeView, setActiveView] = useState<View>('dashboard')
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+  const router = useRouter()
 
   const renderView = () => {
     switch (activeView) {
@@ -38,15 +40,13 @@ export function DashboardShell({ user, credits, historyItems }: DashboardShellPr
             credits={credits} 
             historyCount={historyItems.length} 
             onStartEditing={() => setActiveView('editor')}
-            onUpgrade={() => setActiveView('pricing')}
+            onUpgrade={() => router.push('/pricing')}
           />
         )
       case 'editor':
         return <EditorView />
       case 'history':
         return <HistoryView initialItems={historyItems} />
-      case 'pricing':
-        return <PricingView user={user} />
       default:
         return <EditorView />
     }
