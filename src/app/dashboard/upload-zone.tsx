@@ -137,37 +137,39 @@ export function UploadZone() {
     <div className="w-full max-w-3xl mx-auto mt-6 px-4">
       {/* Passcode Modal */}
       {showPasscodeModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm animate-in fade-in duration-300">
-          <div className="bg-[#09090b] border border-[#27272a] p-8 rounded-[2rem] w-full max-w-md shadow-2xl space-y-6 animate-in zoom-in-95 duration-300 mx-4">
-            <div className="text-center space-y-2">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-500/10 mb-4 border border-blue-500/20">
-                <Lock className="w-8 h-8 text-blue-500" />
+        <div 
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-[2px] animate-in fade-in duration-200"
+          onClick={() => setShowPasscodeModal(false)}
+        >
+          <div 
+            className="bg-[#121214] border border-zinc-800 p-6 rounded-xl w-full max-w-[320px] shadow-xl space-y-5 animate-in zoom-in-95 duration-200 mx-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="text-center space-y-1">
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-zinc-800 mb-2">
+                <Lock className="w-5 h-5 text-zinc-400" />
               </div>
-              <h2 className="text-2xl font-bold text-white tracking-tight">Project Access Code</h2>
-              <p className="text-zinc-400 text-sm">Enter the access code to use the BG Remover AI for this project.</p>
+              <h2 className="text-lg font-semibold text-white">Access Code</h2>
+              <p className="text-zinc-500 text-xs">This tool is locked for project evaluation.</p>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-3">
               <input
                 type="text"
-                placeholder="Enter Code (e.g. 2026)"
+                placeholder="Enter Access Code"
                 value={passcodeInput}
                 onChange={(e) => setPasscodeInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handlePasscodeSubmit()}
-                className="w-full bg-[#18181b] border border-[#27272a] rounded-2xl px-4 py-4 text-white text-center text-xl font-bold focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-zinc-800 placeholder:font-normal"
+                className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2.5 text-white text-center text-base focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all placeholder:text-zinc-700"
                 autoFocus
               />
               <Button 
                 onClick={handlePasscodeSubmit}
-                className="w-full py-7 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-bold transition-all active:scale-95 shadow-lg shadow-blue-500/20"
+                className="w-full py-5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-all active:scale-95"
               >
-                Confirm Access
+                Unlock Tool
               </Button>
             </div>
-            
-            <p className="text-center text-[10px] text-zinc-600 uppercase tracking-widest font-medium">
-              API Credits Protection Enabled
-            </p>
           </div>
         </div>
       )}
