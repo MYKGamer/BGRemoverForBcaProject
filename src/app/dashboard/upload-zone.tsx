@@ -1,13 +1,15 @@
 'use client'
 
 import { useState, useCallback } from 'react'
+import { useRouter } from 'next/navigation'
 import { useDropzone } from 'react-dropzone'
 import { Upload, Loader2, Image as ImageIcon, Download, Sparkles } from 'lucide-react'
 import { Button } from "@/components/ui/button"
-import { removeBackground } from './actions'
+
 import { toast } from 'sonner'
 
 export function UploadZone() {
+  const router = useRouter()
   const [isProcessing, setIsProcessing] = useState(false)
   const [resultImage, setResultImage] = useState<string | null>(null)
 
@@ -33,13 +35,19 @@ export function UploadZone() {
     formData.append('image', file)
 
     try {
-      const result = await removeBackground(formData)
+      const response = await fetch('/api/remove-bg', {
+        method: 'POST',
+        body: formData,
+      })
+      
+      const result = await response.json()
 
-      if (result.error) {
-        toast.error(result.error, { id: 'processing-toast' })
+      if (!response.ok || result.error) {
+        toast.error(result.error || 'Failed to process image', { id: 'processing-toast' })
       } else if (result.success && result.transparentUrl) {
         toast.success('Background removed successfully!', { id: 'processing-toast' })
         setResultImage(result.transparentUrl)
+        router.refresh()
       }
     } catch {
       toast.error('An unexpected error occurred', { id: 'processing-toast' })

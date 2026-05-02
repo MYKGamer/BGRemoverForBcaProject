@@ -1,29 +1,30 @@
-'use server'
-
+import { NextResponse } from 'next/server'
 import { createClient } from '@/utils/supabase/server'
 import { supabaseAdmin } from '@/utils/supabase/admin'
 import { revalidatePath } from 'next/cache'
 
-export async function removeBackground(formData: FormData) {
+export async function POST(req: Request) {
   let uploadedOriginalPath = ''
   
   try {
+    const formData = await req.formData()
     const file = formData.get('image') as File | null
+    
     if (!file) {
-      return { error: 'No image provided' }
+      return NextResponse.json({ error: 'No image provided' }, { status: 400 })
     }
 
-    // 1. Basic File Validation (Teacher check: Security & Performance)
-    const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
+    // 1. Basic File Validation (10MB Limit)
+    const MAX_FILE_SIZE = 10 * 1024 * 1024 
     if (file.size > MAX_FILE_SIZE) {
-      return { error: 'Image too large. Please upload an image smaller than 10MB.' }
+      return NextResponse.json({ error: 'Image too large. Please upload an image smaller than 10MB.' }, { status: 400 })
     }
 
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
     if (!user) {
-      return { error: 'Unauthorized' }
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
     // 2. Check credits
@@ -34,11 +35,11 @@ export async function removeBackground(formData: FormData) {
       .single()
 
     if (userError || !userData) {
-      return { error: 'Could not fetch user data' }
+      return NextResponse.json({ error: 'Could not fetch user data' }, { status: 400 })
     }
 
     if (userData.credits <= 0) {
-      return { error: 'Out of credits. Please top up to continue.' }
+      return NextResponse.json({ error: 'Out of credits. Please top up to continue.' }, { status: 400 })
     }
 
     // 3. Upload Original Image
@@ -52,7 +53,7 @@ export async function removeBackground(formData: FormData) {
 
     if (uploadError) {
       console.error('Upload Error:', uploadError)
-      return { error: 'Failed to upload image to storage' }
+      return NextResponse.json({ error: 'Failed to upload image to storage' }, { status: 500 })
     }
 
     const originalUrl = supabase.storage.from('creations').getPublicUrl(fileName).data.publicUrl
@@ -70,12 +71,10 @@ export async function removeBackground(formData: FormData) {
     })
 
     if (!response.ok) {
-      // CLEANUP: Delete the original image if AI fails
       await supabase.storage.from('creations').remove([fileName])
-      
       const errorText = await response.text()
       console.error('Clipdrop Error:', response.status, errorText)
-      return { error: 'AI processing failed. Please try again later.' }
+      return NextResponse.json({ error: 'AI processing failed. Please try again later.' }, { status: 500 })
     }
 
     const buffer = await response.arrayBuffer()
@@ -90,10 +89,9 @@ export async function removeBackground(formData: FormData) {
       .upload(resultFileName, resultFile)
 
     if (resultUploadError) {
-      // CLEANUP: Delete the original image if second upload fails
       await supabase.storage.from('creations').remove([fileName])
       console.error('Result Upload Error:', resultUploadError)
-      return { error: 'Failed to save processed image' }
+      return NextResponse.json({ error: 'Failed to save processed image' }, { status: 500 })
     }
 
     const transparentUrl = supabase.storage.from('creations').getPublicUrl(resultFileName).data.publicUrl
@@ -112,7 +110,7 @@ export async function removeBackground(formData: FormData) {
       console.error('History Error:', historyError)
     }
 
-    // 7. Deduct Credit (Using Service Role via Admin Client)
+    // 7. Deduct Credit
     const { error: deductError } = await supabaseAdmin
       .rpc('decrement_credit', { user_id: user.id })
 
@@ -128,20 +126,15 @@ export async function removeBackground(formData: FormData) {
     }
 
     revalidatePath('/dashboard')
-    return { success: true, originalUrl, transparentUrl }
+    return NextResponse.json({ success: true, originalUrl, transparentUrl })
 
   } catch (error: any) {
-    // FINAL CLEANUP: Ensure no junk files if an unexpected error occurs
     if (uploadedOriginalPath) {
       const supabase = await createClient()
       await supabase.storage.from('creations').remove([uploadedOriginalPath])
     }
     
-    console.error('================ SERVER ACTION CRASH ================')
-    console.error('Error Details:', error?.message || error)
-    console.error('Error Stack:', error?.stack)
-    console.error('=====================================================')
-    
-    return { error: `System Error: ${error?.message || 'Check terminal logs'}` }
+    console.error('API Route Error:', error?.message || error)
+    return NextResponse.json({ error: `System Error: ${error?.message || 'Check terminal logs'}` }, { status: 500 })
   }
 }
