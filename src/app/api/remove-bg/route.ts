@@ -9,6 +9,12 @@ export async function POST(req: Request) {
   try {
     const formData = await req.formData()
     const file = formData.get('image') as File | null
+    const accessCode = req.headers.get('x-access-code')
+
+    // 0. Access Code Security
+    if (accessCode !== '2026') {
+      return NextResponse.json({ error: 'Invalid or missing Access Code. Please enter the project code to continue.' }, { status: 403 })
+    }
     
     if (!file) {
       return NextResponse.json({ error: 'No image provided' }, { status: 400 })

@@ -7,36 +7,43 @@ import { Upload, Loader2, Image as ImageIcon, Download, Sparkles } from 'lucide-
 import { Button } from "@/components/ui/button"
 
 import { toast } from 'sonner'
+import { useEffect } from 'react'
+import { Lock } from 'lucide-react'
 
 export function UploadZone() {
   const router = useRouter()
   const [isProcessing, setIsProcessing] = useState(false)
   const [resultImage, setResultImage] = useState<string | null>(null)
+  
+  // Passcode States
+  const [isPasscodeVerified, setIsPasscodeVerified] = useState(false)
+  const [showPasscodeModal, setShowPasscodeModal] = useState(false)
+  const [passcodeInput, setPasscodeInput] = useState('')
 
-  const onDrop = useCallback(async (acceptedFiles: File[]) => {
-    const file = acceptedFiles[0]
-    if (!file) return
-
-    if (!file.type.startsWith('image/')) {
-      toast.error('Please upload an image file')
-      return
+  // Check localStorage on mount
+  useEffect(() => {
+    const savedCode = localStorage.getItem('project_access_code')
+    if (savedCode === '2026') {
+      setIsPasscodeVerified(true)
     }
+  }, [])
 
-    if (file.size > 10 * 1024 * 1024) {
-      toast.error('Image must be less than 10MB')
-      return
-    }
+  const [pendingFile, setPendingFile] = useState<File | null>(null)
 
+  const processFile = async (fileToProcess: File) => {
     setIsProcessing(true)
     setResultImage(null)
     toast.loading('Processing image...', { id: 'processing-toast' })
 
     const formData = new FormData()
-    formData.append('image', file)
+    formData.append('image', fileToProcess)
 
     try {
       const response = await fetch('/api/remove-bg', {
         method: 'POST',
+        headers: {
+          'x-access-code': localStorage.getItem('project_access_code') || ''
+        },
         body: formData,
       })
       
@@ -54,7 +61,31 @@ export function UploadZone() {
     } finally {
       setIsProcessing(false)
     }
-  }, [])
+  }
+
+  const onDrop = useCallback(async (acceptedFiles: File[]) => {
+    const file = acceptedFiles[0]
+    if (!file) return
+
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please upload an image file')
+      return
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error('Image must be less than 10MB')
+      return
+    }
+
+    // Check if passcode is verified
+    if (!isPasscodeVerified) {
+      setPendingFile(file)
+      setShowPasscodeModal(true)
+      return
+    }
+
+    await processFile(file)
+  }, [isPasscodeVerified])
 
   const handleDownload = async () => {
     if (!resultImage) return
@@ -86,8 +117,60 @@ export function UploadZone() {
     disabled: isProcessing
   })
 
+  const handlePasscodeSubmit = async () => {
+    if (passcodeInput === '2026') {
+      localStorage.setItem('project_access_code', '2026')
+      setIsPasscodeVerified(true)
+      setShowPasscodeModal(false)
+      toast.success('Access Granted!')
+      
+      if (pendingFile) {
+        await processFile(pendingFile)
+        setPendingFile(null)
+      }
+    } else {
+      toast.error('Invalid Access Code. Please try again.')
+    }
+  }
+
   return (
     <div className="w-full max-w-3xl mx-auto mt-6 px-4">
+      {/* Passcode Modal */}
+      {showPasscodeModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm animate-in fade-in duration-300">
+          <div className="bg-[#09090b] border border-[#27272a] p-8 rounded-[2rem] w-full max-w-md shadow-2xl space-y-6 animate-in zoom-in-95 duration-300 mx-4">
+            <div className="text-center space-y-2">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-500/10 mb-4 border border-blue-500/20">
+                <Lock className="w-8 h-8 text-blue-500" />
+              </div>
+              <h2 className="text-2xl font-bold text-white tracking-tight">Project Access Code</h2>
+              <p className="text-zinc-400 text-sm">Enter the access code to use the BG Remover AI for this project.</p>
+            </div>
+
+            <div className="space-y-4">
+              <input
+                type="text"
+                placeholder="Enter Code (e.g. 2026)"
+                value={passcodeInput}
+                onChange={(e) => setPasscodeInput(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handlePasscodeSubmit()}
+                className="w-full bg-[#18181b] border border-[#27272a] rounded-2xl px-4 py-4 text-white text-center text-xl font-bold focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-zinc-800 placeholder:font-normal"
+                autoFocus
+              />
+              <Button 
+                onClick={handlePasscodeSubmit}
+                className="w-full py-7 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-bold transition-all active:scale-95 shadow-lg shadow-blue-500/20"
+              >
+                Confirm Access
+              </Button>
+            </div>
+            
+            <p className="text-center text-[10px] text-zinc-600 uppercase tracking-widest font-medium">
+              API Credits Protection Enabled
+            </p>
+          </div>
+        </div>
+      )}
       {resultImage ? (
         <div className="bg-[#18181b]/80 border border-[#27272a] backdrop-blur-xl rounded-[1.5rem] p-5 md:p-8 text-center shadow-2xl space-y-6 animate-in zoom-in-95 duration-500">
           <div className="flex items-center justify-between px-2">
