@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
-import { Download, Trash2, Edit2, Check, X, Image as ImageIcon, ExternalLink, Clock, Calendar, Sparkles } from 'lucide-react'
+import { Download, Trash2, Edit2, Check, X, Image as ImageIcon, ExternalLink, Clock, Calendar, History } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { deleteHistoryItem, renameHistoryItem } from './history-actions'
