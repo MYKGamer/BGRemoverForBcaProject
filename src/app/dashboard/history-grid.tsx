@@ -120,8 +120,8 @@ export function HistoryGrid({ initialItems }: { initialItems: HistoryItem[] }) {
               <div className="absolute top-4 left-4 flex flex-col gap-2 z-20">
                 {isNew && (
                   <div className="px-3 py-1 rounded-full bg-[#2563eb] text-[10px] font-black text-white uppercase tracking-tighter shadow-lg shadow-blue-500/40 flex items-center gap-1 animate-pulse">
-                    <Sparkles className="h-3 w-3" />
-                    New
+                    <History className="h-3 w-3" />
+                    Recent Asset
                   </div>
                 )}
               </div>

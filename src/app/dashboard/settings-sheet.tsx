@@ -1,7 +1,7 @@
 'use client'
 
 import { useTransition } from 'react'
-import { Settings, Bell, Shield, CreditCard, LogOut, Loader2, Sparkles, User, ChevronRight } from 'lucide-react'
+import { Settings, Bell, Shield, CreditCard, LogOut, Loader2, Activity, User, ChevronRight } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { 
   Sheet, 
@@ -54,7 +54,7 @@ export function SettingsSheet({ isOpen, onClose, user }: SettingsSheetProps) {
               <div className="relative flex-1">
                 <p className="text-lg font-bold text-white truncate">{user?.email}</p>
                 <div className="flex items-center gap-2 mt-1">
-                  <span className="px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-black text-blue-500 uppercase tracking-widest">Standard Plan</span>
+                  <span className="px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-black text-blue-500 uppercase tracking-widest">Active Member Instance</span>
                 </div>
               </div>
             </div>
@@ -69,7 +69,7 @@ export function SettingsSheet({ isOpen, onClose, user }: SettingsSheetProps) {
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 text-white">
-                  <Sparkles className="h-4 w-4 text-[#2563eb] group-hover:scale-125 transition-transform" />
+                  <Activity className="h-4 w-4 text-[#2563eb] group-hover:scale-125 transition-transform" />
                   <span className="text-sm font-bold">Remaining Credits</span>
                 </div>
                 <span className="text-xl font-black text-white">42</span>

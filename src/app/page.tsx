@@ -9,15 +9,14 @@ import {
 } from "@/components/ui/sheet";
 import { 
   ImageIcon, 
-  Sparkles, 
-  Zap, 
   ShieldCheck, 
   History, 
   Star, 
   CheckCircle2, 
   ArrowRight,
   MonitorPlay,
-  Wand2,
+  Scissors,
+  Gauge,
   Menu,
   X
 } from "lucide-react";
@@ -119,10 +118,9 @@ export default async function Home() {
 
       <main className="flex flex-col items-center w-full relative overflow-hidden">
         
-        {/* Background Ambient Glow */}
+        {/* Background Ambient Glow - Simplified for standard SaaS look */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] pointer-events-none">
-          <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#2563eb]/20 blur-[120px] rounded-full opacity-50" />
-          <div className="absolute top-[20%] left-[40%] w-[300px] h-[300px] bg-purple-500/10 blur-[100px] rounded-full opacity-40 mix-blend-screen" />
+          <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#2563eb]/10 blur-[120px] rounded-full opacity-30" />
         </div>
 
         {/* 2. The Hero Section */}
@@ -130,34 +128,34 @@ export default async function Home() {
 
           
           <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold tracking-tighter text-[#fafafa] mb-6 leading-[1.1] animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100">
-            Pixel-Perfect Backgrounds. <br className="hidden md:block"/>
+            High-Precision Background <br className="hidden md:block"/>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563eb] to-[#60a5fa]">
-              Zero Effort.
+              Removal Engine.
             </span>
           </h1>
           
           <p className="text-base md:text-xl text-[#a1a1aa] max-w-2xl mb-10 leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200 px-4 sm:px-0">
-            Professional AI background removal for designers, developers, and e-commerce. Separate subjects from the noise in milliseconds.
+            Enterprise-grade subject isolation powered by the Clipdrop engine. Built for seamless integration in modern E-commerce and Design workflows.
           </p>
           
           <div className="flex flex-col sm:flex-row items-center gap-4 w-full justify-center px-4 sm:px-0 animate-in fade-in slide-in-from-bottom-10 duration-700 delay-300">
             <NavButton 
               href={authRoute} 
               size="lg" 
-              className="w-full sm:w-auto px-8 h-12 bg-[#2563eb] hover:bg-[#1d4ed8] text-white transition-all shadow-[0_0_40px_-10px_rgba(37,99,235,0.5)] hover:shadow-[0_0_60px_-15px_rgba(37,99,235,0.7)] rounded-full text-base font-semibold group"
+              className="w-full sm:w-auto px-8 h-12 bg-[#2563eb] hover:bg-[#1d4ed8] text-white transition-all shadow-md rounded-md text-base font-semibold group"
             >
               Start for Free
               <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </NavButton>
             <a href="#how-it-works" className="w-full sm:w-auto">
-              <Button variant="outline" size="lg" className="w-full px-8 h-12 border-[#27272a] hover:bg-[#18181b] text-white rounded-full text-base font-semibold transition-all">
+              <Button variant="outline" size="lg" className="w-full px-8 h-12 border-[#27272a] hover:bg-[#18181b] text-white rounded-md text-base font-semibold transition-all">
                 View Demo
               </Button>
             </a>
           </div>
 
           {/* MacOS-style Mockup Window */}
-          <div id="how-it-works" className="mt-20 w-full max-w-3xl mx-auto rounded-2xl border border-[#27272a] bg-[#18181b] shadow-[0_0_50px_-15px_rgba(0,0,0,0.8)] overflow-hidden transition-transform duration-700 hover:scale-[1.02] animate-in fade-in slide-in-from-bottom-12 delay-500">
+          <div id="how-it-works" className="mt-20 w-full max-w-3xl mx-auto rounded-xl border border-[#27272a] bg-[#18181b] shadow-xl overflow-hidden transition-transform duration-700 animate-in fade-in slide-in-from-bottom-12 delay-500">
             <div className="h-10 border-b border-[#27272a] bg-[#09090b] flex items-center px-4 gap-2">
               <div className="h-3 w-3 rounded-full bg-red-500/80"></div>
               <div className="h-3 w-3 rounded-full bg-yellow-500/80"></div>
@@ -180,11 +178,10 @@ export default async function Home() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[250px]">
               {/* Card 1 (Span 2) */}
-              <div className="md:col-span-2 row-span-1 bg-[#18181b]/50 border border-[#27272a] rounded-3xl p-8 flex flex-col sm:flex-row gap-6 relative overflow-hidden group hover:border-[#2563eb]/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-500/10">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#2563eb]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="md:col-span-2 row-span-1 bg-[#18181b] border border-[#27272a] rounded-xl p-8 flex flex-col sm:flex-row gap-6 relative overflow-hidden transition-all duration-300 shadow-sm hover:shadow-md">
                 <div className="flex-1 relative z-10">
-                  <div className="h-10 w-10 rounded-lg bg-[#2563eb]/20 flex items-center justify-center mb-6 border border-[#2563eb]/30 group-hover:scale-110 transition-transform duration-300">
-                    <Wand2 className="h-5 w-5 text-[#2563eb]" />
+                  <div className="h-10 w-10 rounded-lg bg-[#2563eb]/20 flex items-center justify-center mb-6 border border-[#2563eb]/30 transition-transform duration-300">
+                    <Scissors className="h-5 w-5 text-[#2563eb]" />
                   </div>
                   <h3 className="text-2xl font-bold text-white mb-2">Clipdrop AI Engine</h3>
                   <p className="text-[#a1a1aa] leading-relaxed">Flawless edge detection even on complex subjects like hair, fur, and transparent objects. Industry-leading precision.</p>
@@ -209,32 +206,29 @@ export default async function Home() {
               </div>
 
               {/* Card 2 */}
-              <div className="col-span-1 row-span-1 bg-[#18181b]/50 border border-[#27272a] rounded-3xl p-8 relative overflow-hidden group hover:border-yellow-500/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-yellow-500/10">
-                <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <div className="h-10 w-10 rounded-lg bg-yellow-500/20 flex items-center justify-center mb-6 border border-yellow-500/30 group-hover:scale-110 transition-transform duration-300">
-                  <Zap className="h-5 w-5 text-yellow-500" />
+              <div className="col-span-1 row-span-1 bg-[#18181b] border border-[#27272a] rounded-xl p-8 relative overflow-hidden transition-all duration-300 shadow-sm hover:shadow-md">
+                <div className="h-10 w-10 rounded-lg bg-blue-500/10 flex items-center justify-center mb-6 border border-blue-500/20">
+                  <Gauge className="h-5 w-5 text-blue-500" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2">Lightning Fast</h3>
-                <p className="text-[#a1a1aa] leading-relaxed text-sm">Process high-resolution images in seconds, not minutes. Optimized for speed.</p>
+                <h3 className="text-xl font-bold text-white mb-2">Optimized Latency</h3>
+                <p className="text-[#a1a1aa] leading-relaxed text-sm">Process high-resolution images rapidly with our edge-optimized processing pipeline.</p>
               </div>
 
               {/* Card 3 */}
-              <div className="col-span-1 row-span-1 bg-[#18181b]/50 border border-[#27272a] rounded-3xl p-8 relative overflow-hidden group hover:border-green-500/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-green-500/10">
-                <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <div className="h-10 w-10 rounded-lg bg-green-500/20 flex items-center justify-center mb-6 border border-green-500/30 group-hover:scale-110 transition-transform duration-300">
-                  <ShieldCheck className="h-5 w-5 text-green-500" />
+              <div className="col-span-1 row-span-1 bg-[#18181b] border border-[#27272a] rounded-xl p-8 relative overflow-hidden transition-all duration-300 shadow-sm hover:shadow-md">
+                <div className="h-10 w-10 rounded-lg bg-blue-500/10 flex items-center justify-center mb-6 border border-blue-500/20">
+                  <ShieldCheck className="h-5 w-5 text-blue-500" />
                 </div>
                 <h3 className="text-xl font-bold text-white mb-2">Secure Storage</h3>
                 <p className="text-[#a1a1aa] leading-relaxed text-sm">Your original and transparent files are securely backed up in our Supabase cloud vaults.</p>
               </div>
 
               {/* Card 4 (Span 2) */}
-              <div className="md:col-span-2 row-span-1 bg-[#18181b]/50 border border-[#27272a] rounded-3xl p-8 relative overflow-hidden group hover:border-purple-500/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-purple-500/10">
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="md:col-span-2 row-span-1 bg-[#18181b] border border-[#27272a] rounded-xl p-8 relative overflow-hidden transition-all duration-300 shadow-sm hover:shadow-md">
                 <div className="flex flex-col h-full justify-between relative z-10">
                   <div>
-                    <div className="h-10 w-10 rounded-lg bg-purple-500/20 flex items-center justify-center mb-6 border border-purple-500/30 group-hover:scale-110 transition-transform duration-300">
-                      <History className="h-5 w-5 text-purple-500" />
+                    <div className="h-10 w-10 rounded-lg bg-blue-500/10 flex items-center justify-center mb-6 border border-blue-500/20">
+                      <History className="h-5 w-5 text-blue-500" />
                     </div>
                     <h3 className="text-2xl font-bold text-white mb-2">History Dashboard</h3>
                     <p className="text-[#a1a1aa] leading-relaxed max-w-lg">Manage, review, and download your past creations with our lightning-fast Single Page Application interface.</p>

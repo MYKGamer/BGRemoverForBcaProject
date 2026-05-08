@@ -3,7 +3,7 @@
 import { useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { useDropzone } from 'react-dropzone'
-import { Upload, Loader2, Image as ImageIcon, Download, Sparkles } from 'lucide-react'
+import { Upload, Loader2, Image as ImageIcon, Download, Cpu } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 
 import { toast } from 'sonner'
@@ -284,8 +284,8 @@ export function UploadZone() {
                 <span className="px-3 py-1 rounded-full bg-[#18181b] border border-[#27272a] text-[10px] font-bold text-[#71717a] uppercase tracking-widest">PNG, JPG up to 10MB</span>
                 <div className="h-1 w-1 rounded-full bg-[#3f3f46]" />
                 <span className="flex items-center gap-1.5 text-[10px] font-bold text-[#2563eb] uppercase tracking-widest">
-                  <Sparkles className="h-3 w-3" />
-                  Premium Engine
+                  <Cpu className="h-3 w-3" />
+                  High-Precision Engine
                 </span>
               </div>
             )}

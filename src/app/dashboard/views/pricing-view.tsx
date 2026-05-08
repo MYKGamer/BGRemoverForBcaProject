@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Zap, Sparkles, CreditCard, Info } from "lucide-react";
+import { Check, Scissors, Layers, CreditCard, Info } from "lucide-react";
 import { useRazorpay } from "@/hooks/use-razorpay";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -14,16 +14,16 @@ const plans = [
     price: 1,
     credits: 2,
     features: ["2 High Quality Exports", "Standard Processing", "Email Support"],
-    icon: Zap,
-    color: "blue",
+    icon: Scissors,
+    color: "slate",
   },
   {
     name: "Pro",
     price: 9,
     credits: 5,
     features: ["5 High Quality Exports", "Priority Processing", "24/7 Support", "Commercial License"],
-    icon: Sparkles,
-    color: "purple",
+    icon: Layers,
+    color: "blue",
     popular: true,
   },
   {
@@ -102,8 +102,8 @@ export function PricingView({ hideHeader = false, user = null }: { hideHeader?: 
               <div className="mb-10">
                 <div className={cn(
                   "h-16 w-16 rounded-[1.25rem] flex items-center justify-center mb-8 shadow-inner relative overflow-hidden group",
+                  plan.color === "slate" && "bg-slate-500/10 text-slate-400",
                   plan.color === "blue" && "bg-blue-500/10 text-blue-400",
-                  plan.color === "purple" && "bg-purple-500/10 text-purple-400",
                   plan.color === "green" && "bg-green-500/10 text-green-400"
                 )}>
                   <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -119,8 +119,8 @@ export function PricingView({ hideHeader = false, user = null }: { hideHeader?: 
                 </div>
                 <div className="mt-5 inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10">
                   <div className={cn("h-1.5 w-1.5 rounded-full animate-pulse", 
+                    plan.color === "slate" && "bg-slate-400",
                     plan.color === "blue" && "bg-blue-400",
-                    plan.color === "purple" && "bg-purple-400",
                     plan.color === "green" && "bg-green-400"
                   )} />
                   <span className="text-[11px] font-black text-white uppercase tracking-widest">

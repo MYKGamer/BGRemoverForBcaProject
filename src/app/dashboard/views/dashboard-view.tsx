@@ -1,6 +1,6 @@
 'use client'
 
-import { Zap, Clock, Image as ImageIcon, BarChart3, ArrowRight } from 'lucide-react'
+import { Coins, Clock, Image as ImageIcon, BarChart3, ArrowRight } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 interface DashboardViewProps {
@@ -30,7 +30,7 @@ export function DashboardView({ userEmail, credits, historyCount, onStartEditing
         <Card className="bg-[#18181b]/60 border-[#27272a] backdrop-blur-sm overflow-hidden group hover:border-[#3b82f6]/40 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-blue-500/10">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-semibold text-[#a1a1aa] uppercase tracking-wider">Account Credits</CardTitle>
-            <Zap className="h-5 w-5 text-yellow-500 fill-yellow-500/20 group-hover:scale-125 transition-transform" />
+            <Coins className="h-5 w-5 text-yellow-500 group-hover:scale-125 transition-transform" />
           </CardHeader>
           <CardContent>
             <div className="text-4xl font-black text-white mb-4 tracking-tighter">{credits} <span className="text-xs text-[#52525b] font-normal tracking-normal uppercase">/ {maxCredits} available</span></div>
@@ -96,14 +96,14 @@ export function DashboardView({ userEmail, credits, historyCount, onStartEditing
         {/* Animated Background Pattern */}
         <div className="absolute inset-0 bg-[url('https://transparenttextures.com/patterns/carbon-fibre.png')] opacity-[0.03]" />
         <div className="absolute top-0 right-0 -mt-20 -mr-20 h-64 w-64 bg-[#2563eb]/10 rounded-full blur-[80px] transition-all group-hover:bg-[#2563eb]/20 group-hover:scale-125" />
-        <div className="absolute bottom-0 left-0 -mb-20 -ml-20 h-48 w-48 bg-purple-500/5 rounded-full blur-[60px]" />
+        <div className="absolute bottom-0 left-0 -mb-20 -ml-20 h-48 w-48 bg-blue-500/5 rounded-full blur-[60px]" />
         
         <div className="relative flex flex-col lg:flex-row items-center justify-between gap-8">
           <div className="space-y-4 max-w-xl text-center lg:text-left">
 
             <h2 className="text-2xl md:text-3xl font-black text-white leading-tight tracking-tighter">
               Ready to remove some <br className="hidden md:block" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563eb] via-[#60a5fa] to-[#a855f7]">backgrounds?</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563eb] to-[#60a5fa]">backgrounds?</span>
             </h2>
             <p className="text-[#a1a1aa] leading-relaxed text-sm md:text-base">
               Upload your photos and let our high-precision AI do the heavy lifting. Get professional results in seconds.

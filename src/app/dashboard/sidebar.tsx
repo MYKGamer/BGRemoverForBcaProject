@@ -9,7 +9,7 @@ import {
   History, 
   Settings,
   ChevronRight,
-  Zap,
+  Coins,
   CreditCard
 } from 'lucide-react'
 
@@ -130,12 +130,12 @@ export function Sidebar({ activeView, setActiveView, onSettingsClick, forceExpan
           }`}
         >
           <div className="flex items-center">
-            <Zap className="h-5 w-5 text-yellow-500 min-w-[20px] group-hover:scale-110 transition-transform" />
+            <Coins className="h-5 w-5 text-yellow-500 min-w-[20px] group-hover:scale-110 transition-transform" />
             <div className={`ml-4 text-left transition-opacity duration-300 whitespace-nowrap ${
               isExpanded ? 'opacity-100' : 'hidden'
             }`}>
               <p className="text-[10px] uppercase tracking-wider text-[#a1a1aa] font-bold">Credits</p>
-              <p className="text-sm font-bold text-white group-hover:text-[#2563eb] transition-colors">Pro Plan</p>
+              <p className="text-sm font-bold text-white group-hover:text-[#2563eb] transition-colors">Standard Plan</p>
             </div>
           </div>
         </button>

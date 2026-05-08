@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { motion } from "framer-motion";
 import { PricingView } from "../dashboard/views/pricing-view";
-import { ArrowLeft, Check, HelpCircle, ShieldCheck, Zap, Star } from "lucide-react";
+import { ArrowLeft, Check, ShieldCheck } from "lucide-react";
 
 export default function PricingPage() {
   const [user, setUser] = useState<any>(null);
@@ -22,8 +22,8 @@ export default function PricingPage() {
     <div className="min-h-screen bg-[#09090b] text-white selection:bg-[#2563eb]/30 relative overflow-x-hidden">
       {/* Background Decorative Orbs */}
       <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#2563eb]/10 blur-[120px] rounded-full" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-500/5 blur-[120px] rounded-full" />
+        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#2563eb]/5 blur-[120px] rounded-full" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-blue-500/5 blur-[120px] rounded-full" />
       </div>
 
       <div className="relative z-10">
@@ -31,10 +31,10 @@ export default function PricingPage() {
         <header className="sticky top-0 z-50 border-b border-white/5 bg-[#09090b]/60 backdrop-blur-xl">
           <div className="container mx-auto px-6 h-20 flex items-center justify-between">
             <a href="/" className="flex items-center gap-3 group">
-              <div className="h-10 w-10 bg-gradient-to-br from-[#2563eb] to-purple-600 rounded-xl flex items-center justify-center font-black text-white shadow-lg shadow-blue-500/20 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+              <div className="h-10 w-10 bg-gradient-to-br from-[#2563eb] to-[#3b82f6] rounded-xl flex items-center justify-center font-black text-white shadow-lg shadow-blue-500/20 transition-all duration-300">
                 B
               </div>
-              <span className="font-black text-2xl tracking-tighter text-white">BGRemover</span>
+              <span className="font-black text-2xl tracking-tighter text-white">BG<span className="text-[#2563eb]">Remover</span></span>
             </a>
             <div className="flex items-center gap-6">
               {user ? (
@@ -61,7 +61,7 @@ export default function PricingPage() {
 
         {/* 2. Hero Section */}
         <main className="container mx-auto px-6 pt-24 pb-12 text-center max-w-4xl">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="space-y-6"
@@ -70,7 +70,7 @@ export default function PricingPage() {
               Pricing Built <br /> for Speed.
             </h1>
             <p className="text-xl md:text-2xl text-[#a1a1aa] max-w-2xl mx-auto font-medium">
-              Professional AI background removal starting from zero. Scale as you grow with flexible plans.
+              Enterprise-grade background removal solutions. Scale your image processing with flexible credit-based infrastructure.
             </p>
           </motion.div>
         </main>
@@ -88,7 +88,7 @@ export default function PricingPage() {
             <h2 className="text-4xl font-black tracking-tight">Common Questions</h2>
             <p className="text-[#a1a1aa] font-medium">Everything you need to know about our plans.</p>
           </div>
-          
+
           <div className="grid gap-6">
             {[
               { q: "How do credits work?", a: "One credit is used for each image background removal. They never expire!" },
