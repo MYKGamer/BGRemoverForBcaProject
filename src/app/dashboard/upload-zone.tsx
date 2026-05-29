@@ -3,12 +3,11 @@
 import { useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { useDropzone } from 'react-dropzone'
-import { Upload, Loader2, Image as ImageIcon, Download, Cpu } from 'lucide-react'
+import { Upload, Loader2, Image as ImageIcon, Download, Cpu, Lock } from 'lucide-react'
 import { Button } from "@/components/ui/button"
-
+import { motion } from 'framer-motion'
 import { toast } from 'sonner'
 import { useEffect } from 'react'
-import { Lock } from 'lucide-react'
 
 export function UploadZone() {
   const router = useRouter()
@@ -141,8 +140,11 @@ export function UploadZone() {
           className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-[2px] animate-in fade-in duration-200"
           onClick={() => setShowPasscodeModal(false)}
         >
-          <div 
-            className="bg-[#121214] border border-zinc-800 p-6 rounded-xl w-full max-w-[320px] shadow-xl space-y-5 animate-in zoom-in-95 duration-200 mx-4"
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95, y: 15 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ type: "spring", stiffness: 350, damping: 25 }}
+            className="bg-[#121214] border border-zinc-800 p-6 rounded-xl w-full max-w-[320px] shadow-xl space-y-5 mx-4"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="text-center space-y-1">
@@ -163,14 +165,20 @@ export function UploadZone() {
                 className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2.5 text-white text-center text-base focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all placeholder:text-zinc-700"
                 autoFocus
               />
-              <Button 
-                onClick={handlePasscodeSubmit}
-                className="w-full py-5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-all active:scale-95"
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: "spring", stiffness: 350, damping: 25 }}
               >
-                Unlock Tool
-              </Button>
+                <Button 
+                  onClick={handlePasscodeSubmit}
+                  className="w-full py-5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-all"
+                >
+                  Unlock Tool
+                </Button>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
         </div>
       )}
       {resultImage ? (
@@ -185,13 +193,13 @@ export function UploadZone() {
 
           <div className="relative group w-full aspect-video md:aspect-[16/10] flex items-center justify-center bg-[#09090b] rounded-[1.5rem] border border-[#27272a] overflow-hidden shadow-inner">
              {/* Transparency Grid Background */}
-             <div className="absolute inset-0 bg-[url('https://transparenttextures.com/patterns/cubes.png')] opacity-20" />
+             <div className="absolute inset-0 bg-[linear-gradient(45deg,#18181b_25%,transparent_25%),linear-gradient(-45deg,#18181b_25%,transparent_25%),linear-gradient(45deg,transparent_75%,#18181b_75%),linear-gradient(-45deg,transparent_75%,#18181b_75%)] bg-[size:20px_20px] bg-[position:0_0,0_10px,10px_-10px,-10px_0] opacity-40" />
              
              {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
               src={resultImage} 
               alt="Background removed result" 
-              className="relative z-10 max-h-[85%] max-w-[85%] object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-transform duration-500 group-hover:scale-[1.02]"
+              className="relative z-10 max-h-[85%] max-w-[85%] object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.6)] transition-transform duration-500 group-hover:scale-[1.02]"
             />
 
             {/* Corner Decorative Elements */}
@@ -202,21 +210,35 @@ export function UploadZone() {
           </div>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Button 
-              onClick={handleDownload}
-              className="w-full sm:w-auto bg-[#2563eb] hover:bg-[#1d4ed8] text-white px-8 py-6 rounded-xl flex items-center space-x-2 transition-all shadow-[0_10px_40px_-10px_rgba(37,99,235,0.5)] hover:shadow-[0_15px_50px_-10px_rgba(37,99,235,0.7)] text-base font-bold group transform hover:-translate-y-1"
+            <motion.div
+              whileHover={{ scale: 1.02, y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 350, damping: 25 }}
+              className="w-full sm:w-auto"
             >
-              <Download className="h-5 w-5 group-hover:translate-y-1 transition-transform" />
-              <span>Download High-Res</span>
-            </Button>
+              <Button 
+                onClick={handleDownload}
+                className="w-full bg-[#2563eb] hover:bg-[#1d4ed8] text-white px-8 py-6 rounded-xl flex items-center justify-center space-x-2 transition-all shadow-[0_10px_40px_-10px_rgba(37,99,235,0.5)] hover:shadow-[0_15px_50px_-10px_rgba(37,99,235,0.7)] text-base font-bold group"
+              >
+                <Download className="h-5 w-5 group-hover:translate-y-1 transition-transform" />
+                <span>Download High-Res</span>
+              </Button>
+            </motion.div>
             
-            <Button 
-              variant="outline"
-              onClick={() => setResultImage(null)}
-              className="w-full sm:w-auto border-[#27272a] hover:bg-[#18181b] text-[#a1a1aa] hover:text-white px-6 py-6 rounded-xl text-sm font-semibold transition-all"
+            <motion.div
+              whileHover={{ scale: 1.02, y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 350, damping: 25 }}
+              className="w-full sm:w-auto"
             >
-              Remove Another
-            </Button>
+              <Button 
+                variant="outline"
+                onClick={() => setResultImage(null)}
+                className="w-full border-[#27272a] hover:bg-[#18181b] text-[#a1a1aa] hover:text-white px-6 py-6 rounded-xl text-sm font-semibold transition-all"
+              >
+                Remove Another
+              </Button>
+            </motion.div>
           </div>
         </div>
       ) : (

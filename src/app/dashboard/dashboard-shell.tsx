@@ -32,7 +32,7 @@ export function DashboardShell({ user, credits, historyItems }: DashboardShellPr
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   const router = useRouter()
   
-  const springTransition = { type: "spring", stiffness: 350, damping: 25 }
+  const springTransition = { type: "spring", stiffness: 350, damping: 25 } as const
 
   const renderView = () => {
     switch (activeView) {

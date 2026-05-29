@@ -34,7 +34,7 @@ export function Sidebar({ activeView, setActiveView, onSettingsClick, forceExpan
   ]
   
   const isExpanded = forceExpand || isHovered 
-  const springTransition = { type: "spring", stiffness: 350, damping: 25 }
+  const springTransition = { type: "spring", stiffness: 350, damping: 25 } as const
 
   return (
     <aside 
@@ -161,7 +161,5 @@ export function Sidebar({ activeView, setActiveView, onSettingsClick, forceExpan
         </motion.button>
       </div>
     </aside>
-  )
-}
   )
 }
