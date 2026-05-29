@@ -146,25 +146,32 @@ export function PricingView({ hideHeader = false, user = null }: { hideHeader?: 
                 ))}
               </div>
 
-              <Button
-                onClick={() => handleSubscribe(plan.price, plan.credits)}
-                disabled={loading}
-                className={cn(
-                  "w-full py-8 rounded-2xl font-black text-lg transition-all active:scale-[0.97] cursor-pointer",
-                  plan.popular 
-                    ? "bg-[#2563eb] hover:bg-[#1d4ed8] text-white shadow-2xl shadow-blue-500/30" 
-                    : "bg-white text-black hover:bg-[#f4f4f5] shadow-2xl shadow-white/5"
-                )}
+              <motion.div
+                whileHover={{ scale: 1.02, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: "spring", stiffness: 350, damping: 25 }}
+                className="w-full mt-auto"
               >
-                {loading ? (
-                  <div className="flex items-center gap-3">
-                    <div className="h-5 w-5 border-3 border-current border-t-transparent rounded-full animate-spin" />
-                    Processing...
-                  </div>
-                ) : (
-                  `Get ${plan.name}`
-                )}
-              </Button>
+                <Button
+                  onClick={() => handleSubscribe(plan.price, plan.credits)}
+                  disabled={loading}
+                  className={cn(
+                    "w-full py-8 rounded-2xl font-black text-lg transition-all cursor-pointer",
+                    plan.popular 
+                      ? "bg-[#2563eb] hover:bg-[#1d4ed8] text-white shadow-2xl shadow-blue-500/30" 
+                      : "bg-white text-black hover:bg-[#f4f4f5] shadow-2xl shadow-white/5"
+                  )}
+                >
+                  {loading ? (
+                    <div className="flex items-center justify-center gap-3">
+                      <div className="h-5 w-5 border-3 border-current border-t-transparent rounded-full animate-spin" />
+                      Processing...
+                    </div>
+                  ) : (
+                    `Get ${plan.name}`
+                  )}
+                </Button>
+              </motion.div>
             </motion.div>
           );
         })}

@@ -59,7 +59,7 @@ export function BeforeAfterSlider() {
       }`}
     >
       {/* After Image (Background) */}
-      <div className="absolute inset-0 bg-[url('https://transparenttextures.com/patterns/cubes.png')] bg-[#09090b]">
+      <div className="absolute inset-0 bg-[linear-gradient(45deg,#18181b_25%,transparent_25%),linear-gradient(-45deg,#18181b_25%,transparent_25%),linear-gradient(45deg,transparent_75%,#18181b_75%),linear-gradient(-45deg,transparent_75%,#18181b_75%)] bg-[size:20px_20px] bg-[position:0_0,0_10px,10px_-10px,-10px_0] opacity-40 bg-[#09090b]">
         <img 
           src="/images/AnkitAfter.jpg" 
           alt="After" 
