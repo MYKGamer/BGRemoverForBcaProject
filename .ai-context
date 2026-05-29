@@ -1,0 +1,192 @@
+# Project Handover Blueprint: SaaS Background Remover (BCA College Project)
+
+This document is a comprehensive technical blueprint of the AI Background Remover web application. It provides an immediate overview of the system architecture, file structure, database schema, core workflows, and critical "Do Not Touch" files.
+
+---
+
+## 1. Project Brief & Scope
+The application is a **SaaS-Based Background Image Remover System**.
+* **Goal**: Enable users to upload images, automatically remove their backgrounds using AI in seconds, track their history, and buy processing credits.
+* **Credits Model**: Registration grants 6 free credits. Each background removal deducts 1 credit.
+* **Evaluation Access Gate**: A custom passcode gate (`2026`) is implemented to lock the application for project evaluation and defense.
+
+---
+
+## 2. Tech Stack
+* **Framework**: Next.js 16.2.4 (App Router & Server Actions)
+* **Language**: TypeScript & React 19
+* **Database & Authentication**: Supabase (PostgreSQL, Supabase Auth, Supabase Storage buckets)
+* **AI Processing Engine**: Clipdrop API (Stability AI)
+* **Payment Gateway**: Razorpay (Sandbox Mode)
+* **Styling & UI**: Tailwind CSS 4, Tw-Animate, Shadcn UI (Radix-based buttons, sheets, cards, tabs, and Sonner toast alerts)
+* **Animations**: Framer Motion / Motion library
+
+---
+
+## 3. Database Schema (Supabase PostgreSQL)
+
+### A. `users_data` (User Profile & Credits)
+Handles user credits. A database trigger in Supabase automatically inserts a row here on new signup.
+* `id`: `uuid` (Primary Key, references `auth.users.id`)
+* `email`: `text` (User email address)
+* `credits`: `integer` (Default: `6`, must be `>= 0`)
+* `created_at`: `timestamp with time zone`
+
+### B. `history` (Image Processing Records)
+Tracks all successful background removal jobs per user.
+* `id`: `uuid` (Primary Key, defaults to `gen_random_uuid()`)
+* `user_id`: `uuid` (References `users_data.id` on delete cascade)
+* `title`: `text` (Original file name, defaults to `'Untitled Image'`)
+* `original_image_url`: `text` (Public Supabase storage URL for the original image)
+* `transparent_image_url`: `text` (Public Supabase storage URL for the transparent result)
+* `created_at`: `timestamp with time zone`
+
+### C. `transactions` (Razorpay Payment Logs)
+Logs payment logs for admin audits.
+* `id`: `uuid` (Primary Key, defaults to `gen_random_uuid()`)
+* `user_id`: `uuid` (References `auth.users.id`)
+* `amount`: `numeric` (Rupees processed)
+* `credits`: `integer` (Number of credits purchased)
+* `razorpay_order_id`: `text`
+* `razorpay_payment_id`: `text`
+* `status`: `text` (Default: `'success'`)
+* `created_at`: `timestamp with time zone`
+
+### D. Automated Functions & Triggers (PL/pgSQL)
+* **New User Sign-up Trigger**: Creates profile in `users_data` on signup.
+  ```sql
+  CREATE OR REPLACE FUNCTION public.handle_new_user()
+  RETURNS trigger AS $$
+  BEGIN
+    INSERT INTO public.users_data (id, email, credits)
+    VALUES (new.id, new.email, 6);
+    RETURN new;
+  END;
+  $$ LANGUAGE plpgsql SECURITY DEFINER;
+
+  CREATE TRIGGER on_auth_user_created
+    AFTER INSERT ON auth.users
+    FOR EACH ROW EXECUTE PROCEDURE public.handle_new_user();
+  ```
+* **Atomic Credit Decrement**: Subtracts 1 credit.
+  ```sql
+  CREATE OR REPLACE FUNCTION public.decrement_credit(user_id UUID)
+  RETURNS void AS $$
+  BEGIN
+    UPDATE public.users_data
+    SET credits = credits - 1
+    WHERE id = user_id AND credits > 0;
+  END;
+  $$ LANGUAGE plpgsql SECURITY DEFINER;
+  ```
+
+### E. Row Level Security (RLS) Policies
+* **`users_data`**: Users can view only their own profile: `auth.uid() = id`.
+* **`history`**: Users can perform full CRUD only on their own generations: `auth.uid() = user_id`.
+* **`transactions`**: Users can view their own payments: `auth.uid() = user_id`. Authenticated inserts are allowed.
+* **Storage Bucket (`creations`)**: Restricted to authenticated reads, uploads, and deletes of user's own files.
+
+---
+
+## 4. Key Logic Flows
+
+### A. Route Authentication & Session Management
+* **Cookie-based Sessions**: Users authenticate via Email/Password or Google OAuth (handled in `src/app/auth/actions.ts`). Supabase Auth saves session JWTs in secure cookies.
+* **Middleware protection**: `src/utils/supabase/middleware.ts` intercepts all requests. It reads the JWT from the cookie. If no session is active and the user attempts to view a page under `/dashboard`, they are redirected to `/auth`.
+
+### B. AI Background Removal Workflow
+Implemented in both `src/app/api/remove-bg/route.ts` and `src/app/dashboard/actions.ts` (`removeBackground` Server Action):
+1. **Verification**: Checks for active session and user credit count. Aborts if `credits <= 0`.
+2. **Evaluation Gate**: Validates that header `x-access-code` matches `2026` on the API route.
+3. **Upload Original**: Saves original image to Supabase Storage bucket `creations` as `${user.id}-${Date.now()}-original.${ext}`.
+4. **Fetch Clipdrop AI**: Issues a POST request to `https://clipdrop-api.co/remove-background/v1` with the `x-api-key` header.
+5. **Upload Transparent**: Saves processed PNG blob to Supabase Storage as `${user.id}-${Date.now()}-transparent.png`.
+6. **Log & Deduct**:
+   * Inserts row in `history`.
+   * Deducts 1 credit from `users_data` using `supabaseAdmin` service client (RPC `decrement_credit` or direct row update).
+7. **Revalidate**: Calls `revalidatePath('/dashboard')` to refresh dynamic server lists.
+
+### C. Razorpay Sandbox Payments
+1. **Create Order**: Client calls `/api/razorpay/order` with quantity and price. The API uses the Razorpay Node SDK (`RAZORPAY_KEY_SECRET`) to securely generate a server-side Order ID.
+2. **Verify Payment**: After payment checkout, Razorpay returns signatures. Client posts them to `/api/razorpay/verify`.
+3. **HMAC Signature Check**:
+   * Cryptographic verification calculates a SHA-256 HMAC of `order_id + "|" + payment_id` using `RAZORPAY_KEY_SECRET`.
+   * If authentic, the verify route retrieves the order credits, increments `users_data.credits`, and logs the transaction.
+
+---
+
+## 5. Directory & File Map
+
+```
+/src
+├── app/
+│   ├── api/
+│   │   ├── razorpay/
+│   │   │   ├── order/route.ts        # Secure Razorpay order generation
+│   │   │   └── verify/route.ts       # Cryptographic signature check & credit fulfillment
+│   │   └── remove-bg/route.ts        # API endpoint for Clipdrop integration + access code check
+│   ├── auth/
+│   │   ├── callback/route.ts         # OAuth code exchange route
+│   │   ├── actions.ts                # Login, Signup, Social Auth Server Actions
+│   │   └── auth-form.tsx             # Shadcn-styled login & signup interface
+│   ├── dashboard/
+│   │   ├── views/
+│   │   │   ├── dashboard-view.tsx    # Combined editor & overview panel
+│   │   │   ├── history-view.tsx      # Simple Creations history wrapper
+│   │   │   └── pricing-view.tsx      # Credit packages display
+│   │   ├── actions.ts                # Server action fallback for background removal
+│   │   ├── dashboard-shell.tsx       # Desktop sidebar & mobile hamburger drawers (SPA views)
+│   │   ├── history-grid.tsx          # Creations grid with rename, download, and delete
+│   │   ├── upload-zone.tsx           # Drag & Drop dropzone + integrated passcode Modal
+│   │   └── page.tsx                  # Main server dashboard entry page
+│   ├── globals.css                   # Global CSS variables & styles
+│   └── page.tsx                      # Product Landing page
+├── components/
+│   ├── ui/                           # Shadcn primitive elements (button, card, sheet, etc.)
+│   └── before-after-slider.tsx       # Interactive UI slider comparing original vs result
+├── lib/
+│   └── supabase/client.ts            # Client-side Supabase connection client
+└── utils/
+    └── supabase/
+        ├── admin.ts                  # Service role client bypassing RLS for credits deduction
+        ├── client.ts                 # Standard client-side helper
+        ├── middleware.ts             # Session controller checking JWT cookies
+        └── server.ts                 # Server-side cookie-aware Supabase instance
+```
+
+---
+
+## 6. CRITICAL "DO NOT TOUCH" FILES
+
+Avoid making changes to these files without complete understanding, as they can break core system operations:
+
+1. **`src/utils/supabase/middleware.ts` & `src/utils/supabase/server.ts`**
+   * *Why*: These manage the session cookies and JWT exchange. A slight change in cookie options can lead to auth sessions dropping or loops of infinite login redirects.
+2. **`src/app/api/razorpay/verify/route.ts`**
+   * *Why*: Implements cryptographic HMAC verification. Altering the body layout or secret decryption keys will prevent payments from verifying, resulting in users not receiving bought credits.
+3. **`src/app/api/remove-bg/route.ts` & `src/app/dashboard/upload-zone.tsx` (Access Code)**
+   * *Why*: The access code `'2026'` is hardcoded on both client storage and server headers. Disabling or modifying it without synchronization will lock out the evaluator or disable processing functionality.
+4. **`.env.local`**
+   * *Why*: Houses critical server keys. `SUPABASE_SERVICE_ROLE_KEY` is required to perform admin credits overrides bypassing Row Level Security.
+
+---
+
+## 7. ENVIRONMENT VARIABLES LIST
+
+Make sure these are defined in `.env.local` for the application to function correctly:
+
+* `NEXT_PUBLIC_SUPABASE_URL`: Supabase project domain.
+* `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Supabase client-safe key.
+* `SUPABASE_SERVICE_ROLE_KEY`: Service role secret to bypass RLS (Server-only).
+* `CLIPDROP_API_KEY`: Stability AI/Clipdrop key to execute BG removal.
+* `NEXT_PUBLIC_RAZORPAY_KEY_ID`: Razorpay public sandbox token.
+* `RAZORPAY_KEY_SECRET`: Razorpay secret authentication key.
+* `NEXT_PUBLIC_SITE_URL`: Application canonical URL (for OAuth callbacks).
+
+---
+
+## 8. BUILD AND DEVELOPMENT TIPS
+
+* **Next.js Compile Memory limits**: Next.js compilation may run out of memory. The package scripts are optimized to use custom Node flags:
+  * `npm run dev`: `node --max-old-space-size=4096 node_modules/next/dist/bin/next dev`
+  * `npm run build`: `node --max-old-space-size=4096 node_modules/next/dist/bin/next build`

@@ -3,12 +3,12 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { motion } from 'framer-motion'
 import { 
   LayoutDashboard, 
   Image as ImageIcon, 
   History, 
   Settings,
-  ChevronRight,
   Coins,
   CreditCard
 } from 'lucide-react'
@@ -34,10 +34,11 @@ export function Sidebar({ activeView, setActiveView, onSettingsClick, forceExpan
   ]
   
   const isExpanded = forceExpand || isHovered 
+  const springTransition = { type: "spring", stiffness: 350, damping: 25 }
 
   return (
     <aside 
-      className={`h-screen bg-[#09090b] border-r border-[#27272a] z-[60] transition-all duration-300 ease-in-out flex flex-col w-64 md:fixed md:left-0 md:top-0 ${
+      className={`h-screen bg-[#0e0e11]/95 backdrop-blur-xl border-r border-[#1a1a1f] z-[60] transition-all duration-300 ease-in-out flex flex-col w-64 md:fixed md:left-0 md:top-0 shadow-2xl shadow-black/80 ${
         !isHovered ? 'md:w-20' : 'md:w-64'
       }`}
       onMouseEnter={() => setIsHovered(true)}
@@ -47,12 +48,17 @@ export function Sidebar({ activeView, setActiveView, onSettingsClick, forceExpan
       {/* Logo Section */}
       <Link 
         href="/" 
-        className="h-16 flex items-center px-6 mb-8 mt-4 group hover:opacity-90 transition-all"
+        className="h-16 flex items-center px-6 mb-8 mt-4 group transition-all"
       >
-        <div className="h-10 w-10 min-w-[40px] bg-[#2563eb] rounded-xl flex items-center justify-center font-bold text-white shadow-lg shadow-[#2563eb]/20 group-hover:scale-105 transition-transform">
+        <motion.div 
+          whileHover={{ scale: 1.05, rotate: 3 }}
+          whileTap={{ scale: 0.95 }}
+          transition={springTransition}
+          className="h-10 w-10 min-w-[40px] bg-[#2563eb] rounded-xl flex items-center justify-center font-extrabold text-white shadow-lg shadow-[#2563eb]/20"
+        >
           B
-        </div>
-        <span className={`ml-3 font-bold text-xl text-white tracking-tight transition-opacity duration-300 whitespace-nowrap ${
+        </motion.div>
+        <span className={`ml-3 font-black text-xl text-white tracking-tighter transition-opacity duration-300 whitespace-nowrap ${
           isExpanded ? 'opacity-100' : 'opacity-0'
         }`}>
           BGRemover
@@ -60,86 +66,102 @@ export function Sidebar({ activeView, setActiveView, onSettingsClick, forceExpan
       </Link>
 
       {/* Navigation Items */}
-      <nav className="flex-1 px-4 space-y-2">
+      <nav className="flex-1 px-4 space-y-2 relative">
         {menuItems.map((item) => {
           const Icon = item.icon
           const isActive = activeView === item.id
 
           if (item.id === 'pricing') {
             return (
-              <button
+              <motion.button
                 key={item.id}
                 onClick={() => window.location.href = '/pricing'}
-                className="w-full flex items-center p-3 rounded-xl transition-all duration-200 group relative text-[#a1a1aa] hover:text-white hover:bg-[#18181b]"
+                whileHover={{ scale: 1.02, x: 2 }}
+                whileTap={{ scale: 0.98 }}
+                transition={springTransition}
+                className="w-full flex items-center p-3 rounded-xl transition-all duration-200 group relative text-[#a1a1aa] hover:text-white hover:bg-[#1a1a1f]/50 border border-transparent"
               >
-                <Icon className={`h-6 w-6 min-w-[24px] group-hover:scale-110 transition-transform`} />
-                <span className={`ml-4 font-medium transition-opacity duration-300 whitespace-nowrap ${
+                <Icon className="h-5 w-5 min-w-[20px] transition-colors" />
+                <span className={`ml-4 font-semibold text-sm transition-opacity duration-300 whitespace-nowrap ${
                   isExpanded ? 'opacity-100' : 'opacity-0'
                 }`}>
                   {item.label}
                 </span>
-              </button>
+              </motion.button>
             )
           }
 
           return (
-            <button
+            <motion.button
               key={item.id}
               onClick={() => setActiveView(item.id as View)}
-              className={`w-full flex items-center p-3 rounded-xl transition-all duration-200 group relative ${
+              whileHover={{ scale: 1.02, x: 2 }}
+              whileTap={{ scale: 0.98 }}
+              transition={springTransition}
+              className={`w-full flex items-center p-3 rounded-xl transition-all duration-200 group relative border ${
                 isActive 
-                  ? 'bg-[#2563eb]/10 text-[#2563eb] border border-[#2563eb]/20' 
-                  : 'text-[#a1a1aa] hover:text-white hover:bg-[#18181b]'
+                  ? 'bg-[#2563eb]/10 border-[#2563eb]/30 text-[#3b82f6]' 
+                  : 'border-transparent text-[#a1a1aa] hover:text-white hover:bg-[#1a1a1f]/50'
               }`}
             >
-              <Icon className={`h-6 w-6 min-w-[24px] ${isActive ? 'text-[#2563eb]' : 'group-hover:scale-110 transition-transform'}`} />
-              <span className={`ml-4 font-medium transition-opacity duration-300 whitespace-nowrap ${
+              <Icon className={`h-5 w-5 min-w-[20px] ${isActive ? 'text-[#3b82f6]' : 'transition-colors'}`} />
+              <span className={`ml-4 font-semibold text-sm transition-opacity duration-300 whitespace-nowrap ${
                 isExpanded ? 'opacity-100' : 'opacity-0'
               }`}>
                 {item.label}
               </span>
 
-              {/* Active Indicator (Dot) */}
-              {isActive && !isExpanded && (
-                <div className="absolute left-[-4px] w-1.5 h-6 bg-[#2563eb] rounded-r-full" />
+              {/* Active Indicator (Premium Sliding Bar) */}
+              {isActive && (
+                <motion.div 
+                  layoutId="activeIndicator"
+                  className="absolute left-0 w-1 h-6 bg-[#2563eb] rounded-r-full"
+                  transition={springTransition}
+                />
               )}
-            </button>
+            </motion.button>
           )
         })}
       </nav>
 
       {/* Bottom Actions */}
       <div className="px-4 mb-8 space-y-2">
-        <button
+        <motion.button
           onClick={onSettingsClick}
-          className="w-full flex items-center p-3 rounded-xl text-[#a1a1aa] hover:text-white hover:bg-[#18181b] transition-all duration-200 group"
+          whileHover={{ scale: 1.02, x: 2 }}
+          whileTap={{ scale: 0.98 }}
+          transition={springTransition}
+          className="w-full flex items-center p-3 rounded-xl text-[#a1a1aa] hover:text-white hover:bg-[#1a1a1f]/50 transition-all duration-200 group border border-transparent"
         >
-          <Settings className="h-6 w-6 min-w-[24px] group-hover:rotate-45 transition-transform duration-500" />
-          <span className={`ml-4 font-medium transition-opacity duration-300 whitespace-nowrap ${
+          <Settings className="h-5 w-5 min-w-[20px] group-hover:rotate-45 transition-transform duration-500" />
+          <span className={`ml-4 font-semibold text-sm transition-opacity duration-300 whitespace-nowrap ${
             isExpanded ? 'opacity-100' : 'opacity-0'
           }`}>
             Settings
           </span>
-        </button>
+        </motion.button>
 
         {/* Mini Credit Display when collapsed */}
-        <button
+        <motion.button
           onClick={() => window.location.href = '/pricing'}
-          className={`p-3 w-full rounded-xl bg-[#18181b]/50 border border-[#27272a] hover:bg-[#2563eb]/10 hover:border-[#2563eb]/30 transition-all duration-300 group ${
-            isExpanded ? 'opacity-100' : 'opacity-100'
-          }`}
+          whileHover={{ scale: 1.02, y: -2 }}
+          whileTap={{ scale: 0.98 }}
+          transition={springTransition}
+          className="p-3 w-full rounded-xl bg-[#131316]/80 border border-[#1a1a1f] hover:bg-[#2563eb]/10 hover:border-[#2563eb]/30 transition-all duration-300 group shadow-md shadow-black/20"
         >
           <div className="flex items-center">
-            <Coins className="h-5 w-5 text-yellow-500 min-w-[20px] group-hover:scale-110 transition-transform" />
+            <Coins className="h-5 w-5 text-yellow-500 min-w-[20px]" />
             <div className={`ml-4 text-left transition-opacity duration-300 whitespace-nowrap ${
               isExpanded ? 'opacity-100' : 'hidden'
             }`}>
-              <p className="text-[10px] uppercase tracking-wider text-[#a1a1aa] font-bold">Credits</p>
-              <p className="text-sm font-bold text-white group-hover:text-[#2563eb] transition-colors">Standard Plan</p>
+              <p className="text-[9px] uppercase tracking-widest text-[#71717a] font-black">Credits</p>
+              <p className="text-xs font-bold text-white group-hover:text-[#3b82f6] transition-colors">Standard Plan</p>
             </div>
           </div>
-        </button>
+        </motion.button>
       </div>
     </aside>
+  )
+}
   )
 }
