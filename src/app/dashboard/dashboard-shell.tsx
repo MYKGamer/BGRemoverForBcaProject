@@ -154,4 +154,3 @@ export function DashboardShell({ user, credits, historyItems }: DashboardShellPr
     </div>
   )
 }
-}
