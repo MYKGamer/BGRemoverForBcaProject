@@ -20,29 +20,33 @@ export function DashboardView({ userEmail, credits, historyCount, onStartEditing
     <div className="w-full max-w-6xl mx-auto space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-10">
       <div className="flex flex-col space-y-2 px-1">
         <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white">
-          Welcome back, <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563eb] to-[#60a5fa] capitalize">{userName}</span>!
+          Welcome back, <span className="text-[#2563eb] capitalize">{userName}</span>!
         </h1>
         <p className="text-[#a1a1aa] text-lg">Your creative workspace is ready. What would you like to do today?</p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 px-1">
-        {/* Credits Card with Progress Bar */}
-        <Card className="bg-[#18181b]/60 border-[#27272a] backdrop-blur-sm overflow-hidden group hover:border-[#3b82f6]/40 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-blue-500/10">
+      <div className="grid gap-6 lg:grid-cols-3 px-1">
+        {/* Credits Card with Progress Bar - Premium 2-Column Desktop layout */}
+        <Card className="lg:col-span-2 bg-[#18181b]/40 border-[#27272a] backdrop-blur-sm overflow-hidden group hover:border-zinc-800 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-semibold text-[#a1a1aa] uppercase tracking-wider">Account Credits</CardTitle>
-            <Coins className="h-5 w-5 text-yellow-500 group-hover:scale-125 transition-transform" />
+            <Coins className="h-5 w-5 text-yellow-500" />
           </CardHeader>
-          <CardContent>
-            <div className="text-4xl font-black text-white mb-4 tracking-tighter">{credits} <span className="text-xs text-[#52525b] font-normal tracking-normal uppercase">/ {maxCredits} available</span></div>
+          <CardContent className="grid md:grid-cols-2 gap-6 items-center">
+            <div>
+              <div className="text-4xl font-extrabold text-white mb-2 tracking-tighter">
+                {credits} <span className="text-xs text-[#52525b] font-normal tracking-normal uppercase">/ {maxCredits} available</span>
+              </div>
+              <p className="text-[10px] text-[#71717a] font-bold uppercase tracking-[0.1em]">Plan: Free Tier</p>
+            </div>
             <div className="space-y-4">
               <div className="h-2 w-full bg-[#09090b] rounded-full overflow-hidden p-[1px] ring-1 ring-[#27272a]">
                 <div 
-                  className="h-full bg-gradient-to-r from-[#2563eb] to-[#60a5fa] rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(37,99,235,0.4)]" 
+                  className="h-full bg-[#2563eb] rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(37,99,235,0.2)]" 
                   style={{ width: `${creditPercentage}%` }}
                 />
               </div>
-              <div className="flex justify-between items-center">
-                <p className="text-[10px] text-[#71717a] font-bold uppercase tracking-[0.1em]">Plan: Free Tier</p>
+              <div className="flex justify-end">
                 <button 
                   onClick={onUpgrade}
                   className="text-[10px] text-[#2563eb] hover:text-blue-400 font-black uppercase tracking-[0.2em] transition-colors flex items-center gap-1 group/btn"
@@ -55,35 +59,38 @@ export function DashboardView({ userEmail, credits, historyCount, onStartEditing
           </CardContent>
         </Card>
 
-        {/* Total Creations Card */}
-        <Card className="bg-[#18181b]/40 border-[#27272a] backdrop-blur-sm hover:border-zinc-800 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl group">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-semibold text-[#a1a1aa] uppercase tracking-wider">Total Creations</CardTitle>
-            <ImageIcon className="h-5 w-5 text-[#2563eb] transition-transform" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-4xl font-extrabold text-white tracking-tighter">{historyCount}</div>
-            <p className="mt-4 text-xs text-[#71717a] font-medium">All processed images are saved in your profile history.</p>
-          </CardContent>
-        </Card>
+        {/* Total Creations & System Status Stacked */}
+        <div className="space-y-6">
+          {/* Total Creations Card */}
+          <Card className="bg-[#18181b]/40 border-[#27272a] backdrop-blur-sm hover:border-zinc-800 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg group">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-xs font-semibold text-[#a1a1aa] uppercase tracking-wider">Total Creations</CardTitle>
+              <ImageIcon className="h-4 w-4 text-[#2563eb]" />
+            </CardHeader>
+            <CardContent className="flex items-baseline justify-between">
+              <div className="text-3xl font-extrabold text-white tracking-tighter">{historyCount}</div>
+              <p className="text-[10px] text-[#71717a] font-medium">All generations saved</p>
+            </CardContent>
+          </Card>
 
-        {/* System Status Card */}
-        <Card className="bg-[#18181b]/40 border-[#27272a] backdrop-blur-sm hover:border-zinc-800 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl group">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-semibold text-[#a1a1aa] uppercase tracking-wider">AI Engine Status</CardTitle>
-            <BarChart3 className="h-5 w-5 text-green-500 transition-transform" />
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center space-x-3 mb-2">
-              <div className="relative flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+          {/* System Status Card */}
+          <Card className="bg-[#18181b]/40 border-[#27272a] backdrop-blur-sm hover:border-zinc-800 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg group">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-xs font-semibold text-[#a1a1aa] uppercase tracking-wider">AI Engine Status</CardTitle>
+              <BarChart3 className="h-4 w-4 text-green-500" />
+            </CardHeader>
+            <CardContent className="flex items-center justify-between">
+              <div className="flex items-center space-x-2.5">
+                <div className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                </div>
+                <div className="text-sm font-bold text-white">System Online</div>
               </div>
-              <div className="text-lg font-bold text-white">System Online</div>
-            </div>
-            <p className="text-xs text-[#71717a] leading-relaxed">Latency: <span className="text-zinc-300">~140ms</span>. Engine is ready for processing.</p>
-          </CardContent>
-        </Card>
+              <p className="text-[10px] text-[#71717a]">Latency: <span className="text-zinc-300">~140ms</span></p>
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
       {/* Hero Action Section - Premium Upgrade */}
@@ -99,7 +106,7 @@ export function DashboardView({ userEmail, credits, historyCount, onStartEditing
 
             <h2 className="text-2xl md:text-3xl font-black text-white leading-tight tracking-tighter">
               Ready to remove some <br className="hidden md:block" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563eb] to-[#60a5fa]">backgrounds?</span>
+              <span className="text-[#2563eb]">backgrounds?</span>
             </h2>
             <p className="text-[#a1a1aa] leading-relaxed text-sm md:text-base">
               Upload your photos and let our high-precision AI do the heavy lifting. Get professional results in seconds.
