@@ -93,8 +93,8 @@ Logs payment logs for admin audits.
 ### A. Route Authentication & Session Management
 * **Cookie-based Sessions**: Users authenticate via Email/Password or Google OAuth (handled in `src/app/auth/actions.ts`). Supabase Auth saves session JWTs in secure cookies.
 * **Next.js 16 Proxy Entry**: `src/proxy.ts` acts as the entry interceptor for all requests, calling `updateSession()` inside `src/utils/supabase/middleware.ts`.
-* **OAuth Code Interceptor**: To prevent users from getting stuck on the landing page with query parameters (`/?code=...`), the middleware intercepts any incoming request containing a verification `code` that lands outside the callback path, redirecting it server-side to `/auth/callback?code=...` for secure session exchange.
-* **Direct Cookie Injection (Auth Callback)**: In `/auth/callback/route.ts`, session cookies are directly set onto the `NextResponse.redirect` object using `createServerClient` and `response.cookies.set()`. This bypasses the Next.js App Router cookie-loss bug and prevents users from being looped back to `/auth` on successful login.
+* **Direct Middleware OAuth Exchange**: The middleware intercepts any incoming request containing a verification `code` query parameter, exchanges it for a session server-side using `exchangeCodeForSession(code)`, writes the session cookies directly to the redirect response object, and redirects the browser cleanly to `/dashboard` (or `next` path), stripping the query parameters to prevent loop state.
+* **Authenticated Redirect**: If a user is already authenticated and attempts to visit the `/auth` page, the middleware automatically redirects them to `/dashboard` to prevent loop screens or showing the login interface to logged-in users.
 
 ### B. AI Background Removal Workflow
 Implemented directly via `src/app/api/remove-bg/route.ts` called by client components (e.g. `upload-zone.tsx`):
