@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { Download, Trash2, Edit2, Check, X, Image as ImageIcon, ExternalLink, Clock, Calendar, History } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -23,6 +23,11 @@ export function HistoryGrid({ initialItems }: { initialItems: HistoryItem[] }) {
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editTitle, setEditTitle] = useState('')
   const [isDeleting, setIsDeleting] = useState<string | null>(null)
+  const [mountedTime, setMountedTime] = useState<number>(0)
+
+  useEffect(() => {
+    setMountedTime(Date.now())
+  }, [])
 
   if (items.length === 0) {
     return (
@@ -122,7 +127,7 @@ export function HistoryGrid({ initialItems }: { initialItems: HistoryItem[] }) {
       className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8"
     >
       {items.map((item) => {
-        const isNew = new Date(item.created_at).getTime() > Date.now() - 1000 * 60 * 60 * 24;
+        const isNew = mountedTime > 0 && new Date(item.created_at).getTime() > mountedTime - 1000 * 60 * 60 * 24;
 
         return (
           <motion.div

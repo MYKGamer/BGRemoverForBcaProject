@@ -15,17 +15,14 @@ export function UploadZone() {
   const [resultImage, setResultImage] = useState<string | null>(null)
   
   // Passcode States
-  const [isPasscodeVerified, setIsPasscodeVerified] = useState(false)
+  const [isPasscodeVerified, setIsPasscodeVerified] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('project_access_code') === '2026'
+    }
+    return false
+  })
   const [showPasscodeModal, setShowPasscodeModal] = useState(false)
   const [passcodeInput, setPasscodeInput] = useState('')
-
-  // Check localStorage on mount
-  useEffect(() => {
-    const savedCode = localStorage.getItem('project_access_code')
-    if (savedCode === '2026') {
-      setIsPasscodeVerified(true)
-    }
-  }, [])
 
   const [pendingFile, setPendingFile] = useState<File | null>(null)
 

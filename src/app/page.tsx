@@ -23,20 +23,20 @@ import {
 import { BeforeAfterSlider } from "@/components/before-after-slider";
 import { NavButton } from "@/components/nav-button";
 
+const NavLinks = () => (
+  <>
+    <a href="#features" className="hover:text-white transition-colors">Features</a>
+    <a href="#how-it-works" className="hover:text-white transition-colors">How it Works</a>
+    <a href="/pricing" className="hover:text-white transition-colors">Pricing</a>
+  </>
+);
+
 export default async function Home() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
   const authRoute = user ? "/dashboard" : "/auth";
   const pricingRoute = user ? "/pricing" : "/auth?next=/pricing";
-
-  const NavLinks = () => (
-    <>
-      <a href="#features" className="hover:text-white transition-colors">Features</a>
-      <a href="#how-it-works" className="hover:text-white transition-colors">How it Works</a>
-      <a href="/pricing" className="hover:text-white transition-colors">Pricing</a>
-    </>
-  );
 
   return (
     <div className="min-h-screen bg-[#09090b] text-white selection:bg-[#2563eb]/30 font-sans">
@@ -252,7 +252,7 @@ export default async function Home() {
                 <div className="flex text-yellow-500 mb-4">
                   {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 fill-current" />)}
                 </div>
-                <p className="text-[#e4e4e7] mb-6 font-medium leading-relaxed">"Saved me hours on my college presentation edits. The accuracy on hair is just insane."</p>
+                <p className="text-[#e4e4e7] mb-6 font-medium leading-relaxed">&ldquo;Saved me hours on my college presentation edits. The accuracy on hair is just insane.&rdquo;</p>
                 <div className="flex items-center gap-3">
                   <div className="h-10 w-10 rounded-full bg-blue-900 flex items-center justify-center text-blue-200 font-bold border border-blue-700">AK</div>
                   <div>
@@ -267,7 +267,7 @@ export default async function Home() {
                 <div className="flex text-yellow-500 mb-4">
                   {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 fill-current" />)}
                 </div>
-                <p className="text-[#e4e4e7] mb-6 font-medium leading-relaxed">"We use this for all our e-commerce product shots now. It's fast, reliable, and the SPA is so smooth."</p>
+                <p className="text-[#e4e4e7] mb-6 font-medium leading-relaxed">&ldquo;We use this for all our e-commerce product shots now. It&apos;s fast, reliable, and the SPA is so smooth.&rdquo;</p>
                 <div className="flex items-center gap-3">
                   <div className="h-10 w-10 rounded-full bg-purple-900 flex items-center justify-center text-purple-200 font-bold border border-purple-700">SJ</div>
                   <div>
@@ -282,7 +282,7 @@ export default async function Home() {
                 <div className="flex text-yellow-500 mb-4">
                   {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 fill-current" />)}
                 </div>
-                <p className="text-[#e4e4e7] mb-6 font-medium leading-relaxed">"The cleanest UI I've seen for a background remover. No ads, no nonsense. Just works."</p>
+                <p className="text-[#e4e4e7] mb-6 font-medium leading-relaxed">&ldquo;The cleanest UI I&apos;ve seen for a background remover. No ads, no nonsense. Just works.&rdquo;</p>
                 <div className="flex items-center gap-3">
                   <div className="h-10 w-10 rounded-full bg-green-900 flex items-center justify-center text-green-200 font-bold border border-green-700">MR</div>
                   <div>
