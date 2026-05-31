@@ -92,10 +92,12 @@ Logs payment logs for admin audits.
 
 ### A. Route Authentication & Session Management
 * **Cookie-based Sessions**: Users authenticate via Email/Password or Google OAuth (handled in `src/app/auth/actions.ts`). Supabase Auth saves session JWTs in secure cookies.
-* **Middleware protection**: `src/utils/supabase/middleware.ts` intercepts all requests. It reads the JWT from the cookie. If no session is active and the user attempts to view a page under `/dashboard`, they are redirected to `/auth`.
+* **Next.js 16 Proxy Entry**: `src/proxy.ts` acts as the entry interceptor for all requests, calling `updateSession()` inside `src/utils/supabase/middleware.ts`.
+* **OAuth Code Interceptor**: To prevent users from getting stuck on the landing page with query parameters (`/?code=...`), the middleware intercepts any incoming request containing a verification `code` that lands outside the callback path, redirecting it server-side to `/auth/callback?code=...` for secure session exchange.
+* **Direct Cookie Injection (Auth Callback)**: In `/auth/callback/route.ts`, session cookies are directly set onto the `NextResponse.redirect` object using `createServerClient` and `response.cookies.set()`. This bypasses the Next.js App Router cookie-loss bug and prevents users from being looped back to `/auth` on successful login.
 
 ### B. AI Background Removal Workflow
-Implemented in both `src/app/api/remove-bg/route.ts` and `src/app/dashboard/actions.ts` (`removeBackground` Server Action):
+Implemented directly via `src/app/api/remove-bg/route.ts` called by client components (e.g. `upload-zone.tsx`):
 1. **Verification**: Checks for active session and user credit count. Aborts if `credits <= 0`.
 2. **Evaluation Gate**: Validates that header `x-access-code` matches `2026` on the API route.
 3. **Upload Original**: Saves original image to Supabase Storage bucket `creations` as `${user.id}-${Date.now()}-original.${ext}`.
@@ -119,6 +121,7 @@ Implemented in both `src/app/api/remove-bg/route.ts` and `src/app/dashboard/acti
 
 ```
 /src
+├── proxy.ts                  # Next.js 16 request proxy interceptor (replaces middleware.ts)
 ├── app/
 │   ├── api/
 │   │   ├── razorpay/
@@ -126,7 +129,7 @@ Implemented in both `src/app/api/remove-bg/route.ts` and `src/app/dashboard/acti
 │   │   │   └── verify/route.ts       # Cryptographic signature check & credit fulfillment
 │   │   └── remove-bg/route.ts        # API endpoint for Clipdrop integration + access code check
 │   ├── auth/
-│   │   ├── callback/route.ts         # OAuth code exchange route
+│   │   ├── callback/route.ts         # OAuth code exchange route & direct cookie injection
 │   │   ├── actions.ts                # Login, Signup, Social Auth Server Actions
 │   │   └── auth-form.tsx             # Shadcn-styled login & signup interface
 │   ├── dashboard/
@@ -134,10 +137,9 @@ Implemented in both `src/app/api/remove-bg/route.ts` and `src/app/dashboard/acti
 │   │   │   ├── dashboard-view.tsx    # Combined editor & overview panel
 │   │   │   ├── history-view.tsx      # Simple Creations history wrapper
 │   │   │   └── pricing-view.tsx      # Credit packages display
-│   │   ├── actions.ts                # Server action fallback for background removal
 │   │   ├── dashboard-shell.tsx       # Desktop sidebar & mobile hamburger drawers (SPA views)
 │   │   ├── history-grid.tsx          # Creations grid with rename, download, and delete
-│   │   ├── upload-zone.tsx           # Drag & Drop dropzone + integrated passcode Modal
+│   │   ├── upload-zone.tsx           # Drag & Drop dropzone + passcode verification
 │   │   └── page.tsx                  # Main server dashboard entry page
 │   ├── globals.css                   # Global CSS variables & styles
 │   └── page.tsx                      # Product Landing page
@@ -150,7 +152,7 @@ Implemented in both `src/app/api/remove-bg/route.ts` and `src/app/dashboard/acti
     └── supabase/
         ├── admin.ts                  # Service role client bypassing RLS for credits deduction
         ├── client.ts                 # Standard client-side helper
-        ├── middleware.ts             # Session controller checking JWT cookies
+        ├── middleware.ts             # Session controller checking JWT cookies & intercepting OAuth
         └── server.ts                 # Server-side cookie-aware Supabase instance
 ```
 
@@ -160,8 +162,8 @@ Implemented in both `src/app/api/remove-bg/route.ts` and `src/app/dashboard/acti
 
 Avoid making changes to these files without complete understanding, as they can break core system operations:
 
-1. **`src/utils/supabase/middleware.ts` & `src/utils/supabase/server.ts`**
-   * *Why*: These manage the session cookies and JWT exchange. A slight change in cookie options can lead to auth sessions dropping or loops of infinite login redirects.
+1. **`src/proxy.ts`, `src/utils/supabase/middleware.ts` & `src/utils/supabase/server.ts`**
+   * *Why*: These manage the session cookies, JWT exchange, and OAuth interception. `src/proxy.ts` is the active entry point in Next.js 16, replacing the deprecated `middleware.ts`. Modifying cookie properties or routing parameters will break sessions or trigger authentication loops.
 2. **`src/app/api/razorpay/verify/route.ts`**
    * *Why*: Implements cryptographic HMAC verification. Altering the body layout or secret decryption keys will prevent payments from verifying, resulting in users not receiving bought credits.
 3. **`src/app/api/remove-bg/route.ts` & `src/app/dashboard/upload-zone.tsx` (Access Code)**
