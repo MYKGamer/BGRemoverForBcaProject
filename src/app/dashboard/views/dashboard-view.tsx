@@ -56,34 +56,32 @@ export function DashboardView({ userEmail, credits, historyCount, onStartEditing
         </Card>
 
         {/* Total Creations Card */}
-        <Card className="bg-[#18181b]/60 border-[#27272a] backdrop-blur-sm hover:border-[#3b82f6]/40 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-blue-500/10 group">
+        <Card className="bg-[#18181b]/40 border-[#27272a] backdrop-blur-sm hover:border-zinc-800 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl group">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-semibold text-[#a1a1aa] uppercase tracking-wider">Total Creations</CardTitle>
-            <ImageIcon className="h-5 w-5 text-[#2563eb] group-hover:scale-125 transition-transform" />
+            <ImageIcon className="h-5 w-5 text-[#2563eb] transition-transform" />
           </CardHeader>
           <CardContent>
-            <div className="text-4xl font-black text-white tracking-tighter">{historyCount}</div>
-            <div className="mt-4 inline-flex items-center px-2 py-1 rounded-md bg-green-500/10 border border-green-500/20">
-              <span className="text-green-500 text-[10px] font-bold uppercase tracking-tight">↑ 12% Growth</span>
-            </div>
+            <div className="text-4xl font-extrabold text-white tracking-tighter">{historyCount}</div>
+            <p className="mt-4 text-xs text-[#71717a] font-medium">All processed images are saved in your profile history.</p>
           </CardContent>
         </Card>
 
         {/* System Status Card */}
-        <Card className="bg-[#18181b]/60 border-[#27272a] backdrop-blur-sm hover:border-green-500/40 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-green-500/5 group">
+        <Card className="bg-[#18181b]/40 border-[#27272a] backdrop-blur-sm hover:border-zinc-800 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl group">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-semibold text-[#a1a1aa] uppercase tracking-wider">AI Engine Status</CardTitle>
-            <BarChart3 className="h-5 w-5 text-green-500 group-hover:scale-125 transition-transform" />
+            <BarChart3 className="h-5 w-5 text-green-500 transition-transform" />
           </CardHeader>
           <CardContent>
             <div className="flex items-center space-x-3 mb-2">
-              <div className="relative flex h-3 w-3">
+              <div className="relative flex h-2.5 w-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
               </div>
-              <div className="text-xl font-bold text-white">System Online</div>
+              <div className="text-lg font-bold text-white">System Online</div>
             </div>
-            <p className="text-xs text-[#71717a] leading-relaxed">Latency: <span className="text-zinc-300">~140ms</span>. Engine is ready for your images.</p>
+            <p className="text-xs text-[#71717a] leading-relaxed">Latency: <span className="text-zinc-300">~140ms</span>. Engine is ready for processing.</p>
           </CardContent>
         </Card>
       </div>
@@ -91,12 +89,10 @@ export function DashboardView({ userEmail, credits, historyCount, onStartEditing
       {/* Hero Action Section - Premium Upgrade */}
       <div 
         onClick={onStartEditing}
-        className="relative group overflow-hidden rounded-[1.5rem] border border-[#27272a] bg-gradient-to-br from-[#18181b] to-[#09090b] p-6 md:p-10 cursor-pointer hover:border-[#2563eb]/40 transition-all duration-500 shadow-2xl"
+        className="relative group overflow-hidden rounded-[1.5rem] border border-[#27272a] bg-gradient-to-br from-[#18181b] to-[#09090b] p-6 md:p-10 cursor-pointer hover:border-zinc-800 transition-all duration-500 shadow-2xl"
       >
-        {/* Animated Background Pattern */}
-        <div className="absolute inset-0 bg-[url('https://transparenttextures.com/patterns/carbon-fibre.png')] opacity-[0.03]" />
-        <div className="absolute top-0 right-0 -mt-20 -mr-20 h-64 w-64 bg-[#2563eb]/10 rounded-full blur-[80px] transition-all group-hover:bg-[#2563eb]/20 group-hover:scale-125" />
-        <div className="absolute bottom-0 left-0 -mb-20 -ml-20 h-48 w-48 bg-blue-500/5 rounded-full blur-[60px]" />
+        <div className="absolute top-0 right-0 -mt-20 -mr-20 h-64 w-64 bg-[#2563eb]/5 rounded-full blur-[100px] transition-all" />
+        <div className="absolute bottom-0 left-0 -mb-20 -ml-20 h-48 w-48 bg-blue-500/5 rounded-full blur-[80px]" />
         
         <div className="relative flex flex-col lg:flex-row items-center justify-between gap-8">
           <div className="space-y-4 max-w-xl text-center lg:text-left">
@@ -110,7 +106,7 @@ export function DashboardView({ userEmail, credits, historyCount, onStartEditing
             </p>
             
             <div className="pt-2 flex items-center justify-center lg:justify-start">
-              <div className="px-6 py-3 bg-[#2563eb] hover:bg-[#1d4ed8] text-white rounded-xl font-bold transition-all duration-300 shadow-[0_0_30px_-5px_rgba(37,99,235,0.4)] group-hover:shadow-[0_0_50px_-10px_rgba(37,99,235,0.6)] flex items-center gap-2 transform group-hover:scale-[1.02]">
+              <div className="px-6 py-3 bg-[#2563eb] hover:bg-[#1d4ed8] text-white rounded-xl font-bold transition-all duration-300 shadow-[0_0_20px_-5px_rgba(37,99,235,0.3)] flex items-center gap-2 transform group-hover:scale-[1.01]">
                 <span className="text-sm">Get Started Now</span>
                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </div>
@@ -118,8 +114,8 @@ export function DashboardView({ userEmail, credits, historyCount, onStartEditing
           </div>
           
           <div className="flex-shrink-0 relative">
-             <div className="absolute inset-0 bg-[#2563eb]/30 rounded-[1.5rem] blur-2xl opacity-50 group-hover:opacity-100 transition-opacity duration-700" />
-             <div className="relative h-24 w-24 md:h-32 md:w-32 rounded-[1.5rem] bg-gradient-to-br from-[#2563eb] to-[#3b82f6] flex items-center justify-center shadow-[0_15px_35px_rgba(37,99,235,0.3)] group-hover:scale-105 group-hover:-rotate-3 transition-all duration-700 ring-4 ring-[#2563eb]/20">
+             <div className="absolute inset-0 bg-[#2563eb]/20 rounded-[1.5rem] blur-2xl opacity-30" />
+             <div className="relative h-24 w-24 md:h-32 md:w-32 rounded-[1.5rem] bg-gradient-to-br from-[#2563eb] to-[#3b82f6] flex items-center justify-center shadow-[0_15px_35px_rgba(37,99,235,0.2)] group-hover:scale-102 transition-all duration-700 ring-4 ring-[#2563eb]/10">
                <ImageIcon className="h-12 w-12 md:h-16 md:w-16 text-white drop-shadow-2xl" />
              </div>
           </div>
