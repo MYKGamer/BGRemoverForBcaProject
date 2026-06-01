@@ -58,8 +58,11 @@ export function BeforeAfterSlider() {
         isDragging ? 'cursor-grabbing' : 'cursor-default'
       }`}
     >
-      {/* After Image (Background) */}
-      <div className="absolute inset-0 bg-[linear-gradient(45deg,#18181b_25%,transparent_25%),linear-gradient(-45deg,#18181b_25%,transparent_25%),linear-gradient(45deg,transparent_75%,#18181b_75%),linear-gradient(-45deg,transparent_75%,#18181b_75%)] bg-[size:20px_20px] bg-[position:0_0,0_10px,10px_-10px,-10px_0] opacity-40 bg-[#09090b]">
+      {/* Checkerboard Pattern Layer (Sits behind, with soft 40% opacity) */}
+      <div className="absolute inset-0 bg-[linear-gradient(45deg,#18181b_25%,transparent_25%),linear-gradient(-45deg,#18181b_25%,transparent_25%),linear-gradient(45deg,transparent_75%,#18181b_75%),linear-gradient(-45deg,transparent_75%,#18181b_75%)] bg-[size:20px_20px] bg-[position:0_0,0_10px,10px_-10px,-10px_0] opacity-40 bg-[#09090b]" />
+
+      {/* After Image Layer (Sits on top, with full 100% opacity for perfect colors) */}
+      <div className="absolute inset-0">
         <img 
           src="/images/AnkitAfter.jpg" 
           alt="After" 
