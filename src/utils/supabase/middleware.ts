@@ -40,9 +40,11 @@ export async function updateSession(request: NextRequest) {
       return response
     }
 
-    // Fallback: If exchange fails, redirect to /auth with an error
+    // Fallback: If exchange fails, redirect to /auth with an error, clearing parameters to prevent infinite loops
     const authUrl = request.nextUrl.clone()
     authUrl.pathname = '/auth'
+    authUrl.searchParams.delete('code')
+    authUrl.searchParams.delete('next')
     authUrl.searchParams.set('error', 'Could not authenticate user')
     return NextResponse.redirect(authUrl)
   }
